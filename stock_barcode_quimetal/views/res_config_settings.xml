@@ -1,0 +1,39 @@
+<odoo>
+    <record model="ir.ui.view" id="quimetal_res_config_settings">
+        <field name="name">Config Connections</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="stock.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//h2[@id='schedule_info']/following-sibling::div" position="after">
+                <h2>Shared File Configuration</h2>
+                <div class="row mt16 o_settings_container" id="matrix_configuration">
+                    <div class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="save_file_config"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="save_file_config"/>
+                            <div class="text-muted">
+                                Configuration for Shared File
+                            </div>
+                            <div class="content-group" attrs="{'invisible': [('save_file_config','=',False)]}">
+                                <div class="row mt16">
+                                    <label for="protocol" class="col-md-3 o_light_label"/>
+                                    <field name="protocol"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="host_name" class="col-md-3 o_light_label"/>
+                                    <field name="host_name" placeholder="192.168.43.78"/>
+                                </div><div class="row mt16">
+                                    <label for="shared_folder" class="col-md-3 o_light_label"/>
+                                    <field name="shared_folder" placeholder="\C\temporal\"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

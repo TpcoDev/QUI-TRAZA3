@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report id="as_reportes_etiquetas_pp"
+                model="stock.move.line"
+                string="Etiquetas"
+                report_type="qweb-pdf"
+                name="stock_barcode_quimetal.report_label_pp"
+                file="stock_barcode_quimetal.report_label_pp"
+                attachment_use="False"
+                menu="False"/>
+
+        <report
+                id="as_reportes_etiquetas_mp"
+                model="stock.move.line"
+                string="Etiquetas "
+                report_type="qweb-pdf"
+                name="stock_barcode_quimetal.report_label_mp"
+                file="stock_barcode_quimetal.report_label_mp"
+                attachment_use="False"
+                menu="False"/>
+
+        <record id="as_reporte_pp_format" model="report.paperformat">
+            <field name="name">Etiqueta formato 2</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">150</field>
+            <field name="page_width">100</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">7</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">2</field>
+            <field name="margin_right">2</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+            <field name="report_ids" eval="[(4, ref('stock_barcode_quimetal.as_reportes_etiquetas_pp'))]"/>
+        </record>
+        <record id="as_reporte_mp_format" model="report.paperformat">
+            <field name="name">Etiqueta formato 2</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">150</field>
+            <field name="page_width">100</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">7</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">2</field>
+            <field name="margin_right">2</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+            <field name="report_ids" eval="[(4, ref('stock_barcode_quimetal.as_reportes_etiquetas_mp'))]"/>
+        </record>
+
+    </data>
+</odoo>
