@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_picking_merygate_form_7" model="ir.ui.view">
+            <field name="model">stock.picking</field>
+            <field name="name">stock.picking.edi.form</field>
+            <field name="inherit_id" ref="stock.view_picking_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='button_scrap']" position="after">
+                    <button name="action_picking_send" string="Enviar por Correo" type="object" attrs="{'invisible': [('picking_type_code', '!=', 'internal')]}" class="btn-primary" />
+                    <button class="btn-primary" type="action" name="%(as_action_asset_depreciation_confirmation_wizard)d" icon="fa-print"  string="Imprimir MP" states="done,assigned"/>
+                    <button class="btn-primary" type="action" name="%(as_pp_wizard)d" icon="fa-print"  string="Imprimir PP" states="done,assigned"/>
+          
+                </xpath>   
+                <xpath expr="//field[@name='location_dest_id']" position="after">
+                    <field name='as_picking_o' /> 
+                    <field name='picking_type_code' /> 
+                </xpath>           
+            </field>
+        </record>
+    </data>
+</odoo>

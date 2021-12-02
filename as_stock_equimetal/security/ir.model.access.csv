@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_as_wizard_formulas_view_form,Wizard Formulas,model_as_wizard_formulas,stock.group_stock_user,1,1,1,1
+access_as_wizard_formulas,as_wizard_formulas,model_as_wizard_formulas,sales_team.group_sale_salesman,1,1,1,1
+access_as_wizard_lines,as_wizard_lines,model_as_wizard_lines,sales_team.group_sale_salesman,1,1,1,1

@@ -1,0 +1,325 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "title": "The root schema",
+    "description": "The root schema comprises the entire JSON document.",
+    "default": {},
+    "examples": [
+        {
+            "jsonrpc": "2.0",
+            "method": "ws023",
+            "params": {
+                "DocNum": "1234",
+                "DocDate": "2021-02-23T18:25:43",
+                "WarehouseCodeOrigin": "01",
+                "WarehouseCodeDestination": "02",
+                "DatosProdOC": [
+                    {
+                        "ItemCode": "91011",
+                        "ItemDescription": "Nombre de Producto SAP 01",
+                        "Quantity": 1.0,
+                        "MeasureUnit": "Kg",
+                        "Detalle": [
+                            {
+                                "DistNumber": "43554",
+                                "Quantity": 3,
+                                "DateProduction": "2021-04-23T18:25:43",
+                                "DateExpiration": "2021-05-23T18:25:43"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "id": 23
+        }
+    ],
+    "required": [],
+    "properties": {
+        "jsonrpc": {
+            "$id": "#/properties/jsonrpc",
+            "type": "string",
+            "title": "The jsonrpc schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "2.0"
+            ]
+        },
+        "method": {
+            "$id": "#/properties/method",
+            "type": "string",
+            "title": "The method schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "ws023"
+            ]
+        },
+        "params": {
+            "$id": "#/properties/params",
+            "type": "object",
+            "title": "The params schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "DocNum": "1234",
+                    "DocDate": "2021-02-23T18:25:43",
+                    "WarehouseCodeOrigin": "01",
+                    "WarehouseCodeDestination": "02",
+                    "DatosProdOC": [
+                        {
+                            "ItemCode": "91011",
+                            "ItemDescription": "Nombre de Producto SAP 01",
+                            "Quantity": 1.0,
+                            "MeasureUnit": "Kg",
+                            "Detalle": [
+                                {
+                                    "DistNumber": "43554",
+                                    "Quantity": 3,
+                                    "DateProduction": "2021-04-23T18:25:43",
+                                    "DateExpiration": "2021-05-23T18:25:43"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "required": [],
+            "properties": {
+                "DocNum": {
+                    "$id": "#/properties/params/properties/DocNum",
+                    "type": "string",
+                    "title": "The DocNum schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "1234"
+                    ]
+                },
+                "DocDate": {
+                    "$id": "#/properties/params/properties/DocDate",
+                    "type": "string",
+                    "title": "The DocDate schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "2021-02-23T18:25:43"
+                    ]
+                },
+                "WarehouseCodeOrigin": {
+                    "$id": "#/properties/params/properties/WarehouseCodeOrigin",
+                    "type": "string",
+                    "title": "The WarehouseCodeOrigin schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "01"
+                    ]
+                },
+                "WarehouseCodeDestination": {
+                    "$id": "#/properties/params/properties/WarehouseCodeDestination",
+                    "type": "string",
+                    "title": "The WarehouseCodeDestination schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "02"
+                    ]
+                },
+                "DatosProdOC": {
+                    "$id": "#/properties/params/properties/DatosProdOC",
+                    "type": "array",
+                    "title": "The DatosProdOC schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": [],
+                    "examples": [
+                        [
+                            {
+                                "ItemCode": "91011",
+                                "ItemDescription": "Nombre de Producto SAP 01",
+                                "Quantity": 1.0,
+                                "MeasureUnit": "Kg",
+                                "Detalle": [
+                                    {
+                                        "DistNumber": "43554",
+                                        "Quantity": 3,
+                                        "DateProduction": "2021-04-23T18:25:43",
+                                        "DateExpiration": "2021-05-23T18:25:43"
+                                    }
+                                ]
+                            }
+                        ]
+                    ],
+                    "items": {
+                        "$id": "#/properties/params/properties/DatosProdOC/items",
+                        "anyOf": [
+                            {
+                                "$id": "#/properties/params/properties/DatosProdOC/items/anyOf/0",
+                                "type": "object",
+                                "title": "The first anyOf schema",
+                                "description": "An explanation about the purpose of this instance.",
+                                "default": {},
+                                "examples": [
+                                    {
+                                        "ItemCode": "91011",
+                                        "ItemDescription": "Nombre de Producto SAP 01",
+                                        "Quantity": 1.0,
+                                        "MeasureUnit": "Kg",
+                                        "Detalle": [
+                                            {
+                                                "DistNumber": "43554",
+                                                "Quantity": 3,
+                                                "DateProduction": "2021-04-23T18:25:43",
+                                                "DateExpiration": "2021-05-23T18:25:43"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "required": [],
+                                "properties": {
+                                    "ItemCode": {
+                                        "$id": "#/properties/params/properties/DatosProdOC/items/anyOf/0/properties/ItemCode",
+                                        "type": "string",
+                                        "title": "The ItemCode schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "91011"
+                                        ]
+                                    },
+                                    "ItemDescription": {
+                                        "$id": "#/properties/params/properties/DatosProdOC/items/anyOf/0/properties/ItemDescription",
+                                        "type": "string",
+                                        "title": "The ItemDescription schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "Nombre de Producto SAP 01"
+                                        ]
+                                    },
+                                    "Quantity": {
+                                        "$id": "#/properties/params/properties/DatosProdOC/items/anyOf/0/properties/Quantity",
+                                        "type": "number",
+                                        "title": "The Quantity schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": 0.0,
+                                        "examples": [
+                                            1.0
+                                        ]
+                                    },
+                                    "MeasureUnit": {
+                                        "$id": "#/properties/params/properties/DatosProdOC/items/anyOf/0/properties/MeasureUnit",
+                                        "type": "string",
+                                        "title": "The MeasureUnit schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "Kg"
+                                        ]
+                                    },
+                                    "Detalle": {
+                                        "$id": "#/properties/params/properties/DatosProdOC/items/anyOf/0/properties/Detalle",
+                                        "type": "array",
+                                        "title": "The Detalle schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": [],
+                                        "examples": [
+                                            [
+                                                {
+                                                    "DistNumber": "43554",
+                                                    "Quantity": 3,
+                                                    "DateProduction": "2021-04-23T18:25:43",
+                                                    "DateExpiration": "2021-05-23T18:25:43"
+                                                }
+                                            ]
+                                        ],
+                                        "items": {
+                                            "$id": "#/properties/params/properties/DatosProdOC/items/anyOf/0/properties/Detalle/items",
+                                            "anyOf": [
+                                                {
+                                                    "$id": "#/properties/params/properties/DatosProdOC/items/anyOf/0/properties/Detalle/items/anyOf/0",
+                                                    "type": "object",
+                                                    "title": "The first anyOf schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": {},
+                                                    "examples": [
+                                                        {
+                                                            "DistNumber": "43554",
+                                                            "Quantity": 3,
+                                                            "DateProduction": "2021-04-23T18:25:43",
+                                                            "DateExpiration": "2021-05-23T18:25:43"
+                                                        }
+                                                    ],
+                                                    "required": [
+                                                        "DistNumber",
+                                                        "Quantity",
+                                                        "DateProduction",
+                                                        "DateExpiration"
+                                                    ],
+                                                    "properties": {
+                                                        "DistNumber": {
+                                                            "$id": "#/properties/params/properties/DatosProdOC/items/anyOf/0/properties/Detalle/items/anyOf/0/properties/DistNumber",
+                                                            "type": "string",
+                                                            "title": "The DistNumber schema",
+                                                            "description": "An explanation about the purpose of this instance.",
+                                                            "default": "",
+                                                            "examples": [
+                                                                "43554"
+                                                            ]
+                                                        },
+                                                        "Quantity": {
+                                                            "$id": "#/properties/params/properties/DatosProdOC/items/anyOf/0/properties/Detalle/items/anyOf/0/properties/Quantity",
+                                                            "type": "integer",
+                                                            "title": "The Quantity schema",
+                                                            "description": "An explanation about the purpose of this instance.",
+                                                            "default": 0,
+                                                            "examples": [
+                                                                3
+                                                            ]
+                                                        },
+                                                        "DateProduction": {
+                                                            "$id": "#/properties/params/properties/DatosProdOC/items/anyOf/0/properties/Detalle/items/anyOf/0/properties/DateProduction",
+                                                            "type": "string",
+                                                            "title": "The DateProduction schema",
+                                                            "description": "An explanation about the purpose of this instance.",
+                                                            "default": "",
+                                                            "examples": [
+                                                                "2021-04-23T18:25:43"
+                                                            ]
+                                                        },
+                                                        "DateExpiration": {
+                                                            "$id": "#/properties/params/properties/DatosProdOC/items/anyOf/0/properties/Detalle/items/anyOf/0/properties/DateExpiration",
+                                                            "type": "string",
+                                                            "title": "The DateExpiration schema",
+                                                            "description": "An explanation about the purpose of this instance.",
+                                                            "default": "",
+                                                            "examples": [
+                                                                "2021-05-23T18:25:43"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "id": {
+            "$id": "#/properties/id",
+            "type": "integer",
+            "title": "The id schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0,
+            "examples": [
+                23
+            ]
+        }
+    }
+}

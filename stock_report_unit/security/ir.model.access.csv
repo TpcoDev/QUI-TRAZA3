@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tarea_1_6_5_tarea_1_6_5,tarea_1_6_5.tarea_1_6_5,model_tarea_1_6_5_tarea_1_6_5,base.group_user,1,1,1,1

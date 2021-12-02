@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_as_webservice_logs,as.message.log,model_as_webservice_logs,,1,1,1,1
+access_envases,access_envases,model_quimetal_envases,,1,1,1,1
+access_embalaje,access_embalaje,model_quimetal_embalaje,,1,1,1,1
+access_quimetal_unid_logisticas,access_quimetal_unid_logisticas,model_quimetal_unid_logisticas,,1,1,1,1

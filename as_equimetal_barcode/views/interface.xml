@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <template id="assets_backend2" name="stock_barcode assets2" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/as_equimetal_barcode/static/src/js/as_abstract_client_action.js">
+                </script>
+            </xpath>
+        </template>    <template id="assets_backend2" name="stock_barcode assets2" inherit_id="web.assets_common">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/as_equimetal_barcode/static/src/js/as_abstract_client_action.js">
+                </script>
+            </xpath>
+        </template>
+
+        <!-- <template id="assets_backend" name="stock_barcode assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/as_equimetal_barcode/static/src/js/as_abstract_client_action.js">
+                </script>
+            </xpath>
+        </template> -->
+    </data>
+</odoo>

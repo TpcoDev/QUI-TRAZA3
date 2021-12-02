@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="envase_view_form" model="ir.ui.view">
+            <field name="name">envase.view.form</field>
+            <field name="model">quimetal.envases</field>
+            <field name="arch" type="xml">
+                <form string="Envase">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="cod_envase"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="envase_view_tree" model="ir.ui.view">
+            <field name="name">envase.view.tree</field>
+            <field name="model">quimetal.envases</field>
+            <field name="arch" type="xml">
+                <tree string="Envases">
+                    <field name="name"/>
+                    <field name="cod_envase"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="envases_action" model="ir.actions.act_window">
+            <field name="name">Envases</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">quimetal.envases</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="embalaje_view_form" model="ir.ui.view">
+            <field name="name">envase.view.form</field>
+            <field name="model">quimetal.embalaje</field>
+            <field name="arch" type="xml">
+                <form string="Embalaje">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="cod_embalaje"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="embalaje_view_tree" model="ir.ui.view">
+            <field name="name">embalaje.view.tree</field>
+            <field name="model">quimetal.embalaje</field>
+            <field name="arch" type="xml">
+                <tree string="Embalajes">
+                    <field name="name"/>
+                    <field name="cod_embalaje"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="embalaje_action" model="ir.actions.act_window">
+            <field name="name">Embalajes</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">quimetal.embalaje</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="unid_logisticas_view_form" model="ir.ui.view">
+            <field name="name">unid.logisticas.view.form</field>
+            <field name="model">quimetal.unid.logisticas</field>
+            <field name="arch" type="xml">
+                <form string="Envase">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="cod_unid"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="unid_logisticas_view_tree" model="ir.ui.view">
+            <field name="name">unid.logisticas.view.tree</field>
+            <field name="model">quimetal.unid.logisticas</field>
+            <field name="arch" type="xml">
+                <tree string="Envases">
+                    <field name="name"/>
+                    <field name="cod_unid"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="unid_logisticas_action" model="ir.actions.act_window">
+            <field name="name">Logisticas</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">quimetal.unid.logisticas</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- This Menu Item must have a parent and an action -->
+        <!-- This Menu Item will appear in the Upper bar, That's why It needs NO parent or action -->
+        <menuitem id="root_modelos_menu" name="Modelos" parent="stock.menu_stock_config_settings"/>
+        <menuitem id="envases_menu" name="Envases" parent="root_modelos_menu" action="envases_action" sequence="1"/>
+        <menuitem id="embalaje_menu" name="Embalajes" parent="root_modelos_menu" action="embalaje_action" sequence="2"/>
+        <menuitem id="unid_logisticas_menu" name="Logisticas" parent="root_modelos_menu" action="unid_logisticas_action"
+                  sequence="3"/>
+
+
+    </data>
+</odoo>

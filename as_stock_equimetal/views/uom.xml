@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="product_uom_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.uom.form.view.inherit</field>
+            <field name="model">uom.uom</field>
+            <field name="inherit_id" ref="uom.product_uom_form_view"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='category_id']" position="before">
+                    <!-- Add your fields or attributes here -->
+                    <field name="unidad_sap"/>
+                    <field name="as_contenido_envase"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

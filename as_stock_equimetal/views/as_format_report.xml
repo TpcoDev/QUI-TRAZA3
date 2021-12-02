@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+  <report id="as_reportes_etiquetas_pdf" 
+        model="stock.move.line" 
+        string="Etiquetas" 
+        report_type="qweb-pdf"
+        name="as_stock_equimetal.report_lot_label" 
+        file="as_stock_equimetal.report_lot_label" 
+        attachment_use="False"
+        menu="False" />
+
+        <report 
+        id="as_reporte_2" 
+        model="stock.move.line" 
+        string="Etiquetas " 
+        report_type="qweb-pdf"
+        name="as_stock_equimetal.report_lot_label2" 
+        file="as_stock_equimetal.report_lot_label2"
+        attachment_use="False" 
+        menu="False" />
+
+        <record id="as_reporte_2_format" model="report.paperformat">
+            <field name="name">Etiqueta formato 2</field>
+            <field name="default" eval="True" />
+            <field name="format">custom</field>
+            <field name="page_height">150</field>
+            <field name="page_width">100</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">7</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">2</field>
+            <field name="margin_right">2</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+            <field name="report_ids" eval="[(4, ref('as_stock_equimetal.as_reporte_2'))]" />
+        </record>
+         <record id="as_reporte_2_format" model="report.paperformat">
+            <field name="name">Etiqueta formato 2</field>
+            <field name="default" eval="True" />
+            <field name="format">custom</field>
+            <field name="page_height">150</field>
+            <field name="page_width">100</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">7</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">2</field>
+            <field name="margin_right">2</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+            <field name="report_ids" eval="[(4, ref('as_stock_equimetal.as_reportes_etiquetas_pdf'))]" />
+        </record>
+         
+  </data>
+</odoo>

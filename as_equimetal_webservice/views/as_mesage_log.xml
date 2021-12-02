@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="as_message_log_form" model="ir.ui.view">
+            <field name="name">Log de Webservice SAP</field>
+            <field name="model">as.webservice.logs</field>
+            <field name="arch" type="xml">
+                <form string="Log de Webservice SAP">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" />
+                            <h1>
+                                <field name="name" />
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <field name="as_token" />
+                            <field name="as_fecha" />
+                            <field name="as_json" />
+                            <field name="state" />
+                            <field name="as_motivo" />
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="as_message_log_tree" model="ir.ui.view">
+            <field name="name">Log de Webservice SAP</field>
+            <field name="model">as.webservice.logs</field>
+            <field name="arch" type="xml">
+                <tree string="Log de Webservice SAP">
+                    <field name="name" />
+                        <field name="as_token" />
+                            <field name="as_fecha" />
+                            <field name="state" />
+                            <field name="as_motivo" />
+                            <field name="as_json" />
+                            <field name="create_date" />
+                </tree>
+            </field>
+        </record>
+
+
+
+        <record model="ir.actions.act_window" id="action_message_log_nucleo">
+            <field name="name">Log de Webservice SAP</field>
+            <field name="res_model">as.webservice.logs</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="as_message_log_tree" />
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Haga clic aquí para empezar a crear su Log de Webservice SAP.
+                </p>
+            </field>
+        </record>
+        <menuitem id="as_message_log_id" name="Log de Webservice SAP" action="action_message_log_nucleo"
+            parent="base.menu_administration" sequence="100" />
+
+
+    </data>
+</odoo>

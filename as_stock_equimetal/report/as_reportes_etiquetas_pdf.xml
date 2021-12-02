@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_lot_label">
+            <t t-call="web.basic_layout">
+
+                <div class="header">
+                    <style type="text/css">
+                        .header {
+                            margin: 0px;
+                            padding: 0px;
+                        }
+                    </style>
+                </div>
+                <div class="page">
+                    <style type="text/css">
+                        .page {
+                            margin: 0px;
+                            padding: 0px;
+                        }
+
+                        .letra {
+                            font-size: 18px !important;
+                            margin: 0px;
+                        }
+
+
+                        .table {
+                            line-height: 14px;
+                            border: 1px solid black;
+                            width: 100%;
+                            border-collapse: separate;
+                            border: solid black 1px;
+                            border-radius: 15px;
+                            -moz-border-radius: 15px;
+                        }
+                        .code {
+                            font-size: 35px !important;
+                        }
+              
+                    </style>
+       
+                    <t t-foreach="docs" t-as="o">
+
+                        
+
+                        <table class="table">
+                            <tr>
+                                <th style="border-bottom: 1px solid black;"> <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 45px;" alt="Logo"/></th>
+                                <th style="border-bottom: 1px solid black;"><br/><br/><span class="code" t-esc="o.product_id.default_code" />
+                                </th>
+
+                            </tr>
+
+                            <tr>
+
+                                <td class="letra" colspan="2" style="line-height: 20px !important"><strong><span
+                                            t-esc="o.as_get_name_product(o.product_id.name)" /></strong></td>
+
+                            </tr>
+                            <tr>
+                                <td>Producto:</td>
+                                <td><span t-esc="o.product_id.default_code" /></td>
+                            </tr>
+                         
+                            <tr>
+                                <td>Lote:</td>
+                                <td><span t-esc="o.as_get_date_lote_SC()" /></td>
+                            </tr>
+                            <tr >
+                                <td>Peso neto:</td>
+                                <td>
+                                <t t-if="o.as_get_peso_neto()">
+                                <span t-esc="int(o.as_get_peso_neto())" />  <span t-esc="o.lot_id.product_uom_id.name" />
+                                </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Cantidad (unid):</td>
+                                <td><span t-esc="o.product_id.as_cantidad_unidades" /></td>
+                            </tr>
+                            <tr>
+                                <td style="border-bottom: 1px solid black;">Fecha Producción:</td>
+                                <td style="border-bottom: 1px solid black;"><span t-if="o.lot_id.create_date" t-esc="o.lot_id.create_date.strftime('%Y-%m-%d')" /></td>
+                            </tr>
+                            <tr style="height: 110px">
+
+                                <td colspan="2" style="height: 110px;padding-bottom: 25px;">
+                                <br/>
+                                <center>
+                                    <!-- <img t-if="o.product_id.default_code"
+                                        t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', (o.as_barcode_pp_1_CDB()), 500, 350)"
+                                        style="width:100%;height:100%;" /> -->
+                                         <img width="100%" height="100px" t-attf-src="data:image/*;base64,{{o.as_imge}}" />
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        <span t-esc="o.as_barcode_pp_1()" />
+                                            <br/>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                  
+                                </center>
+
+                                    <!-- Barras mal -->
+
+                                </td>
+
+                            </tr>
+
+
+
+                        </table>
+                        <p style="page-break-after:always;" />  
+                    </t>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

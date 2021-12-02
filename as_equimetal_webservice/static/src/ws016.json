@@ -1,0 +1,113 @@
+{
+    "definitions": {},
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://example.com/object1616766586.json",
+    "title": "Root",
+    "type": "object",
+    "properties": {
+        "jsonrpc": {
+            "$id": "#root/jsonrpc",
+            "title": "Jsonrpc",
+            "type": "string",
+            "default": "",
+            "pattern": "^.*$"
+        },
+        "method": {
+            "$id": "#root/method",
+            "title": "Method",
+            "type": "string",
+            "default": "",
+            "pattern": "^.*$"
+        },
+        "params": {
+            "$id": "#root/params",
+            "title": "Params",
+            "type": "object",
+            "properties": {
+                "DocNum": {
+                    "$id": "#root/params/DocNum",
+                    "title": "Docnum",
+                    "type": "string",
+                    "default": "",
+                    "pattern": "^.*$"
+                },
+                "DocDate": {
+                    "$id": "#root/params/DocDate",
+                    "title": "Docdate",
+                    "type": "string",
+                    "default": "",
+                    "pattern": "^.*$"
+                },
+                "CardCode": {
+                    "$id": "#root/params/CardCode",
+                    "title": "Cardcode",
+                    "type": "string",
+                    "default": "",
+                    "pattern": "^.*$"
+                },
+                "CardName": {
+                    "$id": "#root/params/CardName",
+                    "title": "Cardname",
+                    "type": "string",
+                    "default": "",
+                    "pattern": "^.*$"
+                },
+                "NumAtcard": {
+                    "$id": "#root/params/NumAtcard",
+                    "title": "Numatcard",
+                    "type": "string",
+                    "default": "",
+                    "pattern": "^.*$"
+                },
+                "DocDueDate": {
+                    "$id": "#root/params/DocDueDate",
+                    "title": "Docduedate",
+                    "type": "string",
+                    "default": "",
+                    "pattern": "^.*$"
+                },
+                "DatosProdOV": {
+                    "$id": "#root/params/DatosProdOV",
+                    "title": "Datosprodov",
+                    "type": "array",
+                    "default": [],
+                    "items": {
+                        "$id": "#root/params/DatosProdOV/items",
+                        "title": "Items",
+                        "type": "object",
+                        "properties": {
+                            "ItemCode": {
+                                "$id": "#root/params/DatosProdOV/items/ItemCode",
+                                "title": "Itemcode",
+                                "type": "string",
+                                "default": "",
+                                "pattern": "^.*$"
+                            },
+                            "ItemDescription": {
+                                "$id": "#root/params/DatosProdOV/items/ItemDescription",
+                                "title": "Itemdescription",
+                                "type": "string",
+                                "default": "",
+                                "pattern": "^.*$"
+                            },
+                            "Quantity": {
+                                "$id": "#root/params/DatosProdOV/items/Quantity",
+                                "title": "Quantity",
+                                "type": "integer",
+                                "default": 0
+                            },
+                            "MeasureUnit": {
+                                "$id": "#root/params/DatosProdOV/items/MeasureUnit",
+                                "title": "Measureunit",
+                                "type": "string",
+                                "default": "",
+                                "pattern": "^.*$"
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+}

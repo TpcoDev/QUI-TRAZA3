@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="stock_picking_mail_templateD" model="mail.template">
+            <field name="name">Notificación DESTINO = QA</field>
+            <field name="model_id" ref="stock.model_stock_picking" />
+            <field name="subject">Para Revisar: Productos recibidos de OC SAP ${object.origin}/ ref(${object.name}) de ${object.date_done}</field>
+            <field name="email_from">${object.company_id.partner_id.email}</field>
+            <field name="email_to">${object.partner_id.email}</field>
+            <field name="partner_to">68810</field>
+            <field name="email_cc">wmoreno21@hotmail.com, prisca970@gmail.com</field>
+            <field name="body_html" type="html">
+                <div>
+                    Estimado Encargado de Control de Calidad 
+                    <br />
+                    % set website_url = object.env['ir.config_parameter'].sudo().get_param('web.base.url')
+                    Aquí se adjunta la transacción para su revisión <b><a href='${website_url}/web#id=${object.as_picking_o.id}&amp;action=213&amp;active_id=5&amp;model=stock.picking&amp;view_type=form&amp;cids=${object.company_id.id}&amp;menu_id=101'>${object.as_picking_o.name}</a></b> <br />
+                    No dude en contactarnos si tiene cualquier consulta.<br />
+                    <br />
+                </div>
+            </field>
+            <!-- <field name="report_template" ref="stock.action_report_picking" />
+            <field name="report_name">Guia_despacho_${(object.name or '').replace('/','_')}</field>
+            <field name="lang">${object.partner_id.lang}</field>k
+            <field name="auto_delete" eval="True" /> -->
+        </record>
+        <record id="stock_picking_mail_templateO" model="mail.template">
+            <field name="name">Notificación ORIGEN = QA</field>
+            <field name="model_id" ref="stock.model_stock_picking" />
+            <field name="subject">Toma Conocimiento de revisión realizada de ${object.origin}/ ref(${object.name}) de ${object.date_done}</field>
+            <field name="email_from">${object.company_id.partner_id.email}</field>
+            <field name="email_to">${object.partner_id.email}</field>
+            <field name="partner_to">68809</field>
+            <field name="email_cc">cmedinal@gmail.com, prisca970@gmail.com</field>
+            <field name="body_html" type="html">
+<div>
+                    Estimado Encargado de Logística
+                    <br/><br/>
+                    Aquí se indica la transacción que informa resultado de revisión por el encargado de control de calidad. <br/><br/>
+                    No dude en contactarnos si tiene cualquier consulta.<br/>
+
+                </div>
+
+            </field>
+            <!-- <field name="report_template" ref="stock.action_report_picking" />
+            <field name="report_name">Guia_despacho_${(object.name or '').replace('/','_')}</field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="auto_delete" eval="True" /> -->
+        </record>
+    </data>
+</odoo>

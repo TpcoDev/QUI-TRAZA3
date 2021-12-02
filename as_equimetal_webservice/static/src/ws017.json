@@ -1,0 +1,145 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/object1616766586.json",
+  "title": "Root",
+  "type": "object",
+  "properties": {
+    "jsonrpc": {
+      "$id": "#root/jsonrpc",
+      "title": "Jsonrpc",
+      "type": "string",
+      "default": "",
+      "pattern": "^.*$"
+    },
+    "method": {
+      "$id": "#root/method",
+      "title": "Method",
+      "type": "string",
+      "default": "",
+      "pattern": "^.*$"
+    },
+    "params": {
+      "$id": "#root/params",
+      "title": "Params",
+      "type": "object",
+      "properties": {
+        "itemCode": {
+          "$id": "#root/params/itemCode",
+          "title": "itemCode",
+          "type": "string",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "itemDescription": {
+          "$id": "#root/params/itemDescription",
+          "title": "itemDescription",
+          "type": "string",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "tipoProducto": {
+          "$id": "#root/params/tipoProducto",
+          "title": "tipoProducto",
+          "type": "string",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "tipoProdQuimetal": {
+          "$id": "#root/params/tipoProdQuimetal",
+          "title": "tipoProdQuimetal",
+          "type": "string",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "barcode": {
+          "$id": "#root/params/barcode",
+          "title": "barcode",
+          "type": "string",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "uomId": {
+          "$id": "#root/params/uomId",
+          "title": "uomId",
+          "type": "string",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "uomPoId": {
+          "$id": "#root/params/uomPoId",
+          "title": "uomPoId",
+          "type": "string",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "envase": {
+          "$id": "#root/params/envase",
+          "title": "envase",
+          "type": "string",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "glosaEnvase": {
+          "$id": "#root/params/glosaEnvase",
+          "title": "glosaEnvase",
+          "type": "string",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "embalaje": {
+          "$id": "#root/params/embalaje",
+          "title": "embalaje",
+          "type": "string",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "formatoUnidadLogistica": {
+          "$id": "#root/params/formatoUnidadLogistica",
+          "title": "formatoUnidadLogistica",
+          "type": "string",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "contenidoEnvase": {
+          "$id": "#root/params/contenidoEnvase",
+          "title": "contenidoEnvase",
+          "type": "number",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "cantidadEnvase": {
+          "$id": "#root/params/cantidadEnvase",
+          "title": "cantidadEnvase",
+          "type": "integer",
+          "default": 0
+        },
+        "cantidadUnidades": {
+          "$id": "#root/params/cantidadUnidades",
+          "title": "cantidadUnidades",
+          "type": "integer",
+          "default": 0
+        },
+        "expirationTime": {
+          "$id": "#root/params/expirationTime",
+          "title": "expirationTime",
+          "type": "integer",
+          "default": 0
+        },
+        "unidadReferencia": {
+          "$id": "#root/params/unidadReferencia",
+          "title": "unidadReferencia",
+          "type": "string",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "categ_id": {
+          "$id": "#root/params/categ_id",
+          "title": "categ_id",
+          "type": "integer",
+          "default": 0
+        }
+      }
+    }
+  }
+}

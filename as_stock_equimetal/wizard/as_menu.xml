@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="as_wizard_formulas_view_form" model="ir.ui.view">
+        <field name="name">as_wizard_formulas</field>
+        <field name="model">as.wizard.formulas</field>
+        <field name="arch" type="xml">
+            <form string="Compute Asset" create="0">
+            <header>
+                    <button name="export_pdf" 
+                            type="object" 
+                            default_focus="1"
+                            string="Imprimir PDF" 
+                            context="{'pdf_export':1}"
+                            icon="fa-print"
+                            class="oe_highlight"/>
+            </header>
+            
+                <div>
+                    <p>
+                     Wizard de Materia Prima o Producto en Proceso
+                    </p> 
+                    <field name="wiz_lineas" />
+                    <field name="tipo" invisible="True"/>
+                </div>
+               
+              
+            </form>
+         </field>
+    </record>
+    <record id="as_wizard_lines_view_form" model="ir.ui.view">
+        <field name="name">as_wizard_lines</field>
+        <field name="model">as.wizard.lines</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+
+                    <field name="product_id" />
+                    <field name="operacion_id" invisible="True"/>
+                    <field name="lots_id" />
+                    <field name="as_done" />
+                    <field name="as_cantidades" />
+
+            </tree>
+         </field>
+    </record>
+    <record model="ir.actions.act_window" id="as_formulas">
+        <field name="name">Wizard lineas</field>
+        <field name="res_model">as.wizard.lines</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="as_wizard_lines_view_form" />
+    </record>
+
+    <record id="as_action_asset_depreciation_confirmation_wizard" model="ir.actions.act_window">
+        <field name="name">Etiqueta MP</field>
+        <field name="res_model">as.wizard.formulas</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{"tipo":1}</field>
+        <field name="view_id" ref="as_wizard_formulas_view_form"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="" />
+    </record>
+
+    <record id="as_action_binding" model="ir.actions.act_window">
+        <field name="name">Etiqueta MP</field>
+        <field name="res_model">as.wizard.formulas</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{"tipo":1}</field>
+        <field name="view_id" ref="as_wizard_formulas_view_form"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="stock.model_stock_production_lot" />
+    </record>
+
+    <record id="as_action_binding2" model="ir.actions.act_window">
+        <field name="name">Etiqueta PP</field>
+        <field name="res_model">as.wizard.formulas</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{"tipo":2}</field>
+        <field name="view_id" ref="as_wizard_formulas_view_form"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="stock.model_stock_production_lot" />
+    </record>
+
+    <record id="as_pp_wizard" model="ir.actions.act_window">
+        <field name="name">Etiqueta PP</field>
+        <field name="res_model">as.wizard.formulas</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{"tipo":2}</field>
+        <field name="view_id" ref="as_wizard_formulas_view_form"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="" />
+    </record>
+
+</odoo>

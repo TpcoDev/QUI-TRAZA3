@@ -1,0 +1,164 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/object1616766586.json",
+  "title": "Root",
+  "type": "object",
+  "properties": {
+    "jsonrpc": {
+      "$id": "#root/jsonrpc",
+      "title": "Jsonrpc",
+      "type": "string",
+      "default": "",
+      "pattern": "^.*$"
+    },
+    "method": {
+      "$id": "#root/method",
+      "title": "Method",
+      "type": "string",
+      "default": "",
+      "pattern": "^.*$"
+    },
+    "params": {
+      "$id": "#root/params",
+      "title": "Params",
+      "type": "object",
+      "properties": {
+        "DocNumSap": {
+          "$id": "#root/params/DocNumSap",
+          "title": "DocNumSap",
+          "type": "string",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "DocDate": {
+          "$id": "#root/params/DocDate",
+          "title": "DocDate",
+          "type": "string",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "OpDevType": {
+          "$id": "#root/params/OpDevType",
+          "title": "OpDevType",
+          "type": "string",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "CardCode": {
+          "$id": "#root/params/CardCode",
+          "title": "CardCode",
+          "type": "string",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "CardName": {
+          "$id": "#root/params/CardName",
+          "title": "CardName",
+          "type": "string",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "WarehouseCodeOrigin": {
+          "$id": "#root/params/WarehouseCodeOrigin",
+          "title": "WarehouseCodeOrigin",
+          "type": "string",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "WarehouseCodeDestination": {
+          "$id": "#root/params/WarehouseCodeDestination",
+          "title": "WarehouseCodeDestination",
+          "type": "string",
+          "default": "",
+          "pattern": "^.*$"
+        },
+        "DatosProdOC": {
+          "$id": "#/properties/params/properties/DatosProdOC",
+          "type": "array",
+          "title": "The DatosProdOC schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": [],
+          "examples": [
+            [
+              {
+                "ItemCode": "91011",
+                "ItemDescription": "Nombre de Producto SAP 01",
+                "Quantity": 1.0,
+                "MeasureUnit": "Kg"
+              }
+            ]
+          ],
+          "items": {
+            "$id": "#/properties/params/properties/DatosProdOC/items",
+            "type": "object",
+            "title": "The items schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+              [
+                {
+                  "ItemCode": "91011",
+                  "ItemDescription": "Nombre de Producto SAP 01",
+                  "Quantity": 1.0,
+                  "MeasureUnit": "Kg"
+                }
+              ]
+            ],
+            "required": [
+              "ItemCode",
+              "Quantity",
+              "MeasureUnit"
+            ],
+            "properties": {
+              "ItemCode": {
+                "type": "string"
+              },
+              "ItemDescription": {
+                "type": "string"
+              },
+              "Quantity": {
+                "type": "number"
+              },
+              "MeasureUnit": {
+                "type": "string"
+              },
+              "Detalle": {
+                "$id": "#/properties/params/properties/Detalle",
+                "type": "array",
+                "default": [],
+                "items": {
+                  "$id": "#/properties/params/properties/DatosProdOC/Detalle/items",
+                  "type": "object",
+                  "title": "The items schema",
+                  "description": "An explanation about the purpose of this instance.",
+                  "default": {},
+                  "examples": [
+                    [
+                      {
+                        "DistNumber": "91011",
+                        "Quantity": 1.0
+                      }
+                    ]
+                  ],
+                  "required": [
+                    "DistNumber",
+                    "Quantity"
+                  ],
+                  "properties": {
+                    "DistNumber": {
+                      "type": "string"
+                    },
+                    "Quantity": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

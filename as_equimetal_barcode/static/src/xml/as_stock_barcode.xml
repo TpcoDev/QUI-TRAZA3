@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="as_template_barcode" xml:space="preserve">
+    <t t-extend="main_menu">
+        <t t-jquery=".row" t-operation="replace">
+            <div class="row">
+                <div class="col">
+                    <button class="button_operations btn btn-block btn-primary mb-4">Operaciones</button>
+                </div>
+
+            </div>
+        </t>
+    </t>
+
+</templates>

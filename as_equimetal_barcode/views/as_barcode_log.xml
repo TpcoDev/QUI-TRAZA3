@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="as_barcode_log_form" model="ir.ui.view">
+            <field name="name">Log de barcode</field>
+            <field name="model">as.barcode.log</field>
+            <field name="arch" type="xml">
+                <form string="Log de barcode">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" />
+                            <h1>
+                                <field name="name" />
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <field name="as_json" />
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="as_barcode_log_tree" model="ir.ui.view">
+            <field name="name">Log de barcode</field>
+            <field name="model">as.barcode.log</field>
+            <field name="arch" type="xml">
+                <tree string="Log de barcode">
+                    <field name="name" />
+                            <field name="as_json" />
+                </tree>
+            </field>
+        </record>
+
+
+
+        <record model="ir.actions.act_window" id="action_barcode_log_nucleo">
+            <field name="name">Log de barcode</field>
+            <field name="res_model">as.barcode.log</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="as_barcode_log_tree" />
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Haga clic aquí para empezar a crear su Log de barcode.
+                </p>
+            </field>
+        </record>
+        <menuitem id="as_barcode_log_id" name="Log de barcode" action="action_barcode_log_nucleo"
+            parent="stock.menu_stock_config_settings" sequence="100" />
+
+
+    </data>
+</odoo>

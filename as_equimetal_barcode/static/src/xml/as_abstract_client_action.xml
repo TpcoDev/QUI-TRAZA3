@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="as_template" xml:space="preserve">
+    <t t-extend="stock_barcode_lines_widget">
+        <t t-jquery=".mb-3" t-operation="replace">
+            <div class="mb-3">
+                <div class="row align-items-center">
+                    <div class="col-12">
+                        <span class="center o_hidden o_scan_message o_scan_message_scan_products">Scan products</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-9">
+                        <input type='text' id='barman' placeholder="Presione aqui para scanear" class="o_search_barman" style='width:300px; font-size:18px;' />
+                    </div>
+                    <!-- <div class="col-2">
+                        <button id='barman_button' class="btn btn-secondary barman_button o_barman">Buscar</button>
+                    </div> -->
+                    
+                </div>
+                <div class="row align-items-center">
+                    <div class="col-12">
+                        <span style='font-size:18px;' id="as_barcode_scanned"></span>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-12">
+                        <span style='font-size:18px;' id="as_barcode_scanned2"></span>
+                    </div>
+                </div>
+                <!-- <span class="o_hidden o_scan_message o_scan_message_scan_products">Scan products</span> -->
+                <span class="o_hidden o_scan_message o_scan_message_scan_more_dest">Scan more products, or scan the
+                    destination location</span>
+                <span class="o_hidden o_scan_message o_scan_message_scan_more_src">Scan more products, or scan a new
+                    source location</span>
+                <span class="o_hidden o_scan_message o_scan_message_scan_lot">Scan the serial or lot number of the
+                    product</span>
+                <span class="o_hidden o_scan_message o_scan_message_scan_src">Scan the source location, or scan a
+                    product</span>
+                <span class="o_hidden o_scan_message o_scan_message_picking_already_done">
+                    <span class="fa fa-exclamation-triangle" />
+ This picking is already done</span>
+                <span class="o_hidden o_scan_message o_scan_message_picking_already_cancelled">
+                    <span class="fa fa-exclamation-triangle" />
+ This picking is already cancelled</span>
+                <span class="o_hidden o_scan_message o_scan_message_inv_already_done">
+                    <span class="fa fa-exclamation-triangle" />
+ This inventory adjustment is already done</span>
+            </div>
+        </t>
+    </t>
+
+    <t t-extend="stock_barcode_lines_widget">
+        <t t-jquery=".o_barcode_pic.position-relative" t-operation="replace">
+
+        </t>
+    </t>
+</templates>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="as_campos_studio">
+            <field name="name">as.campos.studio</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view" />
+            <field eval="12" name="priority" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='barcode']" position="before">
+                    <field name='as_contenido_envase' />
+                    <field name='as_cantidad_envase' />
+                    <field name='as_cantidad_unidades' />
+                </xpath>
+                <xpath expr="//field[@name='categ_id']" position="before">
+                    <field name='as_type_product' widget="radio"  options="{'horizontal': true}"/>
+                </xpath>
+
+
+            </field>
+        </record>
+      
+    </data>
+</odoo>
