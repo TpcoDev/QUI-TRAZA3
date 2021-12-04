@@ -5,24 +5,41 @@
         <record id="view_picking_merygate_form_8" model="ir.ui.view">
             <field name="model">stock.picking</field>
             <field name="name">stock.picking.edi.webservice.form</field>
-            <field name="inherit_id" ref="stock.view_picking_form" />
+            <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='button_validate'][1]" position="replace">
+                    <button name="button_validate"
+                            attrs="{'invisible': ['|', '|', ('state', 'in', ('waiting','confirmed')), ('show_validate', '=', False), ('f_closed', '=', 1)]}"
+                            string="Validate" type="object" class="oe_highlight" groups="stock.group_stock_user"/>
+                </xpath>
+
+                <xpath expr="//button[@name='button_validate'][2]" position="replace">
+                    <button name="button_validate"
+                            attrs="{'invisible': ['|', '|', ('state', 'not in', ('waiting', 'confirmed')), ('show_validate', '=', False), ('f_closed', '=', 1)]}"
+                            string="Validate" type="object" groups="stock.group_stock_user" class="o_btn_validate"/>
+                </xpath>
+
                 <xpath expr="//button[@name='button_scrap']" position="after">
-                    <button name="action_picking_sap" string="Enviar SAP" type="object" states="waiting,done" class="btn-primary"/>
-                   
-                </xpath>       
+                    <button name="action_picking_sap" string="Enviar SAP" type="object" states="waiting,done"
+                            class="btn-primary"/>
+
+                </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
-                   <field name="as_ot_num" invisible="True"/>
-                   
-                </xpath>        
-            <xpath expr="//field[@name='origin']" position="after">
-                   <field name="as_ot_sap" />
-                   <field name="as_num_factura" />
-                   <field name="as_guia_sap" />
-                   <field name="as_webservice" />
-                   
-                </xpath>        
-          
+                    <field name="f_closed" invisible="1"/>
+                    <field name="as_ot_num" invisible="True"/>
+
+                </xpath>
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="as_ot_sap"/>
+                    <field name="as_num_factura"/>
+                    <field name="as_guia_sap"/>
+                    <field name="as_webservice"/>
+                    <field name="num_fact_prov"/>
+                    <field name="num_guia_prov"/>
+
+                </xpath>
+
             </field>
         </record>
     </data>

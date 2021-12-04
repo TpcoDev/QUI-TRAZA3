@@ -9,7 +9,7 @@ from odoo.exceptions import UserError
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
-    f_closed = fields.Boolean(default=False)
+    f_closed = fields.Integer(default=0)
 
     def button_confirm(self):
         res = super(PurchaseOrder, self).button_confirm()

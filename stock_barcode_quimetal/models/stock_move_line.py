@@ -84,11 +84,9 @@ class StockMoveLine(models.Model):
         if tipos == 1:
             pdf = self.env.ref('stock_barcode_quimetal.as_reportes_etiquetas_mp')._render_qweb_pdf([self.id],
                                                                                                     data=datas)
-            report = self.env.ref('stock_barcode_quimetal.as_reportes_etiquetas_mp').report_action([self.id], data=datas)
         else:
             pdf = self.env.ref('stock_barcode_quimetal.as_reportes_etiquetas_pp')._render_qweb_pdf([self.id],
                                                                                                     data=datas)
-            report = self.env.ref('stock_barcode_quimetal.as_reportes_etiquetas_mp').report_action([self.id], data=datas)
 
         if pdf:
             b64_pdf = base64.b64encode(pdf[0])
@@ -106,7 +104,9 @@ class StockMoveLine(models.Model):
                 t.close()
                 shutil.copyfile(dir_name, source_path)
                 os.remove(dir_name)
-            
-            
-        if report:
-            return report
+
+        ids = self.env['stock.move.line'].browse([self.id])
+        if tipos == 1:
+            return self.env.ref('stock_barcode_quimetal.as_reportes_etiquetas_mp').report_action(docids=ids.ids, data=datas)
+        else:
+            return self.env.ref('stock_barcode_quimetal.as_reportes_etiquetas_pp').report_action(docids=ids.ids, data=datas)

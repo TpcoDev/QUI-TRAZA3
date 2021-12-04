@@ -3,15 +3,28 @@
     <data>
         <record id="view_picking_quimetal_form_8" model="ir.ui.view">
             <field name="model">sale.order</field>
-            <field name="name">	sale.order.form.form</field>
-            <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="name"> sale.order.form.form</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
+
+                <xpath expr="//button[@id='action_confirm']" position="replace">
+                    <button name="action_confirm" id="action_confirm"
+                            string="Confirm" class="btn-primary" type="object"
+                            attrs="{'invisible': [('state', 'not in', ['sent']), ('f_closed', '=', 1)]}"/>
+                </xpath>
+
+                <xpath expr="//button[@name='action_confirm'][1]" position="replace">
+                    <button name="action_confirm"
+                            string="Confirm" type="object"
+                            attrs="{'invisible': [('state', 'not in', ['draft']), ('f_closed', '=', 1)]}"/>
+                </xpath>
+
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="as_num_comex"/>
-                    <field name="f_closed" widget="boolean_toggle"/>
+                    <field name="f_closed" readonly="True"/>
 
-                </xpath>       
-                        
+                </xpath>
+
             </field>
         </record>
     </data>

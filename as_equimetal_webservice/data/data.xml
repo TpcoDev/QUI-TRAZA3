@@ -5,7 +5,7 @@
         <record model="ir.rule" id="equimetal_purchase_order">
             <field name="name">equimetal purchase_order</field>
             <field name="model_id" ref="model_purchase_order"/>
-            <field name="domain_force">[('f_closed', '=', False)]</field>
+            <field name="domain_force">[('f_closed', '=', 0)]</field>
             <field name="groups" eval="[(4, ref('base.group_user'))]"/>
             <field name="perm_write" eval="True"/>
         </record>
@@ -13,7 +13,7 @@
         <record model="ir.rule" id="equimetal_sale_order">
             <field name="name">equimetal sale_order</field>
             <field name="model_id" ref="model_sale_order"/>
-            <field name="domain_force">[('f_closed', '=', True)]</field>
+            <field name="domain_force">[('f_closed', '=', 0)]</field>
             <field name="groups" eval="[(4, ref('base.group_user'))]"/>
             <field name="perm_write" eval="False"/>
         </record>

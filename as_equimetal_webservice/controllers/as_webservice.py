@@ -1101,7 +1101,7 @@ class as_webservice_quimetal(http.Controller):
                 if es_valido:
                     op_dev_type = post['params']['ObjType']
                     picking_type = request.env['stock.picking.type'].sudo().search(
-                        [('sequence_code', '=', op_dev_type)],
+                        [('opdevtype', '=', op_dev_type)],
                         limit=1)
                     location_id = request.env['stock.location'].sudo().search(
                         [('usage', '=', 'internal'), ('name', '=', post['params']['WarehouseCodeOrigin'])], limit=1)
@@ -1150,7 +1150,7 @@ class as_webservice_quimetal(http.Controller):
                         'as_ot_sap': post['params']['DocNumSap'],
                         'picking_type_id': picking_type.id,
                         'date': date,
-                        'op_dev_type': op_dev_type,
+                        'opdevtype': op_dev_type,
                         'partner_id': partner.id if partner else False,
                         'location_id': location_id.id if location_id else False,
                         'location_dest_id': location_dest_id.id if location_dest_id else False,
@@ -1162,6 +1162,7 @@ class as_webservice_quimetal(http.Controller):
                         mensaje_correcto['RespMessage'] = 'Devolución creada'
                         self.create_message_log("WS013", as_token, mensaje_correcto, 'ACEPTADO',
                                                 'Devolución creada')
+                        picking.action_confirm()
                         picking.button_validate()
                     else:
                         mensaje_correcto['RespMessage'] = 'Devolución no creada'
@@ -1208,10 +1209,10 @@ class as_webservice_quimetal(http.Controller):
                 if es_valido:
                     doc_type = post['params']['DocType']
                     model = 'purchase.order' if doc_type == 'OC' else 'sale.order'
-                    object_model = request.env[model].search([('name', 'like', post['params']['DocNum'])])
+                    object_model = request.env[model].sudo().search([('name', 'like', post['params']['DocNum'])])
                     if object_model:
-                        object_model.write({
-                            'f_closed': False if post['params']['flagClosed'] else True
+                        object_model.sudo().write({
+                            'f_closed': int(post['params']['flagClosed'])
                         })
                         if post['params']['flagClosed']:
                             mensaje_correcto['RespMessage'] = f"La OC {post['params']['DocNum']} fue cerrada"

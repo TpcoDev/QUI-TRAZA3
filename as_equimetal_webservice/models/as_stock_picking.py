@@ -45,8 +45,8 @@ class AsStockMoveLine(models.Model):
 class AsStockPickingType(models.Model):
     _inherit = 'stock.picking.type'
 
-    op_dev_type = fields.Selection(
-        selection=[('DEVPROV', 'Devolución de proveedores'), ('DEVCLI', 'Devolución de clientes')],
+    opdevtype = fields.Selection(
+        selection=[('21', 'Devolución de proveedores'), ('16', 'Devolución de clientes')],
         string='Tipo de Operación'
     )
 
@@ -72,11 +72,10 @@ class AsStockPicking(models.Model):
     as_ot_sap = fields.Integer(string='OT SAP')
     as_num_factura = fields.Char(string='Num de Factura')
     as_guia_sap = fields.Char(string='Guía SAP')
-    op_dev_type = fields.Selection(
-        selection=[('DEVPROV', 'Devolución de proveedores'), ('DEVCLI', 'Devolución de clientes')],
-        string='Tipo de Operación'
-    )
+    opdevtype = fields.Integer()
     num_fact_prov = fields.Char()
+    num_guia_prov = fields.Char()
+    f_closed = fields.Integer(related='purchase_id.f_closed', store=True)
 
     def button_validate(self):
         res = super().button_validate()
@@ -468,7 +467,7 @@ class AsStockPicking(models.Model):
                         "quantity": as_total,
                         "quantityOrig": move_stock.qtyOrigin,
                         "lineNum": picking.origin.split('-')[1] if len(picking.origin.split('-')) > 1 else '',
-                        "measureUnitOrig": move_stock.product_id.uom_orig_id,
+                        "measureUnitOrig": '' if not move_stock.product_id.uom_orig_id else move_stock.product_id.uom_orig_id.name,
                         "measureUnit": move_stock.product_uom.name,
                         "lote": move,
                     }
@@ -488,7 +487,8 @@ class AsStockPicking(models.Model):
                         "docNum": str(picking.name),
                         "docDate": str(picking.date_done.strftime('%Y-%m-%dT%H:%M:%S') or None),
                         "docNumSAP": picking.origin.split('-')[0],
-                        "numFactProv": picking.num_fact_prov,
+                        "numFactProv": '' if not picking.num_fact_prov else picking.num_fact_prov,
+                        "numGuiaProv": '' if not picking.num_guia_prov else picking.num_guia_prov,
                         "warehouseCodeOrigin": location_id,
                         "warehouseCodeDestination": location_dest_id,
                         "cardCode": picking.partner_id.vat,

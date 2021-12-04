@@ -7,5 +7,5 @@ from odoo import api, fields, models
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    f_closed = fields.Boolean(default=False)
+    f_closed = fields.Integer(default=0)
     as_num_comex = fields.Char(string='NUM-COMEX')
