@@ -39,10 +39,8 @@
                         font-size: 35px !important;
                         }
                     </style>
-                    <t t-esc="data"/>
-                    <t t-esc="docs"/>
+
                     <t t-foreach="docs" t-as="o">
-                        <t t-esc="o.product_id.default_code"/>
                         <t t-foreach="data" t-as="info">
                             <table class="table">
                                 <tr>

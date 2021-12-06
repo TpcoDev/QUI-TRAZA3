@@ -49,64 +49,65 @@ class StockMoveLine(models.Model):
             rec.total_peso_envase = sum(sum_list)
 
     def export_pdf(self):
-        context = self._context
-        datas = {'ids': context.get('active_ids', [])}
-        tipos = 1 if self.product_id.as_type_product == 'MP' else 0
-
-        datas['model'] = 'as.wizard.formulas'
-        datas['form'] = self.read()[0]
-        diccionario = []
-        oum_obj = self.env['uom.uom'].search([]).filtered(
-            lambda uo: uo.category_id.id == self.product_uom_id.category_id.id and uo.uom_type == "reference")
-
-        # tipo 1 move
-        file_like_object = BytesIO()
-        EAN = barcode.get_barcode_class('code128')
-        ean = EAN(self.as_barcode_mpp_1_CDB(), writer=ImageWriter())
-        ean.write(file_like_object, options={"write_text": False})
-        self.as_imge = base64.b64encode(file_like_object.getvalue())
-
-        for idx, line in enumerate(self.quimetal_lines_ids):
-            for item in range(0, line.num_bultos):
-                diccionario.append({
-                    'cant': line.cant_envases,
-                    'weight': line.peso_envase * line.cant_envases,
-                    'uom_reference': oum_obj.name,
-                })
-
-        datas = {
-            'data': diccionario,
-        }
-
-
-        pdf = None
-        report = None
-        if tipos == 1:
-            pdf = self.env.ref('stock_barcode_quimetal.as_reportes_etiquetas_mp')._render_qweb_pdf([self.id],
-                                                                                                    data=datas)
-        else:
-            pdf = self.env.ref('stock_barcode_quimetal.as_reportes_etiquetas_pp')._render_qweb_pdf([self.id],
-                                                                                                    data=datas)
-
-        if pdf:
-            b64_pdf = base64.b64encode(pdf[0])
-            bytes = base64.b64decode(b64_pdf, validate=True)
-            name = "Etiquetas"
-            filename = name + f'.{pdf[1]}'
-
-            host_name = self.env["ir.config_parameter"].sudo().get_param("host_name")
-            shared_folder = self.env["ir.config_parameter"].sudo().get_param("shared_folder")
-            source_path = f"\\{host_name}{shared_folder}{filename}"
-
-            with tempfile.NamedTemporaryFile(mode='w+b', delete=False) as t:
-                t.write(bytes)
-                dir_name = t.name
-                t.close()
-                shutil.copyfile(dir_name, source_path)
-                os.remove(dir_name)
-
-        ids = self.env['stock.move.line'].browse([self.id])
-        if tipos == 1:
-            return self.env.ref('stock_barcode_quimetal.as_reportes_etiquetas_mp').report_action(docids=ids.ids, data=datas)
-        else:
-            return self.env.ref('stock_barcode_quimetal.as_reportes_etiquetas_pp').report_action(docids=ids.ids, data=datas)
+        print('export_pdf')
+        # context = self._context
+        # datas = {'ids': context.get('active_ids', [])}
+        # tipos = 1 if self.product_id.as_type_product == 'MP' else 0
+        #
+        # datas['model'] = 'as.wizard.formulas'
+        # datas['form'] = self.read()[0]
+        # diccionario = []
+        # oum_obj = self.env['uom.uom'].search([]).filtered(
+        #     lambda uo: uo.category_id.id == self.product_uom_id.category_id.id and uo.uom_type == "reference")
+        #
+        # # tipo 1 move
+        # file_like_object = BytesIO()
+        # EAN = barcode.get_barcode_class('code128')
+        # ean = EAN(self.as_barcode_mpp_1_CDB(), writer=ImageWriter())
+        # ean.write(file_like_object, options={"write_text": False})
+        # self.as_imge = base64.b64encode(file_like_object.getvalue())
+        #
+        # for idx, line in enumerate(self.quimetal_lines_ids):
+        #     for item in range(0, line.num_bultos):
+        #         diccionario.append({
+        #             'cant': line.cant_envases,
+        #             'weight': line.peso_envase * line.cant_envases,
+        #             'uom_reference': oum_obj.name,
+        #         })
+        #
+        # datas = {
+        #     'data': diccionario,
+        # }
+        #
+        #
+        # pdf = None
+        # report = None
+        # if tipos == 1:
+        #     pdf = self.env.ref('stock_barcode_quimetal.as_reportes_etiquetas_mp')._render_qweb_pdf([self.id],
+        #                                                                                             data=datas)
+        # else:
+        #     pdf = self.env.ref('stock_barcode_quimetal.as_reportes_etiquetas_pp')._render_qweb_pdf([self.id],
+        #                                                                                             data=datas)
+        #
+        # if pdf:
+        #     b64_pdf = base64.b64encode(pdf[0])
+        #     bytes = base64.b64decode(b64_pdf, validate=True)
+        #     name = "Etiquetas"
+        #     filename = name + f'.{pdf[1]}'
+        #
+        #     host_name = self.env["ir.config_parameter"].sudo().get_param("host_name")
+        #     shared_folder = self.env["ir.config_parameter"].sudo().get_param("shared_folder")
+        #     source_path = f"\\{host_name}{shared_folder}{filename}"
+        #
+        #     with tempfile.NamedTemporaryFile(mode='w+b', delete=False) as t:
+        #         t.write(bytes)
+        #         dir_name = t.name
+        #         t.close()
+        #         shutil.copyfile(dir_name, source_path)
+        #         os.remove(dir_name)
+        #
+        # ids = self.env['stock.move.line'].browse([self.id])
+        # if tipos == 1:
+        #     return self.env.ref('stock_barcode_quimetal.as_reportes_etiquetas_mp').report_action(docids=ids.ids, data=datas)
+        # else:
+        #     return self.env.ref('stock_barcode_quimetal.as_reportes_etiquetas_pp').report_action(docids=ids.ids, data=datas)
