@@ -46,8 +46,15 @@ class StockBarcodeQuimetalController(http.Controller):
                 'data': diccionario,
             }
 
+
+
             if diccionario:
+                tipos = 1 if obj_move_line.product_id.as_type_product == 'MP' else 0
                 pdf = request.env.ref('stock_barcode_quimetal.as_reportes_etiquetas_mp').sudo()._render_qweb_pdf([id], data=datas)[0]
+
+                if tipos == 0:
+                    pdf = request.env.ref('stock_barcode_quimetal.as_reportes_etiquetas_pp')._render_qweb_pdf([id], data=datas)[0]
+
                 b64_pdf = base64.b64encode(pdf)
                 bytes = base64.b64decode(b64_pdf, validate=True)
                 response = {

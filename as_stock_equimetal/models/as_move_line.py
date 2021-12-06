@@ -44,6 +44,7 @@ class StockMoveLine(models.Model):
             #     fecha_vencimiento = (line.lot_id.expiration_date-timedelta(hours=4)).strftime('%y-%m-%d')
             if line.lot_id.expiration_date:
                 fecha_vencimiento = (line.lot_id.expiration_date - timedelta(hours=4)).strftime('%Y-%m-%d')
+        return fecha_vencimiento
 
     def as_barcode_mpp_1(self):
         fecha_vencimiento = ''
