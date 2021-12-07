@@ -959,7 +959,9 @@ class as_webservice_quimetal(http.Controller):
                     uom_name = f"{post['params']['uomid']} {post['params']['contenidoenvase']} {post['params']['unidadreferencia']}"
                     uomID = request.env['uom.uom'].sudo().search([
                         ('name', '=', uom_name)], limit=1)
-                    uom_category = request.env.ref('uom.product_uom_categ_unit').id if post['params']['unidadreferencia'] == 'KG' else request.env.ref('uom.product_uom_categ_unit').id
+                    uom_category = request.env.ref('uom.product_uom_categ_unit').id if post['params'][
+                                                                                           'unidadreferencia'] == 'KG' else request.env.ref(
+                        'uom.product_uom_categ_unit').id
                     contenidoenvase = post['params']['contenidoenvase']
                     if contenidoenvase == '':
                         contenidoenvase = 0
@@ -977,7 +979,6 @@ class as_webservice_quimetal(http.Controller):
                     uomPOID = request.env['uom.uom'].sudo().search([('name', '=', uom_name)],
                                                                    limit=1)
                     if not uomPOID:
-
                         uomPOID = request.env['uom.uom'].sudo().create({
                             'name': uom_name,
                             'as_contenido_envase': contenidoenvase,
@@ -1120,19 +1121,29 @@ class as_webservice_quimetal(http.Controller):
 
                     moves_lines = []
                     for line in post['params']['DatosProdDev']:
-                        product = request.env['product.template'].sudo().search(
+                        product = request.env['product.product'].sudo().search(
                             [('default_code', '=', line['ItemCode'])], limit=1)
                         uom = request.env['uom.uom'].sudo().search(
                             [('name', '=', line['MeasureUnit'])], limit=1)
 
                         move_line_ids = []
                         for detalle in line['Detalle']:
+
+                            lot_id = request.env['stock.production.lot'].search([('name', '=', detalle['DistNumber'])],
+                                                                                limit=1)
+                            if not lot_id:
+                                lot_id = request.env['stock.production.lot'].create({
+                                    'name': detalle['DistNumber'],
+                                    'product_id': product.id,
+                                })
+
                             move_line_ids.append((0, 0, {
+                                # 'name': f'{product.name}-{detalle["DistNumber"]}',
                                 'product_id': product.id,
                                 'product_uom_id': uom.id,
                                 'location_id': location_id.id,
                                 'location_dest_id': location_dest_id.id,
-                                'lot_name': detalle['DistNumber'],
+                                'lot_id': lot_id.id,
                                 'qty_done': detalle['Quantity'],
                             }))
 
@@ -1150,11 +1161,13 @@ class as_webservice_quimetal(http.Controller):
                         'as_ot_sap': post['params']['DocNumSap'],
                         'picking_type_id': picking_type.id,
                         'date': date,
+                        'immediate_transfer': True,
                         'opdevtype': op_dev_type,
                         'partner_id': partner.id if partner else False,
                         'location_id': location_id.id if location_id else False,
                         'location_dest_id': location_dest_id.id if location_dest_id else False,
-                        'move_lines': moves_lines
+                        'move_line_ids_without_package': move_line_ids
+                        # 'move_lines': moves_lines
                     }
 
                     picking = request.env['stock.picking'].create(vals)
