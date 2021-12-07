@@ -956,8 +956,9 @@ class as_webservice_quimetal(http.Controller):
                 es_valido = self.validar_json(post, esquema=estructura)
                 if es_valido:
                     post['params'] = self.convert_json_key_lower(post['params'])
+                    uom_name = f"{post['params']['uomid']} {post['params']['contenidoenvase']} {post['params']['unidadreferencia']}"
                     uomID = request.env['uom.uom'].sudo().search([
-                        ('unidad_sap', '=', post['params']['uomid'])], limit=1)
+                        ('name', '=', uom_name)], limit=1)
                     uom_category = request.env.ref('uom.product_uom_categ_unit').id if post['params']['unidadreferencia'] == 'KG' else request.env.ref('uom.product_uom_categ_unit').id
                     contenidoenvase = post['params']['contenidoenvase']
                     if contenidoenvase == '':
@@ -965,7 +966,7 @@ class as_webservice_quimetal(http.Controller):
 
                     if not uomID:
                         uomID = request.env['uom.uom'].sudo().create({
-                            'name': f"{post['params']['itemdescription']} ({post['params']['uomid']}) {post['params']['contenidoenvase']}",
+                            'name': uom_name,
                             'as_contenido_envase': contenidoenvase,
                             'unidad_sap': post['params']['uomid'],
                             'category_id': uom_category,
@@ -973,12 +974,12 @@ class as_webservice_quimetal(http.Controller):
                             'uom_type': 'bigger' if contenidoenvase > 1 else 'smaller'
                         })
 
-                    uomPOID = request.env['uom.uom'].sudo().search([('unidad_sap', '=', post['params']['uompoid'])],
+                    uomPOID = request.env['uom.uom'].sudo().search([('name', '=', uom_name)],
                                                                    limit=1)
                     if not uomPOID:
 
                         uomPOID = request.env['uom.uom'].sudo().create({
-                            'name': f"{post['params']['uomid']} {post['params']['contenidoenvase']} {post['params']['unidadreferencia']}",
+                            'name': uom_name,
                             'as_contenido_envase': contenidoenvase,
                             'unidad_sap': post['params']['uomid'],
                             'category_id': uom_category,
