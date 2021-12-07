@@ -958,9 +958,7 @@ class as_webservice_quimetal(http.Controller):
                     post['params'] = self.convert_json_key_lower(post['params'])
                     uomID = request.env['uom.uom'].sudo().search([
                         ('unidad_sap', '=', post['params']['uomid'])], limit=1)
-                    uomReferencia = request.env['uom.uom'].sudo().search(
-                        [('name', '=', post['params']['unidadreferencia'].lower())], limit=1)
-
+                    uom_category = request.env.ref('uom.product_uom_categ_unit').id if post['params']['unidadreferencia'] == 'KG' else request.env.ref('uom.product_uom_categ_unit').id
                     contenidoenvase = post['params']['contenidoenvase']
                     if contenidoenvase == '':
                         contenidoenvase = 0
@@ -970,7 +968,7 @@ class as_webservice_quimetal(http.Controller):
                             'name': f"{post['params']['itemdescription']} ({post['params']['uomid']}) {post['params']['contenidoenvase']}",
                             'as_contenido_envase': contenidoenvase,
                             'unidad_sap': post['params']['uomid'],
-                            'category_id': 2 if post['params']['unidadreferencia'] == 'KG' else 5,
+                            'category_id': uom_category,
                             'factor': (1 / contenidoenvase) if contenidoenvase > 0 else 1,
                             'uom_type': 'bigger' if contenidoenvase > 1 else 'smaller'
                         })
@@ -978,11 +976,12 @@ class as_webservice_quimetal(http.Controller):
                     uomPOID = request.env['uom.uom'].sudo().search([('unidad_sap', '=', post['params']['uompoid'])],
                                                                    limit=1)
                     if not uomPOID:
+
                         uomPOID = request.env['uom.uom'].sudo().create({
                             'name': f"{post['params']['uomid']} {post['params']['contenidoenvase']} {post['params']['unidadreferencia']}",
                             'as_contenido_envase': contenidoenvase,
                             'unidad_sap': post['params']['uomid'],
-                            'category_id': 2 if post['params']['unidadreferencia'] == 'KG' else 5,
+                            'category_id': uom_category,
                             'factor': (1 / contenidoenvase) if contenidoenvase > 0 else 1,
                             'uom_type': 'bigger' if contenidoenvase > 1 else 'smaller'
                         })
@@ -1033,7 +1032,7 @@ class as_webservice_quimetal(http.Controller):
                         'uom_id': uomID.id if uomID else False,
                         'uom_po_id': uomPOID.id if uomPOID else False,
                         'envase_id': envases_id.id if envases_id else False,
-                        'unidad_referencia': uomReferencia.id if uomReferencia else False,
+                        'unidad_referencia': post['params']['unidadreferencia'],
                         'embalaje_id': embalaje_id.id if embalaje_id else False,
                         'unidad_logistica_id': unid_logistica_id.id if unid_logistica_id else False,
                     }

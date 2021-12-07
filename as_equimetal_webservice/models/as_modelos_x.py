@@ -34,5 +34,4 @@ class Product_template(models.Model):
     envase_id = fields.Many2one(comodel_name='quimetal.envases', string='Envase')
     embalaje_id = fields.Many2one(comodel_name='quimetal.embalaje', string='Embalaje')
     unidad_logistica_id = fields.Many2one(comodel_name='quimetal.unid.logisticas', string='Logistica')
-    unidad_referencia = fields.Many2one(comodel_name='uom.uom', domain=[('name', 'in', ('LT', 'KG'))],
-                                        string='Unidad Referencia')
+    unidad_referencia = fields.Char(string='Unidad Referencia')
