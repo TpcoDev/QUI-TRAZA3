@@ -292,7 +292,7 @@ class AsStockPicking(models.Model):
                     "quantity": move_stock.quantity_done,
                     "measureUnit": move_stock.product_uom.name,
                     "quantityOrig": move_stock.qtyOrigin,
-                    "measureUnitOrig": move_stock.product_id.uom_org_id,
+                    "measureUnitOrig": move_stock.product_uom.name if move_stock.product_id.as_type_product == 'MP' else move_stock.product_id.uom_org_id,
                     "lote": move,
                 }
                 picking_line.append(vals_picking_line)
@@ -315,8 +315,8 @@ class AsStockPicking(models.Model):
                     vals_picking = {
                         "docNum": str(picking.name),
                         "docDate": str(picking.date_done.strftime('%Y-%m-%dT%H:%M:%S') or None),
-                        "docNumSAP": picking.origin.split('-')[0],
-                        "numFactProv": picking.num_fact_prov,
+                        "docNumSAP": int(picking.origin.split('-')[0]),
+                        "numFactProv": int(picking.num_fact_prov),
                         "warehouseCodeOrigin": picking.location_id.name,
                         "warehouseCodeDestination": picking.location_dest_id.name,
                         "cardCode": picking.partner_id.vat,
@@ -466,7 +466,7 @@ class AsStockPicking(models.Model):
                         "itemDescription": move_stock.product_id.name,
                         "quantity": as_total,
                         "quantityOrig": move_stock.qtyOrigin,
-                        "lineNum": picking.origin.split('-')[1] if len(picking.origin.split('-')) > 1 else '',
+                        "lineNum": int(picking.origin.split('-')[1]) if len(picking.origin.split('-')) > 1 else '',
                         "measureUnitOrig": '' if not move_stock.product_id.uom_orig_id else move_stock.product_id.uom_orig_id.name,
                         "measureUnit": move_stock.product_uom.name,
                         "lote": move,
@@ -486,9 +486,9 @@ class AsStockPicking(models.Model):
                     vals_picking = {
                         "docNum": str(picking.name),
                         "docDate": str(picking.date_done.strftime('%Y-%m-%dT%H:%M:%S') or None),
-                        "docNumSAP": picking.origin.split('-')[0],
-                        "numFactProv": '' if not picking.num_fact_prov else picking.num_fact_prov,
-                        "numGuiaProv": '' if not picking.num_guia_prov else picking.num_guia_prov,
+                        "docNumSAP": int(picking.origin.split('-')[0]),
+                        "numFactProv": '' if not picking.num_fact_prov else int(picking.num_fact_prov),
+                        "numGuiaProv": '' if not picking.num_guia_prov else int(picking.num_guia_prov),
                         "warehouseCodeOrigin": location_id,
                         "warehouseCodeDestination": location_dest_id,
                         "cardCode": picking.partner_id.vat,
