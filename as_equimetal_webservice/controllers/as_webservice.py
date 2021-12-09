@@ -1067,6 +1067,7 @@ class as_webservice_quimetal(http.Controller):
 
                 # uid = request.env.user.id
         except Exception as e:
+            _logger.debug("\n\n\n\n\n ws017 error: %s", e)
             self.create_message_log("WS017", as_token, post, 'RECHAZADO', str(e))
             return mensaje_error
 
