@@ -1039,6 +1039,8 @@ class as_webservice_quimetal(http.Controller):
                         'unidad_logistica_id': unid_logistica_id.id if unid_logistica_id else False,
                     }
 
+                    _logger.debug("\n\n\n\n\n ws017 Vals: %s", vals)
+
                     product_id = request.env['product.template'].sudo().search(
                         [('default_code', '=', post['params']['itemcode'])], limit=1)
                     if product_id:
