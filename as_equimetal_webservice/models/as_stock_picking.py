@@ -47,7 +47,7 @@ class AsStockPickingType(models.Model):
 
     opdevtype = fields.Selection(
         selection=[('21', 'Devolución de proveedores'), ('16', 'Devolución de clientes')],
-        string='Tipo de Operación'
+        string='Tipo de Operación de Devolucion'
     )
 
 
@@ -292,7 +292,7 @@ class AsStockPicking(models.Model):
                     "quantity": move_stock.quantity_done,
                     "measureUnit": move_stock.product_uom.name,
                     "quantityOrig": move_stock.qtyOrigin,
-                    "measureUnitOrig": move_stock.product_uom.name if move_stock.product_id.as_type_product == 'MP' else move_stock.product_id.uom_org_id,
+                    "measureUnitOrig": move_stock.product_uom.name if move_stock.product_id.as_type_product == 'MP' and move_stock.product_id.uom_org_id else move_stock.product_id.uom_org_id,
                     "lote": move,
                 }
                 picking_line.append(vals_picking_line)
