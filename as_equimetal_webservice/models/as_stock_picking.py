@@ -73,8 +73,8 @@ class AsStockPicking(models.Model):
     as_num_factura = fields.Char(string='Num de Factura')
     as_guia_sap = fields.Char(string='Guía SAP')
     opdevtype = fields.Integer()
-    num_fact_prov = fields.Char()
-    num_guia_prov = fields.Char()
+    num_fact_prov = fields.Integer()
+    num_guia_prov = fields.Integer()
     f_closed = fields.Integer(related='purchase_id.f_closed', store=True)
 
     def button_validate(self):
