@@ -1039,7 +1039,7 @@ class as_webservice_quimetal(http.Controller):
                         'unidad_logistica_id': unid_logistica_id.id if unid_logistica_id else False,
                     }
 
-                    _logger.debug("\n\n\n\n\n ws017 Vals: %s", vals)
+                    _logger.info(f"==> ws017 Vals: {vals}")
 
                     product_id = request.env['product.template'].sudo().search(
                         [('default_code', '=', post['params']['itemcode'])], limit=1)
@@ -1069,7 +1069,7 @@ class as_webservice_quimetal(http.Controller):
 
                 # uid = request.env.user.id
         except Exception as e:
-            _logger.debug("\n\n\n\n\n ws017 error: %s", e)
+            _logger.info(f"==> ws017 Error: {e}")
             self.create_message_log("WS017", as_token, post, 'RECHAZADO', str(e))
             return mensaje_error
 
