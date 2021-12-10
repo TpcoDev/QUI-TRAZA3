@@ -3,7 +3,7 @@ from odoo import models, fields, api, _
 from odoo.http import request
 import requests, json
 from odoo.tests.common import Form
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 address_webservice = {
     'WS005': '/tpco/odoo/ws005',
@@ -76,6 +76,14 @@ class AsStockPicking(models.Model):
     num_fact_prov = fields.Char()
     num_guia_prov = fields.Char()
     f_closed = fields.Integer(related='purchase_id.f_closed', store=True)
+
+    @api.constrains('num_guia_prov', 'num_fact_prov')
+    def _check_alphanumeric(self):
+        for rec in self:
+            if rec.num_guia_prov and rec.num_guia_prov.isalnum():
+                raise ValidationError('El campo Guía SAP es alfanumérico')
+            if rec.num_fact_prov and rec.num_fact_prov.isalnum():
+                raise ValidationError('El campo Num de Factura es alfanumérico')
 
     def button_validate(self):
         res = super().button_validate()
@@ -487,8 +495,10 @@ class AsStockPicking(models.Model):
                         "docNum": str(picking.name),
                         "docDate": str(picking.date_done.strftime('%Y-%m-%dT%H:%M:%S') or None),
                         "docNumSAP": int(picking.origin.split('-')[0]),
-                        "numFactProv": '' if not picking.num_fact_prov else int(picking.num_fact_prov),
-                        "numGuiaProv": '' if not picking.num_guia_prov else int(picking.num_guia_prov),
+                        "numFactProv": '' if not picking.num_fact_prov and picking.num_fact_prov.isalnum() else int(
+                            picking.num_fact_prov),
+                        "numGuiaProv": '' if not picking.num_guia_prov and picking.num_guia_prov.isalnum() else int(
+                            picking.num_guia_prov),
                         "warehouseCodeOrigin": location_id,
                         "warehouseCodeDestination": location_dest_id,
                         "cardCode": picking.partner_id.vat,
