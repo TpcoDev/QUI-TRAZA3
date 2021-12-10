@@ -959,9 +959,13 @@ class as_webservice_quimetal(http.Controller):
                     uom_name = f"{post['params']['uomid']} {post['params']['contenidoenvase']} {post['params']['unidadreferencia']}"
                     uomID = request.env['uom.uom'].sudo().search([
                         ('name', '=', uom_name)], limit=1)
-                    uom_category = request.env.ref('uom.product_uom_categ_unit').id if post['params'][
-                                                                                           'unidadreferencia'] == 'KG' else request.env.ref(
-                        'uom.product_uom_categ_unit').id
+
+                    uom_category = request.env.ref('uom.product_uom_categ_unit').id
+                    if post['params']['unidadreferencia'] == 'KG':
+                        uom_category = request.env.ref('uom.product_uom_categ_kgm').id
+                    elif post['params']['unidadreferencia'] == 'LT':
+                        uom_category = request.env.ref('uom.product_uom_categ_vol').id
+
                     contenidoenvase = post['params']['contenidoenvase']
                     if contenidoenvase == '':
                         contenidoenvase = 0
@@ -1148,6 +1152,7 @@ class as_webservice_quimetal(http.Controller):
                                 'location_dest_id': location_dest_id.id,
                                 'lot_id': lot_id.id,
                                 'qty_done': detalle['Quantity'],
+                                'origin': post['params']['DocNumSap'],
                             }))
 
                         moves_lines.append((0, 0, {

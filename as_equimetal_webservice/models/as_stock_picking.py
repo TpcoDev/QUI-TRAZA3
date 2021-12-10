@@ -73,8 +73,8 @@ class AsStockPicking(models.Model):
     as_num_factura = fields.Char(string='Num de Factura')
     as_guia_sap = fields.Char(string='Guía SAP')
     opdevtype = fields.Integer()
-    num_fact_prov = fields.Integer()
-    num_guia_prov = fields.Integer()
+    num_fact_prov = fields.Char()
+    num_guia_prov = fields.Char()
     f_closed = fields.Integer(related='purchase_id.f_closed', store=True)
 
     def button_validate(self):
@@ -215,7 +215,7 @@ class AsStockPicking(models.Model):
                         body = "<b style='color:red'>ERROR (" + webservice + ")!: </b><b>" + str(e) + "</b><br>"
 
                     self.message_post(body=body)
-                    self.message_post(body='<b style="color:blue;">Llamada a Producto Rechazados</b><br/>')
+                    self.message_post(body='<b style="color:blue;">Llamada a Producto-Lotes Rechazados</b><br/>')
                 if other_loc_aprobe:
                     try:
                         token = self.as_get_apikey(self.env.user.id)
@@ -245,7 +245,7 @@ class AsStockPicking(models.Model):
                     except Exception as e:
                         body = "<b style='color:red'>ERROR (" + webservice + ")!: </b><b>" + str(e) + "</b><br>"
                     self.message_post(body=body)
-                    self.message_post(body='<b style="color:blue;">Llamada a Producto Acaptados</b><br/>')
+                    self.message_post(body='<b style="color:blue;">Llamada a Producto-Lotes Aprobados</b><br/>')
 
     def as_get_apikey(self, user_id):
         query = self.env.cr.execute("""select key from res_users_apikeys where user_id =""" + str(user_id) + """""")
