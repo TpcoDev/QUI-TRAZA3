@@ -969,7 +969,7 @@ class as_webservice_quimetal(http.Controller):
                         uom_name = 'KG'
                     elif uomid_name == 'LT':
                         uom_name = 'LT'
-                    else:
+                    elif uomid_name == 'TM':
                         uom_name = 'TM'
 
                     if not uom_name:
