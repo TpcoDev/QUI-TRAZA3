@@ -9,9 +9,8 @@
             <field name="arch" type="xml">
                 <form string="Select a Product" class="o_barcode_line_form">
                     <div class="row mt-5">
-                        <button class="o_print_report oe_highlight btn btn-lg ">
-                            <span>Descargar PDF</span>
-                        </button>
+                        <button class="o_print_report oe_highlight btn btn-lg " string="Enviar PDF a Drive"
+                                name="export_pdf" type="object"/>
                     </div>
                     <div class="row mt-2 mb-4">
                         <field name="company_id" force_save="1" invisible="1"/>
@@ -54,69 +53,23 @@
                         <div class="col-12 d-flex align-items-baseline">
                             <field name="quimetal_lines_ids">
                                 <tree editable="bottom">
-                                    <field name="num_bultos"/>
-                                    <field name="cant_envases"/>
-                                    <field name="peso_envase"/>
+                                    <field name="num_bultos" string="Num. Bultos"/>
+                                    <field name="cant_envases" string="Cant. Envases"/>
+                                    <field name="peso_envase" string="Peso/Envase"/>
                                 </tree>
                             </field>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12 col-md-8 col-sm-12 d-flex justify-content-end">
+                        <div class="col-6 col-md-8 col-sm-6 d-flex justify-content-end">
                             <i class="fa fa-fw fa-lg fa-cube mr-3" title="Total Cantidad Envase"/>
                             <field name="total_cant_envases" options="{'type': 'number'}"/>
                         </div>
-                        <div class="col-12 col-md-4 col-sm-12 d-flex justify-content-end">
+                        <div class="col-6 col-md-4 col-sm-6 d-flex justify-content-end">
                             <i class="fa fa-fw fa-lg fa-cube mr-3" title="Total de Peso/Envase"/>
                             <field name="total_peso_envase" options="{'type': 'number'}"/>
                         </div>
                     </div>
-
-
-                    <!--                    <div class="row">-->
-                    <!--                        <div class="col-6 my-2 d-flex align-items-baseline">-->
-                    <!--                            <i class="fa fa-fw fa-lg fa-cube mr-3" title="Quantity"/>-->
-                    <!--                            <field name="qty_done" options="{'type': 'number'}" placeholder="Quantity"/>-->
-                    <!--                        </div>-->
-                    <!--                        <div class="col-6 my-2 d-flex align-items-baseline" groups="uom.group_uom">-->
-                    <!--                            <i class="fa mr-3" attrs="{'invisible': [('product_uom_qty', '!=', 0.0)]}"/>-->
-                    <!--                            <field name="product_uom_id" placeholder="Unit of Measure"-->
-                    <!--                                   attrs="{'readonly': [('product_uom_qty', '!=', 0.0)]}"/>-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
-                    <!--                    <div class="row" groups="stock.group_stock_multi_locations">-->
-                    <!--                        <div class="col-12 col-md-6 my-2 d-flex align-items-baseline"-->
-                    <!--                             attrs="{'invisible': [('picking_code', '=', 'incoming')]}">-->
-                    <!--                            <i class="fa fa-fw fa-lg fa-map-marker text-center mr-3" title="Source Location"/>-->
-                    <!--                            <field name="location_id" placeholder="Source Location"-->
-                    <!--                                   domain="[('id', 'child_of', picking_location_id)]"-->
-                    <!--                                   options="{'no_create': True}"/>-->
-                    <!--                        </div>-->
-                    <!--                        <div class="col-12 col-md-6 my-2 d-flex align-items-baseline"-->
-                    <!--                             attrs="{'invisible': [('picking_code', '=', 'outgoing')]}">-->
-                    <!--                            <i class="fa fa-fw fa-lg fa-long-arrow-right mr-3" title="Destination Location"/>-->
-                    <!--                            <field name="location_dest_id" placeholder="Source Location"-->
-                    <!--                                   domain="[('id', 'child_of', picking_location_dest_id)]"-->
-                    <!--                                   options="{'no_create': True}"/>-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
-                    <!--                    <div class="row" groups="stock.group_tracking_lot">-->
-                    <!--                        <div class="col-12 col-md-6 my-2 d-flex align-items-baseline">-->
-                    <!--                            <i class="fa fa-fw fa-lg fa-archive mr-3" title="Source Package"/>-->
-                    <!--                            <field name="package_id" placeholder="Source Package"/>-->
-                    <!--                        </div>-->
-                    <!--                        <div class="col-12 col-md-6 my-2 d-flex align-items-baseline">-->
-                    <!--                            <i class="fa fa-fw fa-lg fa-long-arrow-right mr-3" title="Destination Package"/>-->
-                    <!--                            <field name="result_package_id" placeholder="Destination Package"/>-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
-                    <!--                    <div class="row" groups="stock.group_tracking_owner">-->
-                    <!--                        <div class="col-12 col-md-6 my-2 d-flex align-items-baseline">-->
-                    <!--                            <i class="fa fa-fw fa-lg fa-user-o text-center mr-3" title="Owner"/>-->
-                    <!--                            <field name="owner_id" placeholder="Owner"/>-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
-
 
                 </form>
             </field>
