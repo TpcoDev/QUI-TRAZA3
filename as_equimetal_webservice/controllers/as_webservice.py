@@ -1154,6 +1154,8 @@ class as_webservice_quimetal(http.Controller):
                                 lot_id = request.env['stock.production.lot'].create({
                                     'name': detalle['DistNumber'],
                                     'product_id': product.id,
+                                    'company_id': request.env.user.company_id.id,
+
                                 })
 
                             move_line_ids.append((0, 0, {
