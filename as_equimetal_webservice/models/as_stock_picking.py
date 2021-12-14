@@ -80,10 +80,10 @@ class AsStockPicking(models.Model):
     @api.constrains('num_guia_prov', 'num_fact_prov')
     def _check_alphanumeric(self):
         for rec in self:
-            if rec.num_guia_prov and rec.num_guia_prov.isalnum():
-                raise ValidationError('El campo Guía SAP es alfanumérico')
-            if rec.num_fact_prov and rec.num_fact_prov.isalnum():
-                raise ValidationError('El campo Num de Factura es alfanumérico')
+            if rec.num_guia_prov and not rec.num_guia_prov.isnumeric():
+                raise ValidationError('El campo Guía SAP debe ser numérico')
+            if rec.num_fact_prov and not rec.num_fact_prov.isnumeric():
+                raise ValidationError('El campo Num de Factura debe ser numerico')
 
     def button_validate(self):
         res = super().button_validate()
@@ -495,9 +495,9 @@ class AsStockPicking(models.Model):
                         "docNum": str(picking.name),
                         "docDate": str(picking.date_done.strftime('%Y-%m-%dT%H:%M:%S') or None),
                         "docNumSAP": int(picking.origin.split('-')[0]),
-                        "numFactProv": '' if not picking.num_fact_prov and picking.num_fact_prov.isalnum() else int(
+                        "numFactProv": '' if picking.num_fact_prov and not picking.num_fact_prov.isnumeric() else int(
                             picking.num_fact_prov),
-                        "numGuiaProv": '' if not picking.num_guia_prov and picking.num_guia_prov.isalnum() else int(
+                        "numGuiaProv": '' if picking.num_guia_prov and not picking.num_guia_prov.isnumeric() else int(
                             picking.num_guia_prov),
                         "warehouseCodeOrigin": location_id,
                         "warehouseCodeDestination": location_dest_id,
