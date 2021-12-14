@@ -1169,15 +1169,15 @@ class as_webservice_quimetal(http.Controller):
                                 'origin': post['params']['DocNumSap'],
                             }))
 
-                        moves_lines.append((0, 0, {
-                            'name': product.name,
-                            'product_id': product.id,
-                            'product_uom_qty': line['Quantity'],
-                            'product_uom': uom.id,
-                            'location_id': location_id.id,
-                            'location_dest_id': location_dest_id.id,
-                            'move_line_ids': move_line_ids
-                        }))
+                        # moves_lines.append((0, 0, {
+                        #     'name': product.name,
+                        #     'product_id': product.id,
+                        #     'product_uom_qty': line['Quantity'],
+                        #     'product_uom': uom.id,
+                        #     'location_id': location_id.id,
+                        #     'location_dest_id': location_dest_id.id,
+                        #     'move_line_ids': move_line_ids
+                        # }))
 
                     vals = {
                         'as_ot_sap': post['params']['DocNumSap'],
