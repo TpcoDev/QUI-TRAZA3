@@ -1136,7 +1136,7 @@ class as_webservice_quimetal(http.Controller):
 
                     partner = request.env['res.partner'].sudo().search([('vat', '=', post['params']['CardCode'])],
                                                                        limit=1)
-                    date = datetime.strptime(post['params']['DocDate'], '%Y-%m-%dT%H:%M:%S')
+                    date = datetime.strptime(post['params']['DocDate'], '%Y-%m-%dT%H:%M:%SZ')
 
                     moves_lines = []
                     for line in post['params']['DatosProdDev']:
