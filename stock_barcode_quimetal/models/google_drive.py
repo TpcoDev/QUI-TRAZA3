@@ -2,7 +2,7 @@ import requests
 import json
 import logging
 
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, Warning
 from odoo import fields, models, api, _
 
 _logger = logging.getLogger(__name__)
@@ -32,6 +32,7 @@ class GoogleDriveConfig(models.Model):
                 json_res = json.loads(req.text)
                 doc_id = json_res['id']
                 _logger.info("Upload file %s to google drive successfully" % file_name)
+                raise Warning(_("Upload file %s to google drive successfully" % file_name))
             else:
                 raise UserError(
                     'There is a problem with the connection to Google Drive. Please contact your administrator.')

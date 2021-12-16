@@ -77,6 +77,18 @@ class AsStockPicking(models.Model):
     num_guia_prov = fields.Char()
     f_closed = fields.Integer(related='purchase_id.f_closed', store=True)
 
+    @api.onchange('num_guia_prov', 'num_fact_prov')
+    def _onchage_num_prov(self):
+        pickings = self.search([('origin', '=', self.origin), ('id', '!=', self.ids)])
+        if self.num_guia_prov:
+            pickings.write({
+                'num_guia_prov': self.num_guia_prov
+            })
+        if self.num_fact_prov:
+            pickings.write({
+                'num_fact_prov': self.num_fact_prov
+            })
+
     @api.constrains('num_guia_prov', 'num_fact_prov')
     def _check_alphanumeric(self):
         for rec in self:
