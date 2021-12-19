@@ -98,6 +98,9 @@ class AsStockPicking(models.Model):
                 raise ValidationError('El campo Num de Factura debe ser numerico')
 
     def button_validate(self):
+        if not self.num_guia_prov and not self.num_fact_prov:
+            raise UserError('El Num de Factura no puede estar vacio')
+
         res = super().button_validate()
         self.validate_webservice()
         return res
@@ -502,6 +505,12 @@ class AsStockPicking(models.Model):
                 if not picking.date_done:
                     errores += '<b>* Campo Fecha Confirmacion No completado</b><br/>'
                     cont_errores += 1
+                if int(picking.num_fact_prov) >= 2147483647:
+                    errores += '<b>* Numero de Factura Excede el limite</b><br/>'
+                    cont_errores += 1
+                if int(picking.num_guia_prov) >= 2147483647:
+                    errores += '<b>* Numero de Guia Excede el limite</b><br/>'
+                    cont_errores += 1
                 if cont_errores <= 0:
                     vals_picking = {
                         "docNum": str(picking.name),
@@ -517,7 +526,7 @@ class AsStockPicking(models.Model):
                         "cardName": picking.partner_id.name,
                         "detalle": picking_line,
                     }
-            if cont_errores > 0:
-                self.message_post(body=errores)
+            # if cont_errores > 0:
+            #     self.message_post(body=errores)
             self.message_post(body=vals_picking)
         return vals_picking
