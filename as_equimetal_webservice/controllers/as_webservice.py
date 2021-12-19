@@ -10,6 +10,7 @@ from jsonschema import validate
 
 from odoo import http
 from odoo.http import request
+from odoo import _
 
 _logger = logging.getLogger(__name__)
 from datetime import datetime
@@ -129,7 +130,7 @@ class as_webservice_quimetal(http.Controller):
                                     "product_id": product_product_id,
                                     "product_qty": linea["Quantity"],
                                     # "sequence": 1,
-                                    'name': linea["ItemDescription"],
+                                    'name': _(linea["ItemDescription"]),
                                     'account_analytic_id': False,
                                     'product_uom': producto_uom_id,
                                     "price_unit": 1,
@@ -1066,6 +1067,10 @@ class as_webservice_quimetal(http.Controller):
 
                         if not sale_line and not purchase_line and not stock_line:
                             product_id.write(vals)
+
+                            product_name = request.env['ir.translation'].search(
+                                [('src', '=', product_id.name), ('lang', '=', 'es_ES')])
+
                             mensaje_correcto['RespMessage'] = 'Producto se actualizó'
                             self.create_message_log("WS017", as_token, mensaje_correcto, 'ACEPTADO',
                                                     'Producto actualizado')
@@ -1181,6 +1186,7 @@ class as_webservice_quimetal(http.Controller):
 
                     vals = {
                         'as_ot_sap': post['params']['DocNumSap'],
+                        'origin': post['params']['DocNumSap'],
                         'picking_type_id': picking_type.id,
                         'date': date,
                         'immediate_transfer': True,

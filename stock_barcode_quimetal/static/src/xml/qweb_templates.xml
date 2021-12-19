@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
 
     <t t-extend="stock_barcode_lines_template">
-        <t t-jquery=".o_barcode_line_actions.d-flex:first" t-operation="before">
+        <t t-jquery=".o_barcode_line_actions.d-flex:first" t-operation="after">
             <div t-if="state != 'done' and state != 'cancel' and line.lot_id"
                  class="o_barcode_line_actions d-flex align-items-center pl-4">
                 <a class="o_print text-muted" href="#" title="Edit"><i class="fa fa-2x fa-print"/></a>

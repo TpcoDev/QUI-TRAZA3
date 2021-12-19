@@ -8,6 +8,10 @@
             <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="arch" type="xml">
 
+                <xpath expr="//button[@name='action_assign']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
                 <xpath expr="//button[@name='button_validate'][1]" position="replace">
                     <button name="button_validate"
                             attrs="{'invisible': ['|', '|', ('state', 'in', ('waiting','confirmed')), ('show_validate', '=', False), ('f_closed', '=', 1)]}"
