@@ -1,0 +1,609 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* as_equimetal_webservice
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-12-19 05:47+0000\n"
+"PO-Revision-Date: 2021-12-19 05:47+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: as_equimetal_webservice
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.as_res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" aria-label=\"Values set here are company-specific.\" "
+"role=\"img\"/>"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.as_res_config_settings_view_form
+msgid "<span class=\"o_form_label\">Contraseña: </span>"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.as_res_config_settings_view_form
+msgid "<span class=\"o_form_label\">URL para Endpoint</span>"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.as_res_config_settings_view_form
+msgid "<span class=\"o_form_label\">Usuario o Login</span>"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_embalaje__active
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_envases__active
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_unid_logisticas__active
+msgid "Active"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_uom_uom__as_contenido_envase
+msgid "As Contenido Envase"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: code:addons/as_equimetal_webservice/models/as_purchase_order.py:0
+#: code:addons/as_equimetal_webservice/models/as_sale_order.py:0
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__purchase_order__oc_state__closed
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__sale_order__oc_state__closed
+#, python-format
+msgid "Closed"
+msgstr "Cerrada"
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_embalaje__cod_embalaje
+msgid "Cod Embalaje"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_envases__cod_envase
+msgid "Cod Envase"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_unid_logisticas__cod_unid
+msgid "Cod Unid"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model,name:as_equimetal_webservice.model_res_config_settings
+msgid "Config Settings"
+msgstr "Configuraciones"
+
+#. module: as_equimetal_webservice
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.view_picking_quimetal_form_8
+msgid "Confirm"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.purchase_order_inherit
+msgid "Confirm Order"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.as_res_config_settings_view_form
+msgid "Contraseña para consumo de webservice"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_as_webservice_logs__create_uid
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_embalaje__create_uid
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_envases__create_uid
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_unid_logisticas__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_as_webservice_logs__create_date
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_embalaje__create_date
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_envases__create_date
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_unid_logisticas__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model,name:as_equimetal_webservice.model_stock_move_line
+msgid "Description"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_picking_type__opdevtype__16
+msgid "Devolución de clientes"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_picking_type__opdevtype__21
+msgid "Devolución de proveedores"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_res_config_settings__as_url
+msgid "Dirección de Enpoint"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_as_webservice_logs__display_name
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_product_template__display_name
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_purchase_order__display_name
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_embalaje__display_name
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_envases__display_name
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_unid_logisticas__display_name
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_sale_order__display_name
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_location__display_name
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_move__display_name
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_move_line__display_name
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking__display_name
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking_type__display_name
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_production_lot__display_name
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_quant__display_name
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_uom_uom__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_product_product__embalaje_id
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_product_template__embalaje_id
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.embalaje_view_form
+msgid "Embalaje"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.actions.act_window,name:as_equimetal_webservice.embalaje_action
+#: model:ir.ui.menu,name:as_equimetal_webservice.embalaje_menu
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.embalaje_view_tree
+msgid "Embalajes"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_product_product__envase_id
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_product_template__envase_id
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.envase_view_form
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.unid_logisticas_view_form
+msgid "Envase"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.actions.act_window,name:as_equimetal_webservice.envases_action
+#: model:ir.ui.menu,name:as_equimetal_webservice.envases_menu
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.envase_view_tree
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.unid_logisticas_view_tree
+msgid "Envases"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking__as_enviado_sap
+msgid "Enviado a SAP"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_location__as_send_automatic
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking_type__as_send_automatic
+msgid "Enviar Correo al confirmar"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.view_picking_merygate_form_8
+msgid "Enviar SAP"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_location__as_stock_fail
+msgid "Es Ubicación de Rechazo de Productos"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_as_webservice_logs__state
+msgid "Estado"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.purchase_order_inherit
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.view_picking_quimetal_form_8
+msgid "Estado OC"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_purchase_order__f_closed
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_sale_order__f_closed
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking__f_closed
+msgid "F Closed"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_as_webservice_logs__as_fecha
+msgid "Fecha"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking__as_guia_sap
+msgid "Guía SAP"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model_terms:ir.actions.act_window,help:as_equimetal_webservice.action_message_log_nucleo
+msgid "Haga clic aquí para empezar a crear su Log de Webservice SAP."
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_as_webservice_logs__id
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_product_template__id
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_purchase_order__id
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_embalaje__id
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_envases__id
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_unid_logisticas__id
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_res_config_settings__id
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_sale_order__id
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_location__id
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_move__id
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_move_line__id
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking__id
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking_type__id
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_production_lot__id
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_quant__id
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_uom_uom__id
+msgid "ID"
+msgstr "ID (identificación)"
+
+#. module: as_equimetal_webservice
+#: model:ir.model,name:as_equimetal_webservice.model_stock_location
+msgid "Inventory Locations"
+msgstr "Ubicaciones de inventario"
+
+#. module: as_equimetal_webservice
+#: code:addons/as_equimetal_webservice/models/as_stock_picking_type.py:0
+#, python-format
+msgid ""
+"It is not possible to reserve more products of %s than you have in stock."
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: code:addons/as_equimetal_webservice/controllers/as_webservice.py:0
+#, python-format
+msgid "ItemDescription"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_as_webservice_logs__as_json
+msgid "Json"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_as_webservice_logs____last_update
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_product_template____last_update
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_purchase_order____last_update
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_embalaje____last_update
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_envases____last_update
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_unid_logisticas____last_update
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_res_config_settings____last_update
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_sale_order____last_update
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_location____last_update
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_move____last_update
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_move_line____last_update
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking____last_update
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking_type____last_update
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_production_lot____last_update
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_quant____last_update
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_uom_uom____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_as_webservice_logs__write_uid
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_embalaje__write_uid
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_envases__write_uid
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_unid_logisticas__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_as_webservice_logs__write_date
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_embalaje__write_date
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_envases__write_date
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_unid_logisticas__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.actions.act_window,name:as_equimetal_webservice.action_message_log_nucleo
+#: model:ir.ui.menu,name:as_equimetal_webservice.as_message_log_id
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.as_message_log_form
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.as_message_log_tree
+msgid "Log de Webservice SAP"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_res_config_settings__as_login
+msgid "Login"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_product_product__unidad_logistica_id
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_product_template__unidad_logistica_id
+msgid "Logistica"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.actions.act_window,name:as_equimetal_webservice.unid_logisticas_action
+#: model:ir.ui.menu,name:as_equimetal_webservice.unid_logisticas_menu
+msgid "Logisticas"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model,name:as_equimetal_webservice.model_as_webservice_logs
+msgid "Logs para webservice"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model,name:as_equimetal_webservice.model_stock_production_lot
+msgid "Lot/Serial"
+msgstr "Lote/Número de serie"
+
+#. module: as_equimetal_webservice
+#: model:ir.ui.menu,name:as_equimetal_webservice.root_modelos_menu
+msgid "Modelos"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_sale_order__as_num_comex
+msgid "NUM-COMEX"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_embalaje__name
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_envases__name
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_quimetal_unid_logisticas__name
+msgid "Name"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking__num_fact_prov
+msgid "Num Fact Prov"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking__num_guia_prov
+msgid "Num Guia Prov"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking__as_num_factura
+msgid "Num de Factura"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking__as_ot_num
+msgid "Numero Documento"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.stock_picking_vpicktree_inherit
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.view_picking_merygate_form_8
+msgid "OC Estado"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking__as_ot_sap
+msgid "OT SAP"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_as_webservice_logs__as_motivo
+msgid "Observación"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_purchase_order__oc_state
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_sale_order__oc_state
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking__oc_state
+msgid "Oc State"
+msgstr "OC Estado"
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking__opdevtype
+msgid "Opdevtype"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: code:addons/as_equimetal_webservice/models/as_purchase_order.py:0
+#: code:addons/as_equimetal_webservice/models/as_sale_order.py:0
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__purchase_order__oc_state__open
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__sale_order__oc_state__open
+#, python-format
+msgid "Open"
+msgstr "Abierto"
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_res_config_settings__as_password
+msgid "Password"
+msgstr "Contraseña"
+
+#. module: as_equimetal_webservice
+#: model:ir.model,name:as_equimetal_webservice.model_stock_picking_type
+msgid "Picking Type"
+msgstr "Tipo de albarán"
+
+#. module: as_equimetal_webservice
+#: model:ir.model,name:as_equimetal_webservice.model_product_template
+msgid "Product Template"
+msgstr "Plantilla producto"
+
+#. module: as_equimetal_webservice
+#: model:ir.model,name:as_equimetal_webservice.model_uom_uom
+msgid "Product Unit of Measure"
+msgstr "Unidad de medida del producto"
+
+#. module: as_equimetal_webservice
+#: model:ir.model,name:as_equimetal_webservice.model_purchase_order
+msgid "Purchase Order"
+msgstr "Órden de Compra"
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_move_line__qty_done_base
+msgid "Qty Done Base"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_move__qtyOrigin
+msgid "Qtyorigin"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model,name:as_equimetal_webservice.model_stock_quant
+msgid "Quants"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model,name:as_equimetal_webservice.model_quimetal_envases
+msgid "Quimetal Envases"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking_type__as_rest_factura
+msgid "Restricción de Num Factura y Guia de Despacho"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model,name:as_equimetal_webservice.model_sale_order
+msgid "Sales Order"
+msgstr "Pedido de venta"
+
+#. module: as_equimetal_webservice
+#: model:ir.model,name:as_equimetal_webservice.model_stock_move
+msgid "Stock Move"
+msgstr "Moviemiento de stock"
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking_type__opdevtype
+msgid "Tipo de Operación de Devolucion"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_as_webservice_logs__as_token
+msgid "Token"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model,name:as_equimetal_webservice.model_stock_picking
+msgid "Transfer"
+msgstr "Albarán"
+
+#. module: as_equimetal_webservice
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.as_res_config_settings_view_form
+msgid "URL para consumo de webservice"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_product_product__unidad_referencia
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_product_template__unidad_referencia
+msgid "Unidad Referencia"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_uom_uom__unidad_sap
+msgid "Unidad Sap"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_product_product__uom_orig_id
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_product_template__uom_orig_id
+msgid "Uom Orig"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.as_res_config_settings_view_form
+msgid "Usuario para consumo de webservice"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.view_picking_merygate_form_8
+msgid "Validate"
+msgstr "Validar"
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_location__as_webservice__ws004
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_picking__as_webservice__ws004
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_picking_type__as_webservice__ws004
+msgid "WS004"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_location__as_webservice__ws005
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_picking__as_webservice__ws005
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_picking_type__as_webservice__ws005
+msgid "WS005"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_location__as_webservice__ws006
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_picking__as_webservice__ws006
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_picking_type__as_webservice__ws006
+msgid "WS006"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_picking__as_webservice__ws013
+msgid "WS013"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_picking__as_webservice__ws017
+msgid "WS017"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_location__as_webservice__ws018
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_picking__as_webservice__ws018
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_picking_type__as_webservice__ws018
+msgid "WS018"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_location__as_webservice__ws021
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_picking__as_webservice__ws021
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_picking_type__as_webservice__ws021
+msgid "WS021"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_location__as_webservice__ws099
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_picking__as_webservice__ws099
+#: model:ir.model.fields.selection,name:as_equimetal_webservice.selection__stock_picking_type__as_webservice__ws099
+msgid "WS099"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_location__as_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking__as_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_stock_picking_type__as_webservice
+msgid "Webservice"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model.fields,field_description:as_equimetal_webservice.field_as_webservice_logs__name
+msgid "Webservice (method)"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model_terms:ir.ui.view,arch_db:as_equimetal_webservice.as_res_config_settings_view_form
+msgid "Webservice TPCO"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model,name:as_equimetal_webservice.model_quimetal_embalaje
+msgid "quimetal.embalaje"
+msgstr ""
+
+#. module: as_equimetal_webservice
+#: model:ir.model,name:as_equimetal_webservice.model_quimetal_unid_logisticas
+msgid "quimetal.unid.logisticas"
+msgstr ""
