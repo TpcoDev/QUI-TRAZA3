@@ -81,14 +81,10 @@ class AsStockPicking(models.Model):
     @api.onchange('num_guia_prov', 'num_fact_prov')
     def _onchage_num_prov(self):
         pickings = self.search([('origin', '=', self.origin), ('id', '!=', self.ids)])
-        if self.num_guia_prov:
-            pickings.write({
-                'num_guia_prov': self.num_guia_prov
-            })
-        if self.num_fact_prov:
-            pickings.write({
-                'num_fact_prov': self.num_fact_prov
-            })
+        pickings.write({
+            'num_guia_prov': self.num_guia_prov,
+            'num_fact_prov': self.num_fact_prov
+        })
 
     @api.constrains('num_guia_prov', 'num_fact_prov')
     def _check_alphanumeric(self):
@@ -99,9 +95,6 @@ class AsStockPicking(models.Model):
                 raise ValidationError('El campo Num de Factura debe ser numerico')
 
     def button_validate(self):
-        if not self.num_guia_prov and not self.num_fact_prov:
-            raise UserError('El Num de Factura no puede estar vacio')
-
         res = super().button_validate()
         self.validate_webservice()
         return res
