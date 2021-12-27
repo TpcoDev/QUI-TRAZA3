@@ -3,7 +3,7 @@ from odoo import models, fields, api, _
 from odoo.http import request
 import requests, json
 from odoo.tests.common import Form
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 address_webservice = {
     'WS005': '/tpco/odoo/ws005',
@@ -45,9 +45,9 @@ class AsStockMoveLine(models.Model):
 class AsStockPickingType(models.Model):
     _inherit = 'stock.picking.type'
 
-    op_dev_type = fields.Selection(
-        selection=[('DEVPROV', 'Devolución de proveedores'), ('DEVCLI', 'Devolución de clientes')],
-        string='Tipo de Operación'
+    opdevtype = fields.Selection(
+        selection=[('21', 'Devolución de proveedores'), ('16', 'Devolución de clientes')],
+        string='Tipo de Operación de Devolucion'
     )
 
 
@@ -72,11 +72,27 @@ class AsStockPicking(models.Model):
     as_ot_sap = fields.Integer(string='OT SAP')
     as_num_factura = fields.Char(string='Num de Factura')
     as_guia_sap = fields.Char(string='Guía SAP')
-    op_dev_type = fields.Selection(
-        selection=[('DEVPROV', 'Devolución de proveedores'), ('DEVCLI', 'Devolución de clientes')],
-        string='Tipo de Operación'
-    )
+    opdevtype = fields.Integer()
     num_fact_prov = fields.Char()
+    num_guia_prov = fields.Char()
+    f_closed = fields.Integer(related='purchase_id.f_closed', store=True)
+    oc_state = fields.Selection(related='purchase_id.oc_state', store=True)
+
+    @api.onchange('num_guia_prov', 'num_fact_prov')
+    def _onchage_num_prov(self):
+        pickings = self.search([('origin', '=', self.origin), ('id', '!=', self.ids)])
+        pickings.write({
+            'num_guia_prov': self.num_guia_prov,
+            'num_fact_prov': self.num_fact_prov
+        })
+
+    @api.constrains('num_guia_prov', 'num_fact_prov')
+    def _check_alphanumeric(self):
+        for rec in self:
+            if rec.num_guia_prov and not rec.num_guia_prov.isnumeric():
+                raise ValidationError('El campo Guía SAP debe ser numérico')
+            if rec.num_fact_prov and not rec.num_fact_prov.isnumeric():
+                raise ValidationError('El campo Num de Factura debe ser numerico')
 
     def button_validate(self):
         res = super().button_validate()
@@ -216,7 +232,7 @@ class AsStockPicking(models.Model):
                         body = "<b style='color:red'>ERROR (" + webservice + ")!: </b><b>" + str(e) + "</b><br>"
 
                     self.message_post(body=body)
-                    self.message_post(body='<b style="color:blue;">Llamada a Producto Rechazados</b><br/>')
+                    self.message_post(body='<b style="color:blue;">Llamada a Producto-Lotes Rechazados</b><br/>')
                 if other_loc_aprobe:
                     try:
                         token = self.as_get_apikey(self.env.user.id)
@@ -246,7 +262,7 @@ class AsStockPicking(models.Model):
                     except Exception as e:
                         body = "<b style='color:red'>ERROR (" + webservice + ")!: </b><b>" + str(e) + "</b><br>"
                     self.message_post(body=body)
-                    self.message_post(body='<b style="color:blue;">Llamada a Producto Acaptados</b><br/>')
+                    self.message_post(body='<b style="color:blue;">Llamada a Producto-Lotes Aprobados</b><br/>')
 
     def as_get_apikey(self, user_id):
         query = self.env.cr.execute("""select key from res_users_apikeys where user_id =""" + str(user_id) + """""")
@@ -293,7 +309,7 @@ class AsStockPicking(models.Model):
                     "quantity": move_stock.quantity_done,
                     "measureUnit": move_stock.product_uom.name,
                     "quantityOrig": move_stock.qtyOrigin,
-                    "measureUnitOrig": move_stock.product_id.uom_org_id,
+                    "measureUnitOrig": move_stock.product_uom.name,
                     "lote": move,
                 }
                 picking_line.append(vals_picking_line)
@@ -316,8 +332,8 @@ class AsStockPicking(models.Model):
                     vals_picking = {
                         "docNum": str(picking.name),
                         "docDate": str(picking.date_done.strftime('%Y-%m-%dT%H:%M:%S') or None),
-                        "docNumSAP": picking.origin.split('-')[0],
-                        "numFactProv": picking.num_fact_prov,
+                        "docNumSAP": int(picking.origin.split('-')[0]),
+                        "numFactProv": int(picking.num_fact_prov),
                         "warehouseCodeOrigin": picking.location_id.name,
                         "warehouseCodeDestination": picking.location_dest_id.name,
                         "cardCode": picking.partner_id.vat,
@@ -467,8 +483,8 @@ class AsStockPicking(models.Model):
                         "itemDescription": move_stock.product_id.name,
                         "quantity": as_total,
                         "quantityOrig": move_stock.qtyOrigin,
-                        "lineNum": picking.origin.split('-')[1] if len(picking.origin.split('-')) > 1 else '',
-                        "measureUnitOrig": move_stock.product_id.uom_orig_id,
+                        "lineNum": int(picking.origin.split('-')[1]) if len(picking.origin.split('-')) > 1 else '',
+                        "measureUnitOrig": move_stock.product_uom.name,
                         "measureUnit": move_stock.product_uom.name,
                         "lote": move,
                     }
@@ -483,19 +499,28 @@ class AsStockPicking(models.Model):
                 if not picking.date_done:
                     errores += '<b>* Campo Fecha Confirmacion No completado</b><br/>'
                     cont_errores += 1
+                if int(picking.num_fact_prov) >= 2147483647:
+                    errores += '<b>* Numero de Factura Excede el limite</b><br/>'
+                    cont_errores += 1
+                if int(picking.num_guia_prov) >= 2147483647:
+                    errores += '<b>* Numero de Guia Excede el limite</b><br/>'
+                    cont_errores += 1
                 if cont_errores <= 0:
                     vals_picking = {
                         "docNum": str(picking.name),
                         "docDate": str(picking.date_done.strftime('%Y-%m-%dT%H:%M:%S') or None),
-                        "docNumSAP": picking.origin.split('-')[0],
-                        "numFactProv": picking.num_fact_prov,
+                        "docNumSAP": int(picking.origin.split('-')[0]),
+                        "numFactProv": '' if picking.num_fact_prov and not picking.num_fact_prov.isnumeric() else int(
+                            picking.num_fact_prov),
+                        "numGuiaProv": '' if picking.num_guia_prov and not picking.num_guia_prov.isnumeric() else int(
+                            picking.num_guia_prov),
                         "warehouseCodeOrigin": location_id,
                         "warehouseCodeDestination": location_dest_id,
                         "cardCode": picking.partner_id.vat,
                         "cardName": picking.partner_id.name,
                         "detalle": picking_line,
                     }
-            if cont_errores > 0:
-                self.message_post(body=errores)
+            # if cont_errores > 0:
+            #     self.message_post(body=errores)
             self.message_post(body=vals_picking)
         return vals_picking

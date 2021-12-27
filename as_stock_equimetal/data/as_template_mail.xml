@@ -7,9 +7,9 @@
             <field name="model_id" ref="stock.model_stock_picking" />
             <field name="subject">Para Revisar: Productos recibidos de OC SAP ${object.origin}/ ref(${object.name}) de ${object.date_done}</field>
             <field name="email_from">${object.company_id.partner_id.email}</field>
-            <field name="email_to">${object.partner_id.email}</field>
+            <field name="email_to"></field>
             <field name="partner_to">68810</field>
-            <field name="email_cc">wmoreno21@hotmail.com, prisca970@gmail.com</field>
+            <field name="email_cc">camila.gomez@quimetal.cl</field>
             <field name="body_html" type="html">
                 <div>
                     Estimado Encargado de Control de Calidad 
@@ -30,9 +30,9 @@
             <field name="model_id" ref="stock.model_stock_picking" />
             <field name="subject">Toma Conocimiento de revisión realizada de ${object.origin}/ ref(${object.name}) de ${object.date_done}</field>
             <field name="email_from">${object.company_id.partner_id.email}</field>
-            <field name="email_to">${object.partner_id.email}</field>
+            <field name="email_to"></field>
             <field name="partner_to">68809</field>
-            <field name="email_cc">cmedinal@gmail.com, prisca970@gmail.com</field>
+            <field name="email_cc">camila.gomez@quimetal.cl</field>
             <field name="body_html" type="html">
 <div>
                     Estimado Encargado de Logística

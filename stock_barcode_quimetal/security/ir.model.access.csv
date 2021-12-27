@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_quimetal_line_view_form,Quimetal Lines Formulas,model_stock_quimetal_lines,,1,1,1,1

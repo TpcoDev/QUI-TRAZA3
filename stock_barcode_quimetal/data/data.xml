@@ -1,0 +1,7 @@
+<odoo>
+    <record id="stock_barcode_quimetal_client_action" model="ir.actions.client">
+        <field name="name">Barcode Picking Quimetal Client Action</field>
+        <field name="tag">stock_barcode_quimetal_client_action</field>
+    </record>
+
+</odoo>

@@ -2,6 +2,19 @@
 <odoo>
     <data>
 
+        <record id="purchase_order_tree_inherit" model="ir.ui.view">
+            <field name="name">purchase.order.tree.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="oc_state"/>
+                </xpath>
+
+            </field>
+        </record>
+
         <!-- Inherit Form View to Modify it -->
         <record id="purchase_order_inherit" model="ir.ui.view">
             <field name="name">purchase.order.inherit</field>
@@ -9,8 +22,14 @@
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
 
+                <xpath expr="//button[@name='button_confirm']" position="replace">
+                    <button name="button_confirm" type="object" states="sent" string="Confirm Order"
+                            class="oe_highlight" id="bid_confirm" attrs="{'invisible': ['|', ('f_closed', '=', 1)]}"/>
+                </xpath>
+
                 <xpath expr="//field[@name='origin']" position="before">
-                    <field name="f_closed" widget="boolean_toggle"/>
+                    <field name="f_closed" readonly="True"/>
+                    <field name="oc_state" string="Estado OC"/>
                 </xpath>
 
             </field>
