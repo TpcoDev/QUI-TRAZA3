@@ -28,7 +28,7 @@
                 </xpath>
 
                 <xpath expr="//field[@name='origin']" position="before">
-                    <field name="f_closed" readonly="True"/>
+                    <field name="f_closed" readonly="True" invisible="1"/>
                     <field name="oc_state" string="Estado OC"/>
                 </xpath>
 

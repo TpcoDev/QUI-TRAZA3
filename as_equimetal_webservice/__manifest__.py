@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Ahorasoft EQUIMETAL customizaciones",
-    'version': "1.4.20211221.1",
+    'version': "1.4.20220104",
     'author': "Ahorasoft",
     'description': """
 Webservice dummy equimetal
