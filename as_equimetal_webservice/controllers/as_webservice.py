@@ -1124,92 +1124,104 @@ class as_webservice_quimetal(http.Controller):
                 # es_valido = True
                 es_valido = self.validar_json(post, esquema=estructura)
                 if es_valido:
-                    op_dev_type = post['params']['ObjType']
-                    picking_type = request.env['stock.picking.type'].sudo().search(
-                        [('opdevtype', '=', op_dev_type)],
-                        limit=1)
-                    location_id = request.env['stock.location'].sudo().search(
-                        [('usage', '=', 'internal'), ('name', '=', post['params']['WarehouseCodeOrigin'])], limit=1)
-                    location_dest_id = request.env['stock.location'].sudo().search(
-                        [('usage', '=', 'internal'), ('name', '=', post['params']['WarehouseCodeDestination'])],
-                        limit=1)
 
-                    if op_dev_type == 21 and not location_dest_id:
-                        location_dest_id = request.env.ref('stock.stock_location_suppliers')
-                    elif op_dev_type == 16 and not location_id:
-                        location_id = request.env.ref('stock.stock_location_customers')
+                    picking = request.env['stock.picking'].search([('as_ot_sap', '=', post['params']['DocNumSap'])],
+                                                               limit=1)
 
-                    partner = request.env['res.partner'].sudo().search([('vat', '=', post['params']['CardCode'])],
-                                                                       limit=1)
-                    date = datetime.strptime(post['params']['DocDate'], '%Y-%m-%dT%H:%M:%SZ')
+                    if not picking:
+                        op_dev_type = post['params']['ObjType']
+                        picking_type = request.env['stock.picking.type'].sudo().search(
+                            [('opdevtype', '=', op_dev_type)],
+                            limit=1)
+                        location_id = request.env['stock.location'].sudo().search(
+                            [('usage', '=', 'internal'), ('name', '=', post['params']['WarehouseCodeOrigin'])], limit=1)
+                        location_dest_id = request.env['stock.location'].sudo().search(
+                            [('usage', '=', 'internal'), ('name', '=', post['params']['WarehouseCodeDestination'])],
+                            limit=1)
 
-                    moves_lines = []
-                    for line in post['params']['DatosProdDev']:
-                        product = request.env['product.product'].sudo().search(
-                            [('default_code', '=', line['ItemCode'])], limit=1)
-                        uom = request.env['uom.uom'].sudo().search(
-                            [('name', '=', line['MeasureUnit'])], limit=1)
+                        if op_dev_type == 21 and not location_dest_id:
+                            location_dest_id = request.env.ref('stock.stock_location_suppliers')
+                        elif op_dev_type == 16 and not location_id:
+                            location_id = request.env.ref('stock.stock_location_customers')
 
-                        move_line_ids = []
-                        for detalle in line['Detalle']:
+                        partner = request.env['res.partner'].sudo().search([('vat', '=', post['params']['CardCode'])],
+                                                                           limit=1)
+                        date = datetime.strptime(post['params']['DocDate'], '%Y-%m-%dT%H:%M:%SZ')
 
-                            lot_id = request.env['stock.production.lot'].search([('name', '=', detalle['DistNumber'])],
-                                                                                limit=1)
-                            if not lot_id:
-                                lot_id = request.env['stock.production.lot'].create({
-                                    'name': detalle['DistNumber'],
+                        moves_lines = []
+                        for line in post['params']['DatosProdDev']:
+                            product = request.env['product.product'].sudo().search(
+                                [('default_code', '=', line['ItemCode'])], limit=1)
+                            uom = request.env['uom.uom'].sudo().search(
+                                [('name', '=', line['MeasureUnit'])], limit=1)
+
+                            move_line_ids = []
+                            for detalle in line['Detalle']:
+
+                                lot_id = request.env['stock.production.lot'].search(
+                                    [('name', '=', detalle['DistNumber'])],
+                                    limit=1)
+                                if not lot_id:
+                                    lot_id = request.env['stock.production.lot'].create({
+                                        'name': detalle['DistNumber'],
+                                        'product_id': product.id,
+                                        'company_id': request.env.user.company_id.id,
+
+                                    })
+
+                                move_line_ids.append((0, 0, {
+                                    # 'name': f'{product.name}-{detalle["DistNumber"]}',
                                     'product_id': product.id,
-                                    'company_id': request.env.user.company_id.id,
+                                    'product_uom_id': uom.id,
+                                    'location_id': location_id.id,
+                                    'location_dest_id': location_dest_id.id,
+                                    'lot_id': lot_id.id,
+                                    'qty_done': detalle['Quantity'],
+                                    'origin': post['params']['DocNumSap'],
+                                }))
 
-                                })
+                            # moves_lines.append((0, 0, {
+                            #     'name': product.name,
+                            #     'product_id': product.id,
+                            #     'product_uom_qty': line['Quantity'],
+                            #     'product_uom': uom.id,
+                            #     'location_id': location_id.id,
+                            #     'location_dest_id': location_dest_id.id,
+                            #     'move_line_ids': move_line_ids
+                            # }))
 
-                            move_line_ids.append((0, 0, {
-                                # 'name': f'{product.name}-{detalle["DistNumber"]}',
-                                'product_id': product.id,
-                                'product_uom_id': uom.id,
-                                'location_id': location_id.id,
-                                'location_dest_id': location_dest_id.id,
-                                'lot_id': lot_id.id,
-                                'qty_done': detalle['Quantity'],
-                                'origin': post['params']['DocNumSap'],
-                            }))
+                        vals = {
+                            'as_ot_sap': post['params']['DocNumSap'],
+                            'origin': post['params']['DocNumSap'],
+                            'picking_type_id': picking_type.id,
+                            'date': date,
+                            'immediate_transfer': True,
+                            'opdevtype': op_dev_type,
+                            'partner_id': partner.id if partner else False,
+                            'location_id': location_id.id if location_id else False,
+                            'location_dest_id': location_dest_id.id if location_dest_id else False,
+                            'move_line_ids_without_package': move_line_ids
+                            # 'move_lines': moves_lines
+                        }
 
-                        # moves_lines.append((0, 0, {
-                        #     'name': product.name,
-                        #     'product_id': product.id,
-                        #     'product_uom_qty': line['Quantity'],
-                        #     'product_uom': uom.id,
-                        #     'location_id': location_id.id,
-                        #     'location_dest_id': location_dest_id.id,
-                        #     'move_line_ids': move_line_ids
-                        # }))
-
-                    vals = {
-                        'as_ot_sap': post['params']['DocNumSap'],
-                        'origin': post['params']['DocNumSap'],
-                        'picking_type_id': picking_type.id,
-                        'date': date,
-                        'immediate_transfer': True,
-                        'opdevtype': op_dev_type,
-                        'partner_id': partner.id if partner else False,
-                        'location_id': location_id.id if location_id else False,
-                        'location_dest_id': location_dest_id.id if location_dest_id else False,
-                        'move_line_ids_without_package': move_line_ids
-                        # 'move_lines': moves_lines
-                    }
-
-                    picking = request.env['stock.picking'].create(vals)
-                    if picking:
-                        mensaje_correcto['RespMessage'] = 'Devolución creada'
-                        self.create_message_log("WS013", as_token, mensaje_correcto, 'ACEPTADO',
-                                                'Devolución creada')
-                        picking.action_confirm()
-                        picking.button_validate()
+                        picking = request.env['stock.picking'].create(vals)
+                        if picking:
+                            mensaje_correcto['RespMessage'] = 'Devolución creada'
+                            self.create_message_log("WS013", as_token, mensaje_correcto, 'ACEPTADO',
+                                                    'Devolución creada')
+                            picking.action_confirm()
+                            picking.button_validate()
+                        else:
+                            mensaje_correcto['RespMessage'] = 'Devolución no creada'
+                            self.create_message_log("WS013", as_token, mensaje_correcto, 'ERROR',
+                                                    'Devolución no creada')
+                        return mensaje_correcto
                     else:
-                        mensaje_correcto['RespMessage'] = 'Devolución no creada'
-                        self.create_message_log("WS013", as_token, mensaje_correcto, 'ERROR',
-                                                'Devolución no creada')
-                    return mensaje_correcto
+                        self.create_message_log("WS013", as_token, post, 'RECHAZADO',
+                                                'Devolución no se puede crear, porque ya existe')
+                        mensaje_error['RespMessage'] = 'Devolución no creada'
+                        return mensaje_error
+
                 else:
                     self.create_message_log("WS013", as_token, post, 'RECHAZADO', 'Estructura del Json Invalida')
                     return mensaje_error

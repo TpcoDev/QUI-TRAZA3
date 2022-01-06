@@ -36,6 +36,7 @@ class AsStockMoveLine(models.Model):
     _inherit = 'stock.move.line'
 
     qty_done_base = fields.Float(compute='_compute_qty_done_base')
+    f_closed = fields.Integer(related='picking_id.f_closed', store=True)
 
     def _compute_qty_done_base(self):
         for rec in self:
