@@ -77,7 +77,18 @@ class AsStockPicking(models.Model):
     num_fact_prov = fields.Char()
     num_guia_prov = fields.Char()
     f_closed = fields.Integer(related='purchase_id.f_closed', store=True)
-    oc_state = fields.Selection(related='purchase_id.oc_state', store=True)
+    oc_state = fields.Char(
+        compute='_compute_oc_state',
+    )
+
+    # @api.depends('origin')
+    def _compute_oc_state(self):
+        for picking in self:
+            picking.oc_state = 'Abierta'
+            purchase = self.env['purchase.order'].search([('name', '=', picking.origin)], limit=1)
+            #
+            if purchase and purchase.oc_state == 'closed':
+                 picking.oc_state = 'Cerrada'
 
     @api.onchange('num_guia_prov', 'num_fact_prov')
     def _onchage_num_prov(self):

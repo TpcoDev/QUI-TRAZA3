@@ -31,7 +31,8 @@ class as_webservice_quimetal(http.Controller):
     # WS001, de SAP a ODOO
     @http.route(['/tpco/odoo/ws001', ], auth="public", type="json", method=['POST'], csrf=False)
     def WS001(self, **post):
-        post = yaml.load(request.httprequest.data)
+        # post = yaml.load(request.httprequest.data)
+        post = json.loads(request.httprequest.data)
         res = {}
         as_token = uuid.uuid4().hex
         mensaje_error = {
