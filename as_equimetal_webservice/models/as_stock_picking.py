@@ -76,10 +76,17 @@ class AsStockPicking(models.Model):
     opdevtype = fields.Integer()
     num_fact_prov = fields.Char()
     num_guia_prov = fields.Char()
-    f_closed = fields.Integer(related='purchase_id.f_closed', store=True)
+    f_closed = fields.Integer(compute="_compute_f_closed")
     oc_state = fields.Char(
         compute='_compute_oc_state',
     )
+
+    def _compute_f_closed(self):
+        for rec in self:
+            purchase = self.env['purchase.order'].search([('name', '=', rec.origin)], limit=1)
+            rec.f_closed = 0
+            if purchase and purchase.f_closed == 1:
+                rec.f_closed = purchase.f_closed
 
     # @api.depends('origin')
     def _compute_oc_state(self):
@@ -88,7 +95,7 @@ class AsStockPicking(models.Model):
             purchase = self.env['purchase.order'].search([('name', '=', picking.origin)], limit=1)
             #
             if purchase and purchase.oc_state == 'closed':
-                 picking.oc_state = 'Cerrada'
+                picking.oc_state = 'Cerrada'
 
     @api.onchange('num_guia_prov', 'num_fact_prov')
     def _onchage_num_prov(self):

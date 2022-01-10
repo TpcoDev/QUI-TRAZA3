@@ -76,5 +76,10 @@
         </record>
 
 
+         <record id="stock_barcode.stock_picking_action_kanban" model="ir.actions.act_window">
+            <field name="domain">[('f_closed', '=', 0)]</field>
+        </record>
+
+
     </data>
 </odoo>

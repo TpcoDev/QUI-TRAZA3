@@ -965,6 +965,12 @@ class as_webservice_quimetal(http.Controller):
                     elif post['params']['unidadreferencia'] == 'LT':
                         uom_category = request.env.ref('uom.product_uom_categ_vol').id
 
+                    contenidoenvase = post['params']['contenidoenvase']
+                    if contenidoenvase == '':
+                        contenidoenvase = 0
+
+                    contenidoenvase = round(contenidoenvase, 1)
+
                     uomid_name = post['params']['uomid']
                     uom_name = False
                     if uomid_name == 'KG':
@@ -975,14 +981,12 @@ class as_webservice_quimetal(http.Controller):
                         uom_name = 'TM'
 
                     if not uom_name:
-                        uom_name = f"{uomid_name} {post['params']['contenidoenvase']} {post['params']['unidadreferencia']}"
+                        uom_name = f"{uomid_name} {contenidoenvase} {post['params']['unidadreferencia']}"
 
                     uomID = request.env['uom.uom'].sudo().search([
                         ('name', '=', uom_name)], limit=1)
 
-                    contenidoenvase = post['params']['contenidoenvase']
-                    if contenidoenvase == '':
-                        contenidoenvase = 0
+
 
                     if not uomID:
                         uomID = request.env['uom.uom'].sudo().create({
@@ -1037,7 +1041,7 @@ class as_webservice_quimetal(http.Controller):
                         'type': post['params']['tipoproducto'],
                         'as_type_product': as_type_product,
                         'barcode': as_barcode,
-                        'as_contenido_envase': post['params']['contenidoenvase'],
+                        'as_contenido_envase': contenidoenvase,
                         'as_cantidad_envase': post['params']['cantidadenvase'],
                         'as_cantidad_unidades': post['params']['cantidadunidades'],
                         'expiration_time': post['params']['expirationtime'],
