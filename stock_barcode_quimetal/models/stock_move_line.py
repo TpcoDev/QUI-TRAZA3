@@ -18,9 +18,14 @@ class Lines(models.Model):
     _name = 'stock.quimetal.lines'
 
     line_id = fields.Many2one(comodel_name='stock.move.line', string='Line')
-    num_bultos = fields.Integer(string='Numero de Bultos', required=False)
-    cant_envases = fields.Integer(string='Cantidad de Envases')
-    peso_envase = fields.Float(string='Peso/Envase', required=False)
+    num_bultos = fields.Integer(string='Numero de Bultos', required=True, default=1)
+    cant_envases = fields.Integer(string='Cantidad de Envases', required=True, default=1)
+    peso_envase = fields.Float(string='Peso/Envase', required=True, default=1)
+
+    @api.constrains('num_bultos', 'cant_envases', 'peso_envase')
+    def _check_zero(self):
+        if self.num_bultos <= 0 or self.cant_envases <= 0 or self.peso_envase <= 0:
+            raise UserError('No puede ser menor o igual a 0')
 
 
 class StockMoveLine(models.Model):
@@ -89,5 +94,5 @@ class StockMoveLine(models.Model):
             b64_pdf = base64.b64encode(pdf[0])
             content_bytes = base64.b64decode(b64_pdf, validate=True)
             dt_string = datetime.now().strftime("%d-%m-%Y %H:%M:%S").split(' ')
-            filename = f"{self.lot_name}-{self.product_id.default_code}-{dt_string[0]}-{dt_string[1]}.pdf"
+            filename = f"{self.lot_id.display_name}-{self.product_id.default_code}-{dt_string[0]}-{dt_string[1]}.pdf"
             self.env['google.drive.config'].sudo().upload_pdf(filename, content_bytes)

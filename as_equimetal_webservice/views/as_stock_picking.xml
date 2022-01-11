@@ -2,6 +2,18 @@
 <odoo>
     <data>
 
+        <record id="as_picking_view_kanban_inherit_barcode" model="ir.ui.view">
+            <field name="name">as.stock.picking.view.kanban.barcode</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.stock_picking_kanban"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="f_closed"/>
+                </xpath>
+            </field>
+        </record>
+
         <record id="stock_picking_vpicktree_inherit" model="ir.ui.view">
             <field name="name">stock.picking.vpicktree.inherit</field>
             <field name="model">stock.picking</field>
@@ -10,6 +22,7 @@
 
                 <xpath expr="//field[@name='state']" position="after">
                     <field name="oc_state" string="OC Estado"/>
+                    <field name="f_closed" string="F Closed" invisible=""/>
                 </xpath>
 
             </field>
@@ -60,5 +73,8 @@
 
             </field>
         </record>
+
+
+
     </data>
 </odoo>

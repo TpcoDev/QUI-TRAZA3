@@ -35,7 +35,7 @@
 
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="as_num_comex"/>
-                    <field name="f_closed" readonly="True"/>
+                    <field name="f_closed" readonly="True" invisible="1"/>
                     <field name="oc_state" string="Estado OC"/>
 
                 </xpath>
