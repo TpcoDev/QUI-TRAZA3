@@ -9,7 +9,7 @@
     'author': "TPCO",
     'website': "http://www.tpco.com",
     'category': 'Inventory/Inventory',
-    'version': '1.0.20220104',
+    'version': '1.0.20220111',
     'depends': ['stock_barcode', 'as_stock_equimetal', 'google_drive'],
 
     # always loaded

@@ -9,12 +9,15 @@ from odoo import fields, models, api
 class StockPicking(models.Model):
     _inherit = 'stock.picking.type'
 
+    as_count_picking_ready = fields.Integer(compute='_compute_picking_count')
+
     def _compute_picking_count(self):
         # TDE TODO count picking can be done using previous two
         domains = {
             'count_picking_draft': [('state', '=', 'draft')],
             'count_picking_waiting': [('state', 'in', ('confirmed', 'waiting'))],
-            'count_picking_ready': [('state', '=', 'assigned'), ('f_closed', '=', 0)],
+            'count_picking_ready': [('state', '=', 'assigned')],
+            'as_count_picking_ready': [('state', '=', 'assigned'), ('f_closed', '=', 0)],
             'count_picking': [('state', 'in', ('assigned', 'waiting', 'confirmed'))],
             'count_picking_late': [('scheduled_date', '<', time.strftime(DEFAULT_SERVER_DATETIME_FORMAT)),
                                    ('state', 'in', ('assigned', 'waiting', 'confirmed'))],
