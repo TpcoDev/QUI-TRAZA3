@@ -1300,7 +1300,7 @@ class as_webservice_quimetal(http.Controller):
 
                         picking = request.env['stock.picking'].create(vals)
                         if picking:
-                            mensaje_correcto['RespMessage'] = 'Devolución creada'
+                            mensaje_correcto['RespMessage'] = 'Transferencia creada'
                             self.create_message_log("WS013", as_token, mensaje_correcto, 'ACEPTADO',
                                                     'Transferencia creada')
                             picking.action_confirm()
