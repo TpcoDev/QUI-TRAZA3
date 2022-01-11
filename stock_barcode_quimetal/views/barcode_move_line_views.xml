@@ -76,5 +76,38 @@
         </record>
 
 
+        <!-- Inherit Form View to Modify it -->
+        <record id="as_stock_picking_type_kanban_inherit" model="ir.ui.view">
+            <field name="name">as.stock.picking.type.kanban.inherit</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock_barcode.stock_picking_type_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='count_picking_ready']" position="before">
+                    <field name="as_count_picking_ready"/>
+                </xpath>
+
+                <xpath expr="//button[@name='get_action_picking_tree_ready_kanban']" position="replace">
+                    <button class="btn btn-primary" name="get_action_picking_tree_ready_kanban" type="object">
+                        <span t-if="record.code.raw_value =='incoming'"><t t-esc="record.as_count_picking_ready.value"/>
+                            To
+                            Process</span>
+                        <span t-if="record.code.raw_value =='outgoing'"><t t-esc="record.as_count_picking_ready.value"/>
+                            To
+                            Process</span>
+                        <span t-if="record.code.raw_value =='internal'"><t t-esc="record.as_count_picking_ready.value"/>
+                            To
+                            Process</span>
+                    </button>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <record id="stock_barcode.stock_picking_action_kanban" model="ir.actions.act_window">
+            <field name="domain">[('f_closed', '=', 0)]</field>
+        </record>
+
+
     </data>
 </odoo>

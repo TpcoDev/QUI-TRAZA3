@@ -36,6 +36,7 @@ class AsStockMoveLine(models.Model):
     _inherit = 'stock.move.line'
 
     qty_done_base = fields.Float(compute='_compute_qty_done_base')
+    f_closed = fields.Integer(related='picking_id.f_closed', store=True)
 
     def _compute_qty_done_base(self):
         for rec in self:
@@ -75,8 +76,20 @@ class AsStockPicking(models.Model):
     opdevtype = fields.Integer()
     num_fact_prov = fields.Char()
     num_guia_prov = fields.Char()
-    f_closed = fields.Integer(related='purchase_id.f_closed', store=True)
-    oc_state = fields.Selection(related='purchase_id.oc_state', store=True)
+    f_closed = fields.Integer(compute="_compute_f_closed", store=True, default=0)
+    oc_state = fields.Char(
+        compute='_compute_f_closed',
+        store=True
+    )
+
+    def _compute_f_closed(self):
+        for rec in self:
+            purchase = self.env['purchase.order'].search([('name', '=', rec.origin)], limit=1)
+            rec.f_closed = 0
+            rec.oc_state = 'Abierta'
+            if purchase and purchase.f_closed == 1:
+                rec.f_closed = purchase.f_closed
+                rec.oc_state = 'Cerrada'
 
     @api.onchange('num_guia_prov', 'num_fact_prov')
     def _onchage_num_prov(self):
@@ -118,6 +131,13 @@ class AsStockPicking(models.Model):
     def as_send_email(self):
         ''' Opens a wizard to compose an email, with relevant mail template loaded by default '''
         self.ensure_one()
+
+        # cc = self.env['stock.location'].search([('barcode', '=', 'WH-QUALITY')], limit=1)
+        # if self.location_dest_id.id == cc.id:
+        #     picking_next = self.search([('origin', '=', self.origin), ('id', '!=', self.ids)], order='id asc',
+        #                                limit=1)
+        #     self.write({'as_picking_o': picking_next.id})
+
         template_id = self._find_mail_template_send()
         lang = self.env.context.get('lang')
         template = self.env['mail.template'].browse(template_id)
