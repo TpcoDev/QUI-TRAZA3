@@ -134,7 +134,7 @@ class AsStockPicking(models.Model):
 
         cc = self.env['stock.location'].search([('barcode', '=', 'WH-QUALITY')], limit=1)
         if self.location_dest_id.id == cc.id:
-            picking_next = self.search([('origin', '=', self.origin), ('id', '!=', self.ids)], orderby='id asc',
+            picking_next = self.search([('origin', '=', self.origin), ('id', '!=', self.ids)], order='id asc',
                                        limit=1)
             self.write({'as_picking_o': picking_next.id})
 
