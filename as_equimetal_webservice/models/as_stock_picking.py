@@ -76,9 +76,10 @@ class AsStockPicking(models.Model):
     opdevtype = fields.Integer()
     num_fact_prov = fields.Char()
     num_guia_prov = fields.Char()
-    f_closed = fields.Integer(compute="_compute_f_closed")
+    f_closed = fields.Integer(compute="_compute_f_closed", store=True)
     oc_state = fields.Char(
         compute='_compute_oc_state',
+        store=True
     )
 
     def _compute_f_closed(self):
