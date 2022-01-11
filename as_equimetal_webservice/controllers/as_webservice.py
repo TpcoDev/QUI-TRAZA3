@@ -49,6 +49,8 @@ class as_webservice_quimetal(http.Controller):
             myapikey = request.httprequest.headers.get("Authorization")
             if not myapikey:
                 self.create_message_log("ws001", as_token, post, 'RECHAZADO', 'API KEY no existe')
+                mensaje_error['RespCode'] = -2
+                mensaje_error['RespMessage'] = f"Rechazado: API KEY no existe"
                 return mensaje_error
             user_id = request.env["res.users.apikeys"]._check_credentials(scope="rpc", key=myapikey)
             request.uid = user_id
@@ -183,7 +185,7 @@ class as_webservice_quimetal(http.Controller):
                     mensaje_error = {
                         "Token": as_token,
                         "RespCode": -3,
-                        "RespMessage": "Estructura del Json Invalida"
+                        "RespMessage": "Rechazado: Ya existe el registro que pretende almacenar"
                     }
                     self.create_message_log("ws001", as_token, post, 'RECHAZADO', 'Estructura del Json Invalida')
                     return mensaje_error
@@ -191,17 +193,18 @@ class as_webservice_quimetal(http.Controller):
                 mensaje_error = {
                     "Token": as_token,
                     "RespCode": -4,
-                    "RespMessage": "Autenticación fallida"
+                    "RespMessage": "Rechazado: Estructura del Json Invalida"
                 }
                 self.create_message_log("ws001", as_token, post, 'RECHAZADO', 'Autenticación fallida')
                 return mensaje_error
         except Exception as e:
             mensaje_error = {
                 "Token": as_token,
-                "RespCode": -99,
-                "RespMessage": str(e)
+                "RespCode": -5,
+                "RespMessage": "Rechazado: Autenticación fallida"
             }
             self.create_message_log("ws001", as_token, post, 'RECHAZADO', str(e))
+            mensaje_error['RespMessage'] = f"Error: {str(e)}"
             return mensaje_error
 
     # WS016, de SAP a ODOO
@@ -225,6 +228,8 @@ class as_webservice_quimetal(http.Controller):
             myapikey = request.httprequest.headers.get("Authorization")
             if not myapikey:
                 self.create_message_log("ws016", as_token, post, 'RECHAZADO', 'API KEY no existe')
+                mensaje_error['RespCode'] = -2
+                mensaje_error['RespMessage'] = f"Rechazado: API KEY no existe"
                 return mensaje_error
             user_id = request.env["res.users.apikeys"]._check_credentials(scope="rpc", key=myapikey)
             request.uid = user_id
@@ -313,7 +318,7 @@ class as_webservice_quimetal(http.Controller):
                                     'name': linea["ItemDescription"],
                                     # 'account_analytic_id': False,
                                     'product_uom': producto_uom_id,
-
+                                    'f_closed': 0,
                                     "price_unit": 1,
                                     "route_id": False,
                                     "customer_lead": 0,
@@ -373,15 +378,23 @@ class as_webservice_quimetal(http.Controller):
                     else:
                         self.create_message_log("ws016", as_token, post, 'RECHAZADO',
                                                 'Ya existe el registro que pretende almacenar')
+                        mensaje_error['RespMessage'] = f"Rechazado: Ya existe el registro que pretende almacenar"
+                        mensaje_error['RespCode'] = -3
                         return mensaje_error
                 else:
                     self.create_message_log("ws016", as_token, post, 'RECHAZADO', 'Estructura del Json Invalida')
+                    mensaje_error['RespMessage'] = f"Rechazado: Estructura del Json Invalida"
+                    mensaje_error['RespCode'] = -4
                     return mensaje_error
             else:
                 self.create_message_log("ws016", as_token, post, 'RECHAZADO', 'Autenticación fallida')
+                mensaje_error['RespMessage'] = f"Rechazado: Autenticación fallida"
+                mensaje_error['RespCode'] = -5
                 return mensaje_error
         except Exception as e:
             self.create_message_log("ws016", as_token, post, 'RECHAZADO', str(e))
+            mensaje_error['RespCode'] = -99
+            mensaje_error['RespMessage'] = f"Rechazado: {str(e)}"
             return mensaje_error
 
     @http.route(['/tpco/odoo/ws023', ], auth="public", type="json", method=['POST'], csrf=False)
@@ -404,8 +417,8 @@ class as_webservice_quimetal(http.Controller):
             if not myapikey:
                 mensaje_error = {
                     "Token": as_token,
-                    "RespCode": -1,
-                    "RespMessage": "API KEY no existe"
+                    "RespCode": -2,
+                    "RespMessage": "Rechazado: API KEY no existe"
                 }
                 self.create_message_log("ws023", as_token, post, 'RECHAZADO', 'API KEY no existe')
                 return mensaje_error
@@ -486,7 +499,7 @@ class as_webservice_quimetal(http.Controller):
                                         'lot_id': lot_id,
                                         "company_id": request.env.user.company_id.id,
                                         'state': 'assigned',
-                                        'location_processed': False,
+                                        # 'location_processed': False,
                                     })
                             picking.state = "assigned"
                             # picking.action_confirm()
@@ -497,8 +510,8 @@ class as_webservice_quimetal(http.Controller):
                         else:
                             mensaje_error = {
                                 "Token": as_token,
-                                "RespCode": -2,
-                                "RespMessage": "Ya existe el registro que pretende almacenar"
+                                "RespCode": -3,
+                                "RespMessage": "Rechazado: Ya existe el registro que pretende almacenar"
                             }
                             self.create_message_log("ws023", as_token, post, 'RECHAZADO',
                                                     'Ya existe el registro que pretende almacenar')
@@ -506,21 +519,23 @@ class as_webservice_quimetal(http.Controller):
                 else:
                     mensaje_error = {
                         "Token": as_token,
-                        "RespCode": -3,
-                        "RespMessage": "Estructura del Json Invalida"
+                        "RespCode": -4,
+                        "RespMessage": "Rechazado: Estructura del Json Invalida"
                     }
                     self.create_message_log("ws023", as_token, post, 'RECHAZADO', 'Estructura del Json Invalida')
                     return mensaje_error
             else:
                 mensaje_error = {
                     "Token": as_token,
-                    "RespCode": -4,
-                    "RespMessage": "Autenticación fallida"
+                    "RespCode": -5,
+                    "RespMessage": "Rechazado: Autenticación fallida"
                 }
                 self.create_message_log("ws023", as_token, post, 'RECHAZADO', 'Autenticación fallida')
                 return mensaje_error
         except Exception as e:
             self.create_message_log("ws023", as_token, post, 'RECHAZADO', str(e))
+            mensaje_error['RespCode'] = -99
+            mensaje_error['RespMessage'] = f"Rechazado: {str(e)}"
             return mensaje_error
 
     @http.route(['/tpco/odoo/ws005', ], auth="public", type="json", method=['POST'], csrf=False)
@@ -572,23 +587,35 @@ class as_webservice_quimetal(http.Controller):
                                 else:
                                     self.create_message_log("ws005", as_token, info, 'RECHAZADO',
                                                             'El JSON fue rechazado.')
+                                    mensaje_error['RespCode'] = -2
+                                    mensaje_error['RespMessage'] = f"Rechazado: El JSON fue rechazado"
                                     return mensaje_error
                         else:
                             self.create_message_log("ws005", as_token, post, 'RECHAZADO',
                                                     'El documento ya fue enviado a SAP.')
+                            mensaje_error['RespCode'] = -3
+                            mensaje_error['RespMessage'] = f"Rechazado: El documento ya fue enviado a SAP"
                             return mensaje_error
                     else:
                         self.create_message_log("ws005", as_token, post, 'RECHAZADO',
                                                 'El registro que desea enviar no existe.')
+                        mensaje_error['RespCode'] = -4
+                        mensaje_error['RespMessage'] = f"Rechazado: El registro que desea enviar no existe"
                         return mensaje_error
                 else:
                     self.create_message_log("ws005", as_token, post, 'RECHAZADO', 'Estructura del Json Invalida')
+                    mensaje_error['RespCode'] = -5
+                    mensaje_error['RespMessage'] = f"Rechazado: Estructura del Json Invalida"
                     return mensaje_error
             else:
                 self.create_message_log("ws005", as_token, post, 'RECHAZADO', 'Autenticación fallida')
+                mensaje_error['RespCode'] = -6
+                mensaje_error['RespMessage'] = f"Rechazado: Autenticación fallida"
                 return mensaje_error
         except Exception as e:
             self.create_message_log("ws005", as_token, post, 'RECHAZADO', str(e))
+            mensaje_error['RespCode'] = -99
+            mensaje_error['RespMessage'] = f"Rechazado: {str(e)}"
             return mensaje_error
 
     @http.route(['/tpco/odoo/ws004', ], auth="public", type="json", method=['POST'], csrf=False)
@@ -639,23 +666,35 @@ class as_webservice_quimetal(http.Controller):
                                 else:
                                     self.create_message_log("ws004", as_token, info, 'RECHAZADO',
                                                             'El JSON fue rechazado.')
+                                    mensaje_error['RespCode'] = -2
+                                    mensaje_error['RespMessage'] = f"Rechazado: El JSON fue rechazado"
                                     return mensaje_error
                         else:
                             self.create_message_log("ws004", as_token, post, 'RECHAZADO',
                                                     'El documento ya fue enviado a SAP.')
+                            mensaje_error['RespCode'] = -3
+                            mensaje_error['RespMessage'] = f"Rechazado: El documento ya fue enviado a SAP"
                             return mensaje_error
                     else:
                         self.create_message_log("ws004", as_token, post, 'RECHAZADO',
                                                 'El registro que desea enviar no existe.')
+                        mensaje_error['RespCode'] = -4
+                        mensaje_error['RespMessage'] = f"Rechazado: El registro que desea enviar no existe"
                         return mensaje_error
                 else:
                     self.create_message_log("ws004", as_token, post, 'RECHAZADO', 'Estructura del Json Invalida')
+                    mensaje_error['RespCode'] = -5
+                    mensaje_error['RespMessage'] = f"Rechazado: Estructura del Json Invalida"
                     return mensaje_error
             else:
                 self.create_message_log("ws004", as_token, post, 'RECHAZADO', 'Autenticación fallida')
+                mensaje_error['RespCode'] = -6
+                mensaje_error['RespMessage'] = f"Rechazado: Autenticación fallida"
                 return mensaje_error
         except Exception as e:
             self.create_message_log("ws004", as_token, post, 'RECHAZADO', str(e))
+            mensaje_error['RespCode'] = -99
+            mensaje_error['RespMessage'] = f"Rechazado: {str(e)}"
             return mensaje_error
 
     @http.route(['/tpco/odoo/ws006', ], auth="public", type="json", method=['POST'], csrf=False)
@@ -706,23 +745,35 @@ class as_webservice_quimetal(http.Controller):
                                 else:
                                     self.create_message_log("ws006", as_token, info, 'RECHAZADO',
                                                             'El JSON fue rechazado.')
+                                    mensaje_error['RespCode'] = -2
+                                    mensaje_error['RespMessage'] = f"Rechazado: El JSON fue rechazado"
                                     return mensaje_error
                         else:
                             self.create_message_log("ws006", as_token, post, 'RECHAZADO',
                                                     'El documento ya fue enviado a SAP.')
+                            mensaje_error['RespCode'] = -3
+                            mensaje_error['RespMessage'] = f"Rechazado: El documento ya fue enviado a SAP"
                             return mensaje_error
                     else:
                         self.create_message_log("ws006", as_token, post, 'RECHAZADO',
                                                 'El registro que desea enviar no existe.')
+                        mensaje_error['RespCode'] = -4
+                        mensaje_error['RespMessage'] = f"Rechazado: El registro que desea enviar no existe"
                         return mensaje_error
                 else:
                     self.create_message_log("ws006", as_token, post, 'RECHAZADO', 'Estructura del Json Invalida')
+                    mensaje_error['RespCode'] = -5
+                    mensaje_error['RespMessage'] = f"Rechazado: Estructura del Json Invalida"
                     return mensaje_error
             else:
                 self.create_message_log("ws006", as_token, post, 'RECHAZADO', 'Autenticación fallida')
+                mensaje_error['RespCode'] = -6
+                mensaje_error['RespMessage'] = f"Rechazado: Autenticación fallida"
                 return mensaje_error
         except Exception as e:
             self.create_message_log("ws006", as_token, post, 'RECHAZADO', str(e))
+            mensaje_error['RespCode'] = -99
+            mensaje_error['RespMessage'] = f"Rechazado: {str(e)}"
             return mensaje_error
 
     @http.route(['/tpco/odoo/ws099', ], auth="public", type="json", method=['POST'], csrf=False)
@@ -773,23 +824,35 @@ class as_webservice_quimetal(http.Controller):
                                 else:
                                     self.create_message_log("ws099", as_token, info, 'RECHAZADO',
                                                             'El JSON fue rechazado.')
+                                    mensaje_error['RespCode'] = -2
+                                    mensaje_error['RespMessage'] = f"Rechazado: El JSON fue rechazado"
                                     return mensaje_error
                         else:
                             self.create_message_log("ws099", as_token, post, 'RECHAZADO',
                                                     'El documento ya fue enviado a SAP.')
+                            mensaje_error['RespCode'] = -3
+                            mensaje_error['RespMessage'] = f"Rechazado: El documento ya fue enviado a SAP"
                             return mensaje_error
                     else:
                         self.create_message_log("ws099", as_token, post, 'RECHAZADO',
                                                 'El registro que desea enviar no existe.')
+                        mensaje_error['RespCode'] = -4
+                        mensaje_error['RespMessage'] = f"Rechazado: El registro que desea enviar no existe"
                         return mensaje_error
                 else:
                     self.create_message_log("ws099", as_token, post, 'RECHAZADO', 'Estructura del Json Invalida')
+                    mensaje_error['RespCode'] = -5
+                    mensaje_error['RespMessage'] = f"Rechazado: Estructura del Json Invalida"
                     return mensaje_error
             else:
                 self.create_message_log("ws099", as_token, post, 'RECHAZADO', 'Autenticación fallida')
+                mensaje_error['RespCode'] = -6
+                mensaje_error['RespMessage'] = f"Rechazado: Autenticación fallida"
                 return mensaje_error
         except Exception as e:
             self.create_message_log("ws099", as_token, post, 'RECHAZADO', str(e))
+            mensaje_error['RespCode'] = -99
+            mensaje_error['RespMessage'] = f"Rechazado: {str(e)}"
             return mensaje_error
 
     @http.route(['/tpco/odoo/ws018', ], auth="public", type="json", method=['POST'], csrf=False)
@@ -840,23 +903,35 @@ class as_webservice_quimetal(http.Controller):
                                 else:
                                     self.create_message_log("ws018", as_token, info, 'RECHAZADO',
                                                             'El JSON fue rechazado.')
+                                    mensaje_error['RespCode'] = -2
+                                    mensaje_error['RespMessage'] = f"Rechazado: El JSON fue rechazado"
                                     return mensaje_error
                         else:
                             self.create_message_log("ws018", as_token, post, 'RECHAZADO',
                                                     'El documento ya fue enviado a SAP.')
+                            mensaje_error['RespCode'] = -3
+                            mensaje_error['RespMessage'] = f"Rechazado: El documento ya fue enviado a SAP"
                             return mensaje_error
                     else:
                         self.create_message_log("ws018", as_token, post, 'RECHAZADO',
                                                 'El registro que desea enviar no existe.')
+                        mensaje_error['RespCode'] = -4
+                        mensaje_error['RespMessage'] = f"Rechazado: El registro que desea enviar no existe"
                         return mensaje_error
                 else:
                     self.create_message_log("ws018", as_token, post, 'RECHAZADO', 'Estructura del Json Invalida')
+                    mensaje_error['RespCode'] = -5
+                    mensaje_error['RespMessage'] = f"Rechazado: Estructura del Json Invalida"
                     return mensaje_error
             else:
                 self.create_message_log("ws018", as_token, post, 'RECHAZADO', 'Autenticación fallida')
+                mensaje_error['RespCode'] = -6
+                mensaje_error['RespMessage'] = f"Rechazado: Autenticación fallida"
                 return mensaje_error
         except Exception as e:
             self.create_message_log("ws018", as_token, post, 'RECHAZADO', str(e))
+            mensaje_error['RespCode'] = -99
+            mensaje_error['RespMessage'] = f"Rechazado: {str(e)}"
             return mensaje_error
 
     @http.route(['/tpco/odoo/ws021', ], auth="public", type="json", method=['POST'], csrf=False)
@@ -907,23 +982,35 @@ class as_webservice_quimetal(http.Controller):
                                 else:
                                     self.create_message_log("ws021", as_token, info, 'RECHAZADO',
                                                             'El JSON fue rechazado.')
+                                    mensaje_error['RespCode'] = -2
+                                    mensaje_error['RespMessage'] = f"Rechazado: El JSON fue rechazado"
                                     return mensaje_error
                         else:
                             self.create_message_log("ws021", as_token, post, 'RECHAZADO',
                                                     'El documento ya fue enviado a SAP.')
+                            mensaje_error['RespCode'] = -3
+                            mensaje_error['RespMessage'] = f"Rechazado: El documento ya fue enviado a SAP"
                             return mensaje_error
                     else:
                         self.create_message_log("ws021", as_token, post, 'RECHAZADO',
                                                 'El registro que desea enviar no existe.')
+                        mensaje_error['RespCode'] = -4
+                        mensaje_error['RespMessage'] = f"Rechazado: El registro que desea enviar no existe"
                         return mensaje_error
                 else:
                     self.create_message_log("ws021", as_token, post, 'RECHAZADO', 'Estructura del Json Invalida')
+                    mensaje_error['RespCode'] = -5
+                    mensaje_error['RespMessage'] = f"Rechazado: Estructura del Json Invalida"
                     return mensaje_error
             else:
                 self.create_message_log("ws021", as_token, post, 'RECHAZADO', 'Autenticación fallida')
+                mensaje_error['RespCode'] = -6
+                mensaje_error['RespMessage'] = f"Rechazado: Autenticación fallida"
                 return mensaje_error
         except Exception as e:
             self.create_message_log("ws021", as_token, post, 'RECHAZADO', str(e))
+            mensaje_error['RespCode'] = -99
+            mensaje_error['RespMessage'] = f"Rechazado: {str(e)}"
             return mensaje_error
 
     @http.route('/tpco/odoo/ws017', auth="public", type="json", method=['POST'], csrf=False)
@@ -946,6 +1033,8 @@ class as_webservice_quimetal(http.Controller):
             myapikey = request.httprequest.headers.get("Authorization")
             if not myapikey:
                 self.create_message_log("WS017", as_token, post, 'RECHAZADO', 'API KEY no existe')
+                mensaje_error['RespCode'] = -2
+                mensaje_error['RespMessage'] = f"Rechazado: API KEY no existe"
                 return mensaje_error
             user_id = request.env["res.users.apikeys"]._check_credentials(scope="rpc", key=myapikey)
             request.uid = user_id
@@ -985,8 +1074,6 @@ class as_webservice_quimetal(http.Controller):
 
                     uomID = request.env['uom.uom'].sudo().search([
                         ('name', '=', uom_name)], limit=1)
-
-
 
                     if not uomID:
                         uomID = request.env['uom.uom'].sudo().create({
@@ -1091,6 +1178,8 @@ class as_webservice_quimetal(http.Controller):
                         return mensaje_correcto
                 else:
                     self.create_message_log("WS017", as_token, post, 'RECHAZADO', 'Estructura del Json Invalida')
+                    mensaje_error['RespCode'] = -3
+                    mensaje_error['RespMessage'] = f"Rechazado: Estructura del Json Invalida"
                     return mensaje_error
 
                 # uid = request.env.user.id
@@ -1131,7 +1220,7 @@ class as_webservice_quimetal(http.Controller):
                 if es_valido:
 
                     picking = request.env['stock.picking'].search([('as_ot_sap', '=', post['params']['DocNumSap'])],
-                                                               limit=1)
+                                                                  limit=1)
 
                     if not picking:
                         op_dev_type = post['params']['ObjType']
@@ -1213,22 +1302,24 @@ class as_webservice_quimetal(http.Controller):
                         if picking:
                             mensaje_correcto['RespMessage'] = 'Devolución creada'
                             self.create_message_log("WS013", as_token, mensaje_correcto, 'ACEPTADO',
-                                                    'Devolución creada')
+                                                    'Transferencia creada')
                             picking.action_confirm()
                             picking.button_validate()
                         else:
                             mensaje_correcto['RespMessage'] = 'Devolución no creada'
                             self.create_message_log("WS013", as_token, mensaje_correcto, 'ERROR',
-                                                    'Devolución no creada')
+                                                    'Transferencia no creada')
                         return mensaje_correcto
                     else:
                         self.create_message_log("WS013", as_token, post, 'RECHAZADO',
-                                                'Devolución no se puede crear, porque ya existe')
-                        mensaje_error['RespMessage'] = 'Devolución no creada'
+                                                'Transferencia no se puede crear, porque ya existe')
+                        mensaje_error['RespMessage'] = 'Transferencia no creada'
                         return mensaje_error
 
                 else:
                     self.create_message_log("WS013", as_token, post, 'RECHAZADO', 'Estructura del Json Invalida')
+                    mensaje_error['RespCode'] = -3
+                    mensaje_error['RespMessage'] = f"Rechazado: Estructura del Json Invalida"
                     return mensaje_error
 
         except Exception as e:
@@ -1255,6 +1346,8 @@ class as_webservice_quimetal(http.Controller):
             myapikey = request.httprequest.headers.get("Authorization")
             if not myapikey:
                 self.create_message_log("WS015", as_token, post, 'RECHAZADO', 'API KEY no existe')
+                mensaje_error['RespCode'] = -2
+                mensaje_error['RespMessage'] = f"Rechazado: API KEY no existe"
                 return mensaje_error
             user_id = request.env["res.users.apikeys"]._check_credentials(scope="rpc", key=myapikey)
             request.uid = user_id
@@ -1282,15 +1375,20 @@ class as_webservice_quimetal(http.Controller):
                         return mensaje_correcto
                     else:
                         mensaje_error['RespMessage'] = f"La OC {post['params']['DocNum']} no existe"
+                        mensaje_error['RespCode'] = -3
                         self.create_message_log("WS015", as_token, mensaje_error, 'ERROR',
-                                                'Orden de compra no existe')
+                                                'Rechazado: Orden de compra no existe')
                         return mensaje_error
                 else:
                     self.create_message_log("WS015", as_token, post, 'RECHAZADO', 'Estructura del Json Invalida')
+                    mensaje_error['RespCode'] = -4
+                    mensaje_error['RespMessage'] = f"Rechazado: Estructura del Json Invalida"
                     return mensaje_error
 
         except Exception as e:
             self.create_message_log("WS015", as_token, post, 'RECHAZADO', str(e))
+            mensaje_error['RespCode'] = -99
+            mensaje_error['RespMessage'] = f"Rechazado: {str(e)}"
             return mensaje_error
 
     @http.route('/tpco/odoo/ws032', auth="public", type="json", method=['POST'], csrf=False)
