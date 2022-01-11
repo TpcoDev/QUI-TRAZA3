@@ -1253,8 +1253,7 @@ class as_webservice_quimetal(http.Controller):
                             for detalle in line['Detalle']:
 
                                 lot_id = request.env['stock.production.lot'].search(
-                                    [('name', '=', detalle['DistNumber'])],
-                                    limit=1)
+                                    [('name', '=', detalle['DistNumber']),('product_id', '=', product.id)], limit=1)
                                 if not lot_id:
                                     lot_id = request.env['stock.production.lot'].create({
                                         'name': detalle['DistNumber'],
