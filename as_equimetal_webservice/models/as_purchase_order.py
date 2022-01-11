@@ -23,6 +23,13 @@ class PurchaseOrder(models.Model):
             else:
                 record.oc_state = 'open'
 
+    def write(self, vals):
+        res = super(PurchaseOrder, self).write(vals)
+        if 'f_closed' in vals:
+            pickings = self.env['stock.picking'].search([('origin', 'in', self.mapped('name'))])
+            pickings._compute_f_closed()
+        return res
+
     def button_confirm(self):
         res = super(PurchaseOrder, self).button_confirm()
         pickings = self.env['stock.picking'].search([('origin', '=', self.name)])
