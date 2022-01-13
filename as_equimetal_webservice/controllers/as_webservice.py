@@ -1,20 +1,30 @@
 # -*- coding: utf-8 -*-
-import json
-import logging
-import uuid
-
-import jsonschema
-import requests
-import yaml
-from jsonschema import validate
-
+from odoo.tools.translate import _
+from odoo import http
 from odoo import http
 from odoo.http import request
-from odoo import _
+from datetime import datetime
+from bs4 import BeautifulSoup
+import json
+import sys
+import uuid
+from odoo import http
+from odoo.http import request, Response
+import jsonschema
+from jsonschema import validate
+import json
+import yaml
+import requests, json
+from . import as_estructuras
+import logging
 
 _logger = logging.getLogger(__name__)
-from datetime import datetime
+from datetime import timedelta, datetime, date
+import calendar
+from dateutil.relativedelta import relativedelta
 import os.path
+from werkzeug import urls
+from werkzeug.wsgi import wrap_file
 
 address_api = {
     'WS005': '/api/Trazabilidad/ProductoRecibido',
@@ -133,7 +143,7 @@ class as_webservice_quimetal(http.Controller):
                                     "product_id": product_product_id,
                                     "product_qty": linea["Quantity"],
                                     # "sequence": 1,
-                                    'name': _(linea["ItemDescription"]),
+                                    'name': linea["ItemDescription"],
                                     'account_analytic_id': False,
                                     'product_uom': producto_uom_id,
                                     "price_unit": 1,
@@ -174,8 +184,8 @@ class as_webservice_quimetal(http.Controller):
                         else:
                             mensaje_error = {
                                 "Token": as_token,
-                                "RespCode": -2,
-                                "RespMessage": "Ya existe el registro que pretende almacenar"
+                                "RespCode": -3,
+                                "RespMessage": "Rechazado: Ya existe el registro que pretende almacenar"
                             }
                             self.create_message_log("ws001", as_token, post, 'RECHAZADO',
                                                     'Ya existe el registro que pretende almacenar')
@@ -210,8 +220,7 @@ class as_webservice_quimetal(http.Controller):
     # WS016, de SAP a ODOO
     @http.route(['/tpco/odoo/ws016', ], auth="public", type="json", method=['POST'], csrf=False)
     def WS016(self, **post):
-        # post = yaml.load(request.httprequest.data)
-        post = json.loads(request.httprequest.data)
+        post = yaml.load(request.httprequest.data)
         res = {}
         as_token = uuid.uuid4().hex
         mensaje_error = {
@@ -328,52 +337,51 @@ class as_webservice_quimetal(http.Controller):
 
                                 }
                             )
-                            # request.env.cr.commit()
-                            _logger.debug("\n\n\n\n\nventa_nueva_linea: %s", venta_nueva_linea)
+                        # request.env.cr.commit()
+                        _logger.debug("\n\n\n\n\nventa_nueva_linea: %s", venta_nueva_linea)
 
-                            # Ensamblando la venta
-                            venta_nueva = {
-                                'name': f"{post['DocNum']} - {linea['LineNum']}",
-                                'origin': post['DocNum'],
-                                'as_num_comex': post['NumAtcard'],
-                                # 'priority': '0',
-                                'partner_id': cliente_id,
-                                # 'partner_ref': False,
-                                'f_closed': 0,
-                                'currency_id': 2,
-                                'date_order': date_approve,
-                                'user_id': uid,
-                                'company_id': 1,
-                                'payment_term_id': 7,
-                                "fiscal_position_id": False,
-                                "analytic_account_id": False,
-                                "warehouse_id": 1,
-                                "incoterm": False,
-                                "picking_policy": "direct",
-                                "commitment_date": False,
-                                "campaign_id": False,
-                                "medium_id": False,
-                                "source_id": False,
-                                "signed_by": False,
-                                "signed_on": False,
-                                "signature": False,
-                                "note": "",
-                                "team_id": 1,
-                                "require_signature": True,
-                                "require_payment": True,
-                                "client_order_ref": False,
-                                "show_update_pricelist": False,
-                                "pricelist_id": 1,
-                                "partner_invoice_id": cliente_id,
-                                "partner_shipping_id": cliente_id,
-                                "sale_order_template_id": False,
-                                "validity_date": False,
-                                'order_line': [(0, False, line) for line in venta_nueva_linea],
-                            }
+                        # Ensamblando la venta
+                        venta_nueva = {
+                            'name': post['DocNum'],
+                            'origin': post['DocNum'],
+                            'as_num_comex': post['NumAtcard'],
+                            # 'priority': '0',
+                            'partner_id': cliente_id,
+                            # 'partner_ref': False,
+                            'currency_id': 2,
+                            'date_order': date_approve,
+                            'user_id': uid,
+                            'company_id': 1,
+                            'payment_term_id': 7,
+                            "fiscal_position_id": False,
+                            "analytic_account_id": False,
+                            "warehouse_id": 1,
+                            "incoterm": False,
+                            "picking_policy": "direct",
+                            "commitment_date": False,
+                            "campaign_id": False,
+                            "medium_id": False,
+                            "source_id": False,
+                            "signed_by": False,
+                            "signed_on": False,
+                            "signature": False,
+                            "note": "",
+                            "team_id": 1,
+                            "require_signature": True,
+                            "require_payment": True,
+                            "client_order_ref": False,
+                            "show_update_pricelist": False,
+                            "pricelist_id": 1,
+                            "partner_invoice_id": cliente_id,
+                            "partner_shipping_id": cliente_id,
+                            "sale_order_template_id": False,
+                            "validity_date": False,
+                            'order_line': [(0, False, line) for line in venta_nueva_linea],
+                        }
 
-                            nueva_venta = request.env['sale.order'].sudo().create(venta_nueva)
-                            nueva_venta.action_confirm()
-                            self.create_message_log("ws016", as_token, post, 'ACEPTADO', 'OC recibidas correctamente')
+                        nueva_venta = request.env['sale.order'].sudo().create(venta_nueva)
+                        nueva_venta.action_confirm()
+                        self.create_message_log("ws016", as_token, post, 'ACEPTADO', 'OC recibidas correctamente')
                         return mensaje_correcto
                     else:
                         self.create_message_log("ws016", as_token, post, 'RECHAZADO',
@@ -1077,24 +1085,26 @@ class as_webservice_quimetal(http.Controller):
 
                     if not uomID:
                         uomID = request.env['uom.uom'].sudo().create({
-                            'name': uom_name,
-                            'as_contenido_envase': contenidoenvase,
-                            'unidad_sap': post['params']['uomid'],
-                            'category_id': uom_category,
-                            'factor': (1 / contenidoenvase) if contenidoenvase > 0 else 1,
-                            'uom_type': 'bigger' if contenidoenvase > 1 else 'smaller'
+                            'name': f"{post['params']['itemDescription']} ({post['params']['uomId']}) {post['params']['contenidoEnvase']}",
+                            'as_contenido_envase': post['params']['contenidoEnvase'],
+                            'unidad_sap': post['params']['uomId'],
+                            'category_id': 2 if post['params']['unidadReferencia'] == 'KG' else 5,
+                            'factor': (1 / post['params']['contenidoEnvase']) if post['params'][
+                                                                                     'contenidoEnvase'] > 0 else 1,
+                            'uom_type': 'bigger' if post['params']['contenidoEnvase'] > 1 else 'smaller'
                         })
 
-                    uomPOID = request.env['uom.uom'].sudo().search([('name', '=', uom_name)],
+                    uomPOID = request.env['uom.uom'].sudo().search([('unidad_sap', '=', post['params']['uomPoId'])],
                                                                    limit=1)
                     if not uomPOID:
                         uomPOID = request.env['uom.uom'].sudo().create({
-                            'name': uom_name,
-                            'as_contenido_envase': contenidoenvase,
-                            'unidad_sap': post['params']['uomid'],
-                            'category_id': uom_category,
-                            'factor': (1 / contenidoenvase) if contenidoenvase > 0 else 1,
-                            'uom_type': 'bigger' if contenidoenvase > 1 else 'smaller'
+                            'name': f"{post['params']['uomId']} {post['params']['contenidoEnvase']} {post['params']['unidadReferencia']}",
+                            'as_contenido_envase': post['params']['contenidoEnvase'],
+                            'unidad_sap': post['params']['uomId'],
+                            'category_id': 2 if post['params']['unidadReferencia'] == 'KG' else 5,
+                            'factor': (1 / post['params']['contenidoEnvase']) if post['params'][
+                                                                                     'contenidoEnvase'] > 0 else 1,
+                            'uom_type': 'bigger' if post['params']['contenidoEnvase'] > 1 else 'smaller'
                         })
 
                     envases_id = request.env['quimetal.envases'].sudo().search(
@@ -1102,30 +1112,26 @@ class as_webservice_quimetal(http.Controller):
 
                     if not envases_id and post['params']['envase'] != '':
                         envases_id = request.env['quimetal.envases'].sudo().create({
-                            'name': post['params']['glosaenvase'],
+                            'name': post['params']['glosaEnvase'],
                             'cod_envase': post['params']['envase']
                         })
 
                     embalaje_id = request.env['quimetal.embalaje'].sudo().search(
                         [('cod_embalaje', '=', post['params']['embalaje'])], limit=1)
                     unid_logistica_id = request.env['quimetal.unid.logisticas'].sudo().search(
-                        [('name', '=', post['params']['formatounidadlogistica'])], limit=1)
-
-                    categ = post['params']['categ_id']
-                    if categ == '':
-                        categ = 1
+                        [('name', '=', post['params']['formatoUnidadLogistica'])], limit=1)
                     categ_id = request.env['product.category'].sudo().search(
-                        [('id', '=', categ)], limit=1)
+                        [('id', '=', post['params']['categ_id'])], limit=1)
 
                     as_barcode = post['params']['barcode']
-                    as_type_product = post['params']['tipoprodquimetal']
+                    as_type_product = post['params']['tipoProdQuimetal']
                     if as_type_product in ('MP', 'PP') and as_barcode == '':
-                        as_barcode = post['params']['itemcode']
+                        as_barcode = post['params']['itemCode']
 
                     vals = {
-                        'default_code': post['params']['itemcode'],
-                        'name': post['params']['itemdescription'],
-                        'type': post['params']['tipoproducto'],
+                        'default_code': post['params']['itemCode'],
+                        'name': post['params']['itemDescription'],
+                        'type': post['params']['tipoProducto'],
                         'as_type_product': as_type_product,
                         'barcode': as_barcode,
                         'as_contenido_envase': contenidoenvase,
@@ -1143,15 +1149,13 @@ class as_webservice_quimetal(http.Controller):
                         'uom_id': uomID.id if uomID else False,
                         'uom_po_id': uomPOID.id if uomPOID else False,
                         'envase_id': envases_id.id if envases_id else False,
-                        'unidad_referencia': post['params']['unidadreferencia'],
+                        'unidad_referencia': uomReferencia.id if uomReferencia else False,
                         'embalaje_id': embalaje_id.id if embalaje_id else False,
                         'unidad_logistica_id': unid_logistica_id.id if unid_logistica_id else False,
                     }
 
-                    _logger.info(f"==> ws017 Vals: {vals}")
-
                     product_id = request.env['product.template'].sudo().search(
-                        [('default_code', '=', post['params']['itemcode'])], limit=1)
+                        [('default_code', '=', post['params']['itemCode'])], limit=1)
                     if product_id:
                         sale_line = request.env['sale.order.line'].search([('product_id', '=', product_id.id)])
                         purchase_line = request.env['purchase.order.line'].search([('product_id', '=', product_id.id)])
@@ -1159,10 +1163,6 @@ class as_webservice_quimetal(http.Controller):
 
                         if not sale_line and not purchase_line and not stock_line:
                             product_id.write(vals)
-
-                            product_name = request.env['ir.translation'].search(
-                                [('src', '=', product_id.name), ('lang', '=', 'es_ES')])
-
                             mensaje_correcto['RespMessage'] = 'Producto se actualizó'
                             self.create_message_log("WS017", as_token, mensaje_correcto, 'ACEPTADO',
                                                     'Producto actualizado')
@@ -1184,8 +1184,9 @@ class as_webservice_quimetal(http.Controller):
 
                 # uid = request.env.user.id
         except Exception as e:
-            _logger.info(f"==> ws017 Error: {e}")
             self.create_message_log("WS017", as_token, post, 'RECHAZADO', str(e))
+            mensaje_error['RespCode'] = -99
+            mensaje_error['RespMessage'] = f"Rechazado: {str(e)}"
             return mensaje_error
 
     @http.route('/tpco/odoo/ws013', auth="public", type="json", method=['POST'], csrf=False)
@@ -1201,13 +1202,15 @@ class as_webservice_quimetal(http.Controller):
         mensaje_correcto = {
             "Token": as_token,
             "RespCode": 0,
-            "RespMessage": "Devolución se realizó correctamente"
+            "RespMessage": "Devolución se creo correctamente"
         }
 
         try:
             myapikey = request.httprequest.headers.get("Authorization")
             if not myapikey:
-                self.create_message_log("WS013", as_token, post, 'RECHAZADO', 'API KEY no existe')
+                self.create_message_log("WS017", as_token, post, 'RECHAZADO', 'API KEY no existe')
+                mensaje_error['RespCode'] = -2
+                mensaje_error['RespMessage'] = f"Rechazado: API KEY no existe"
                 return mensaje_error
             user_id = request.env["res.users.apikeys"]._check_credentials(scope="rpc", key=myapikey)
             request.uid = user_id
@@ -1299,20 +1302,20 @@ class as_webservice_quimetal(http.Controller):
 
                         picking = request.env['stock.picking'].create(vals)
                         if picking:
-                            mensaje_correcto['RespMessage'] = 'Transferencia creada'
+                            mensaje_correcto['RespMessage'] = 'Devolución creada'
                             self.create_message_log("WS013", as_token, mensaje_correcto, 'ACEPTADO',
-                                                    'Transferencia creada')
+                                                    'Devolución creada')
                             picking.action_confirm()
                             picking.button_validate()
                         else:
                             mensaje_correcto['RespMessage'] = 'Devolución no creada'
                             self.create_message_log("WS013", as_token, mensaje_correcto, 'ERROR',
-                                                    'Transferencia no creada')
+                                                    'Devolución no creada')
                         return mensaje_correcto
                     else:
                         self.create_message_log("WS013", as_token, post, 'RECHAZADO',
                                                 'Transferencia no se puede crear, porque ya existe')
-                        mensaje_error['RespMessage'] = 'Transferencia no creada'
+                        mensaje_error['RespMessage'] = 'Devolución no creada'
                         return mensaje_error
 
                 else:
@@ -1323,6 +1326,8 @@ class as_webservice_quimetal(http.Controller):
 
         except Exception as e:
             self.create_message_log("WS013", as_token, post, 'RECHAZADO', str(e))
+            mensaje_error['RespCode'] = -99
+            mensaje_error['RespMessage'] = f"Rechazado: {str(e)}"
             return mensaje_error
 
     @http.route('/tpco/odoo/ws015', auth="public", type="json", method=['POST'], csrf=False)
@@ -1359,12 +1364,12 @@ class as_webservice_quimetal(http.Controller):
                 if es_valido:
                     doc_type = post['params']['DocType']
                     model = 'purchase.order' if doc_type == 'OC' else 'sale.order'
-                    object_model = request.env[model].sudo().search([('name', 'like', post['params']['DocNum'])])
+                    object_model = request.env[model].search([('name', '=', post['params']['DocNum'])], limit=1)
                     if object_model:
-                        object_model.sudo().write({
-                            'f_closed': int(post['params']['FlagClosed'])
+                        object_model.write({
+                            'f_closed': False if post['params']['flagClosed'] else True
                         })
-                        if post['params']['FlagClosed']:
+                        if post['params']['flagClosed']:
                             mensaje_correcto['RespMessage'] = f"La OC {post['params']['DocNum']} fue cerrada"
                         else:
                             mensaje_correcto['RespMessage'] = f"La OC {post['params']['DocNum']} fue abierta"
@@ -1388,64 +1393,6 @@ class as_webservice_quimetal(http.Controller):
             self.create_message_log("WS015", as_token, post, 'RECHAZADO', str(e))
             mensaje_error['RespCode'] = -99
             mensaje_error['RespMessage'] = f"Rechazado: {str(e)}"
-            return mensaje_error
-
-    @http.route('/tpco/odoo/ws032', auth="public", type="json", method=['POST'], csrf=False)
-    def WS032(self, **post):
-        post = json.loads(request.httprequest.data)
-        res = {}
-        as_token = uuid.uuid4().hex
-        mensaje_error = {
-            "Token": as_token,
-            "RespCode": -1,
-            "RespMessage": "Error de conexión"
-        }
-        mensaje_correcto = {
-            "Token": as_token,
-            "RespCode": 0,
-            "RespMessage": "Producto se agregó correctamente"
-        }
-
-        try:
-            myapikey = request.httprequest.headers.get("Authorization")
-            if not myapikey:
-                self.create_message_log("WS032", as_token, post, 'RECHAZADO', 'API KEY no existe')
-                return mensaje_error
-            user_id = request.env["res.users.apikeys"]._check_credentials(scope="rpc", key=myapikey)
-            request.uid = user_id
-            if user_id:
-                res['token'] = as_token
-                uid = user_id
-                estructura = self.get_file('ws032.json')
-                # es_valido = True
-                es_valido = self.validar_json(post, esquema=estructura)
-                if es_valido:
-                    doc_type = post['params']['DocType']
-                    model = 'purchase.order' if doc_type == 'OC' else 'sale.order'
-                    object_model = request.env[model].search([('name', '=', post['params']['DocNum'])], limit=1)
-                    if object_model:
-                        object_model.write({
-                            'f_closed': False if post['params']['flagClosed'] else True
-                        })
-                        if post['params']['flagClosed']:
-                            mensaje_correcto['RespMessage'] = f"La OC {post['params']['DocNum']} fue cerrada"
-                        else:
-                            mensaje_correcto['RespMessage'] = f"La OC {post['params']['DocNum']} fue abierta"
-
-                        self.create_message_log("WS032", as_token, mensaje_correcto, 'ACEPTADO',
-                                                'Orden de compra actualizada')
-                        return mensaje_correcto
-                    else:
-                        mensaje_error['RespMessage'] = f"La OC {post['params']['DocNum']} no existe"
-                        self.create_message_log("WS032", as_token, mensaje_error, 'ERROR',
-                                                'Orden de compra no existe')
-                        return mensaje_error
-                else:
-                    self.create_message_log("WS032", as_token, post, 'RECHAZADO', 'Estructura del Json Invalida')
-                    return mensaje_error
-
-        except Exception as e:
-            self.create_message_log("WS032", as_token, post, 'RECHAZADO', str(e))
             return mensaje_error
 
     def as_get_auth(self):
@@ -1572,9 +1519,3 @@ class as_webservice_quimetal(http.Controller):
             return int(num[0:digits])
         else:
             return txt[0:digits]
-
-    def convert_json_key_lower(self, post):
-        post_upper = {}
-        for key, value in post.items():
-            post_upper.update({key.lower(): value})
-        return post_upper
