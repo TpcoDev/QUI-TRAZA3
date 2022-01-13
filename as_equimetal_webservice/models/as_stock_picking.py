@@ -70,7 +70,7 @@ class AsStockPicking(models.Model):
         string="Webservice",
     )
     as_ot_num = fields.Integer(string='Numero Documento')
-    as_ot_sap = fields.Integer(string='OT SAP')
+    as_ot_sap = fields.Char(string='OT SAP')
     as_num_factura = fields.Char(string='Num de Factura')
     as_guia_sap = fields.Char(string='Guía SAP')
     opdevtype = fields.Integer()

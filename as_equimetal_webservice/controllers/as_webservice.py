@@ -1202,7 +1202,7 @@ class as_webservice_quimetal(http.Controller):
         mensaje_correcto = {
             "Token": as_token,
             "RespCode": 0,
-            "RespMessage": "Producto se agregó correctamente"
+            "RespMessage": "Devolución se creo correctamente"
         }
 
         try:
@@ -1302,20 +1302,20 @@ class as_webservice_quimetal(http.Controller):
 
                         picking = request.env['stock.picking'].create(vals)
                         if picking:
-                            mensaje_correcto['RespMessage'] = 'Transferencia creada'
+                            mensaje_correcto['RespMessage'] = 'Devolución creada'
                             self.create_message_log("WS013", as_token, mensaje_correcto, 'ACEPTADO',
-                                                    'Transferencia creada')
+                                                    'Devolución creada')
                             picking.action_confirm()
                             picking.button_validate()
                         else:
                             mensaje_correcto['RespMessage'] = 'Devolución no creada'
                             self.create_message_log("WS013", as_token, mensaje_correcto, 'ERROR',
-                                                    'Transferencia no creada')
+                                                    'Devolución no creada')
                         return mensaje_correcto
                     else:
                         self.create_message_log("WS013", as_token, post, 'RECHAZADO',
                                                 'Transferencia no se puede crear, porque ya existe')
-                        mensaje_error['RespMessage'] = 'Transferencia no creada'
+                        mensaje_error['RespMessage'] = 'Devolución no creada'
                         return mensaje_error
 
                 else:
