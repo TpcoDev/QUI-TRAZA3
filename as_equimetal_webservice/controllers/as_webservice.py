@@ -1256,7 +1256,7 @@ class as_webservice_quimetal(http.Controller):
                             for detalle in line['Detalle']:
 
                                 lot_id = request.env['stock.production.lot'].search(
-                                    [('name', '=', detalle['DistNumber']),('product_id', '=', product.id)], limit=1)
+                                    [('name', '=', detalle['DistNumber']), ('product_id', '=', product.id)], limit=1)
                                 if not lot_id:
                                     lot_id = request.env['stock.production.lot'].create({
                                         'name': detalle['DistNumber'],
@@ -1519,3 +1519,9 @@ class as_webservice_quimetal(http.Controller):
             return int(num[0:digits])
         else:
             return txt[0:digits]
+
+    def convert_json_key_lower(self, post):
+        post_upper = {}
+        for key, value in post.items():
+            post_upper.update({key.lower(): value})
+        return post_upper
