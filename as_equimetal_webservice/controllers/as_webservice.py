@@ -1186,7 +1186,7 @@ class as_webservice_quimetal(http.Controller):
                         return mensaje_error
 
                     # uid = request.env.user.id
-            except Exception as e:
+        except Exception as e:
             self.create_message_log("WS017", as_token, post, 'RECHAZADO', str(e))
             mensaje_error['RespCode'] = -99
             mensaje_error['RespMessage'] = f"Rechazado: {str(e)}"
