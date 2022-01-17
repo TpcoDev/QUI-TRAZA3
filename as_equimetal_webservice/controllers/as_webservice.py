@@ -1244,6 +1244,18 @@ class as_webservice_quimetal(http.Controller):
                         elif op_dev_type == 16 and not location_id:
                             location_id = request.env.ref('stock.stock_location_customers')
 
+                        if not location_dest_id:
+                            self.create_message_log("WS013", as_token, post, 'RECHAZADO',
+                                                    'La Ubicacion destino no existe')
+                            mensaje_error['RespMessage'] = 'La Ubicacion destino no existe'
+                            return mensaje_error
+
+                        if not location_id:
+                            self.create_message_log("WS013", as_token, post, 'RECHAZADO',
+                                                    'La Ubicacion origen no existe')
+                            mensaje_error['RespMessage'] = 'La Ubicacion origen no existe'
+                            return mensaje_error
+
                         partner = request.env['res.partner'].sudo().search([('vat', '=', post['params']['CardCode'])],
                                                                            limit=1)
                         date = datetime.strptime(post['params']['DocDate'], '%Y-%m-%dT%H:%M:%SZ')
