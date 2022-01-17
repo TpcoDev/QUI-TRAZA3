@@ -179,7 +179,6 @@ class as_webservice_quimetal(http.Controller):
 
                             nueva_compra = request.env['purchase.order'].sudo().create(compra_nueva)
                             nueva_compra.button_confirm()
-                            self.create_message_log("ws001", as_token, post, 'ACEPTADO', 'OC recibidas correctamente')
                             _logger.debug('\n\nCompra creada: ' + str(nueva_compra.name))
                         else:
                             mensaje_error = {
@@ -190,6 +189,8 @@ class as_webservice_quimetal(http.Controller):
                             self.create_message_log("ws001", as_token, post, 'RECHAZADO',
                                                     'Ya existe el registro que pretende almacenar')
                             return mensaje_error
+
+                    self.create_message_log("ws001", as_token, post, 'ACEPTADO', 'OC recibidas correctamente')
                     return mensaje_correcto
                 else:
                     mensaje_error = {
