@@ -13,7 +13,7 @@
           
                 </xpath>   
                 <xpath expr="//field[@name='location_dest_id']" position="after">
-                    <field name='as_picking_o' /> 
+                    <field name='as_picking_o' invisible="1"/>
                     <field name='picking_type_code' /> 
                 </xpath>           
             </field>
