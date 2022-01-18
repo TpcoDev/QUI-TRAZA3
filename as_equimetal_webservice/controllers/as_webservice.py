@@ -1378,23 +1378,24 @@ class as_webservice_quimetal(http.Controller):
                 # es_valido = True
                 es_valido = self.validar_json(post, esquema=estructura)
                 if es_valido:
-                    doc_type = post['params']['DocType']
+                    post['params'] = self.convert_json_key_lower(post['params'])
+                    doc_type = post['params']['doctype']
                     model = 'purchase.order' if doc_type == 'OC' else 'sale.order'
-                    object_model = request.env[model].search([('name', '=', post['params']['DocNum'])], limit=1)
+                    object_model = request.env[model].search([('name', 'ilike', post['params']['docnum'])])
                     if object_model:
                         object_model.write({
-                            'f_closed': False if post['params']['flagClosed'] else True
+                            'f_closed': False if post['params']['flagclosed'] else True
                         })
-                        if post['params']['flagClosed']:
-                            mensaje_correcto['RespMessage'] = f"La OC {post['params']['DocNum']} fue cerrada"
+                        if post['params']['flagclosed']:
+                            mensaje_correcto['RespMessage'] = f"La OC {post['params']['docnum']} fue cerrada"
                         else:
-                            mensaje_correcto['RespMessage'] = f"La OC {post['params']['DocNum']} fue abierta"
+                            mensaje_correcto['RespMessage'] = f"La OC {post['params']['docnum']} fue abierta"
 
                         self.create_message_log("WS015", as_token, mensaje_correcto, 'ACEPTADO',
                                                 'Orden de compra actualizada')
                         return mensaje_correcto
                     else:
-                        mensaje_error['RespMessage'] = f"La OC {post['params']['DocNum']} no existe"
+                        mensaje_error['RespMessage'] = f"La OC {post['params']['docnum']} no existe"
                         mensaje_error['RespCode'] = -3
                         self.create_message_log("WS015", as_token, mensaje_error, 'ERROR',
                                                 'Rechazado: Orden de compra no existe')
