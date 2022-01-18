@@ -179,7 +179,6 @@ class as_webservice_quimetal(http.Controller):
 
                             nueva_compra = request.env['purchase.order'].sudo().create(compra_nueva)
                             nueva_compra.button_confirm()
-                            self.create_message_log("ws001", as_token, post, 'ACEPTADO', 'OC recibidas correctamente')
                             _logger.debug('\n\nCompra creada: ' + str(nueva_compra.name))
                         else:
                             mensaje_error = {
@@ -190,6 +189,8 @@ class as_webservice_quimetal(http.Controller):
                             self.create_message_log("ws001", as_token, post, 'RECHAZADO',
                                                     'Ya existe el registro que pretende almacenar')
                             return mensaje_error
+
+                    self.create_message_log("ws001", as_token, post, 'ACEPTADO', 'OC recibidas correctamente')
                     return mensaje_correcto
                 else:
                     mensaje_error = {
@@ -1085,104 +1086,107 @@ class as_webservice_quimetal(http.Controller):
 
                     if not uomID:
                         uomID = request.env['uom.uom'].sudo().create({
-                            'name': f"{post['params']['itemDescription']} ({post['params']['uomId']}) {post['params']['contenidoEnvase']}",
-                            'as_contenido_envase': post['params']['contenidoEnvase'],
-                            'unidad_sap': post['params']['uomId'],
-                            'category_id': 2 if post['params']['unidadReferencia'] == 'KG' else 5,
-                            'factor': (1 / post['params']['contenidoEnvase']) if post['params'][
-                                                                                     'contenidoEnvase'] > 0 else 1,
-                            'uom_type': 'bigger' if post['params']['contenidoEnvase'] > 1 else 'smaller'
+                            'name': f"{post['params']['itemdescription']} ({post['params']['uomid']}) {post['params']['contenidoenvase']}",
+                            'as_contenido_envase': post['params']['contenidoenvase'],
+                            'unidad_sap': post['params']['uomid'],
+                            'category_id': 2 if post['params']['unidadreferencia'] == 'KG' else 5,
+                            'factor': (1 / post['params']['contenidoenvase']) if post['params'][
+                                                                                     'contenidoenvase'] > 0 else 1,
+                            'uom_type': 'bigger' if post['params']['contenidoenvase'] > 1 else 'smaller'
                         })
 
-                    uomPOID = request.env['uom.uom'].sudo().search([('unidad_sap', '=', post['params']['uomPoId'])],
-                                                                   limit=1)
-                    if not uomPOID:
-                        uomPOID = request.env['uom.uom'].sudo().create({
-                            'name': f"{post['params']['uomId']} {post['params']['contenidoEnvase']} {post['params']['unidadReferencia']}",
-                            'as_contenido_envase': post['params']['contenidoEnvase'],
-                            'unidad_sap': post['params']['uomId'],
-                            'category_id': 2 if post['params']['unidadReferencia'] == 'KG' else 5,
-                            'factor': (1 / post['params']['contenidoEnvase']) if post['params'][
-                                                                                     'contenidoEnvase'] > 0 else 1,
-                            'uom_type': 'bigger' if post['params']['contenidoEnvase'] > 1 else 'smaller'
-                        })
+                        uomPOID = request.env['uom.uom'].sudo().search([('unidad_sap', '=', post['params']['uompoid'])],
+                                                                       limit=1)
+                        if not uomPOID:
+                            uomPOID = request.env['uom.uom'].sudo().create({
+                                'name': f"{post['params']['uomid']} {post['params']['contenidoenvase']} {post['params']['unidadreferencia']}",
+                                'as_contenido_envase': post['params']['contenidoenvase'],
+                                'unidad_sap': post['params']['uomid'],
+                                'category_id': 2 if post['params']['unidadreferencia'] == 'KG' else 5,
+                                'factor': (1 / post['params']['contenidoenvase']) if post['params'][
+                                                                                         'contenidoenvase'] > 0 else 1,
+                                'uom_type': 'bigger' if post['params']['contenidoenvase'] > 1 else 'smaller'
+                            })
 
-                    envases_id = request.env['quimetal.envases'].sudo().search(
-                        [('cod_envase', '=', post['params']['envase'])], limit=1)
+                        envases_id = request.env['quimetal.envases'].sudo().search(
+                            [('cod_envase', '=', post['params']['envase'])], limit=1)
 
-                    if not envases_id and post['params']['envase'] != '':
-                        envases_id = request.env['quimetal.envases'].sudo().create({
-                            'name': post['params']['glosaEnvase'],
-                            'cod_envase': post['params']['envase']
-                        })
+                        if not envases_id and post['params']['envase'] != '':
+                            envases_id = request.env['quimetal.envases'].sudo().create({
+                                'name': post['params']['glosaenvase'],
+                                'cod_envase': post['params']['envase']
+                            })
 
-                    embalaje_id = request.env['quimetal.embalaje'].sudo().search(
-                        [('cod_embalaje', '=', post['params']['embalaje'])], limit=1)
-                    unid_logistica_id = request.env['quimetal.unid.logisticas'].sudo().search(
-                        [('name', '=', post['params']['formatoUnidadLogistica'])], limit=1)
-                    categ_id = request.env['product.category'].sudo().search(
-                        [('id', '=', post['params']['categ_id'])], limit=1)
+                        embalaje_id = request.env['quimetal.embalaje'].sudo().search(
+                            [('cod_embalaje', '=', post['params']['embalaje'])], limit=1)
+                        unid_logistica_id = request.env['quimetal.unid.logisticas'].sudo().search(
+                            [('name', '=', post['params']['formatounidadlogistica'])], limit=1)
 
-                    as_barcode = post['params']['barcode']
-                    as_type_product = post['params']['tipoProdQuimetal']
-                    if as_type_product in ('MP', 'PP') and as_barcode == '':
-                        as_barcode = post['params']['itemCode']
+                        categ_id = request.env['product.category'].sudo().search(
+                            [('id', '=', post['params']['categ_id'])], limit=1)
 
-                    vals = {
-                        'default_code': post['params']['itemCode'],
-                        'name': post['params']['itemDescription'],
-                        'type': post['params']['tipoProducto'],
-                        'as_type_product': as_type_product,
-                        'barcode': as_barcode,
-                        'as_contenido_envase': contenidoenvase,
-                        'as_cantidad_envase': post['params']['cantidadenvase'],
-                        'as_cantidad_unidades': post['params']['cantidadunidades'],
-                        'expiration_time': post['params']['expirationtime'],
-                        'list_price': 1.00,
-                        'taxes_id': [(4, request.env.ref('l10n_cl.ITAX_19').id)],
-                        'standard_price': 0.0,
-                        'use_expiration_date': True,
-                        'tracking': 'lot',
-                        'purchase_ok': True,
-                        'sale_ok': True,
-                        'categ_id': categ_id.id if categ_id else 1,
-                        'uom_id': uomID.id if uomID else False,
-                        'uom_po_id': uomPOID.id if uomPOID else False,
-                        'envase_id': envases_id.id if envases_id else False,
-                        'unidad_referencia': uomReferencia.id if uomReferencia else False,
-                        'embalaje_id': embalaje_id.id if embalaje_id else False,
-                        'unidad_logistica_id': unid_logistica_id.id if unid_logistica_id else False,
-                    }
+                        as_barcode = post['params']['barcode']
+                        as_type_product = post['params']['tipoprodquimetal']
+                        if as_type_product in ('MP', 'PP') and as_barcode == '':
+                            as_barcode = post['params']['itemcode']
 
-                    product_id = request.env['product.template'].sudo().search(
-                        [('default_code', '=', post['params']['itemCode'])], limit=1)
-                    if product_id:
-                        sale_line = request.env['sale.order.line'].search([('product_id', '=', product_id.id)])
-                        purchase_line = request.env['purchase.order.line'].search([('product_id', '=', product_id.id)])
-                        stock_line = request.env['stock.move.line'].search([('product_id', '=', product_id.id)])
+                        vals = {
+                            'default_code': post['params']['itemcode'],
+                            'name': post['params']['itemdescription'],
+                            'type': post['params']['tipoproducto'],
+                            'as_type_product': as_type_product,
+                            'barcode': as_barcode,
+                            'as_contenido_envase': contenidoenvase,
+                            'as_cantidad_envase': post['params']['cantidadenvase'],
+                            'as_cantidad_unidades': post['params']['cantidadunidades'],
+                            'expiration_time': post['params']['expirationtime'],
+                            'list_price': 1.00,
+                            'taxes_id': [(4, request.env.ref('l10n_cl.ITAX_19').id)],
+                            'standard_price': 0.0,
+                            'use_expiration_date': True,
+                            'tracking': 'lot',
+                            'purchase_ok': True,
+                            'sale_ok': True,
+                            'categ_id': categ_id.id if categ_id else 1,
+                            'uom_id': uomID.id if uomID else False,
+                            'uom_po_id': uomPOID.id if uomPOID else False,
+                            'envase_id': envases_id.id if envases_id else False,
+                            'unidad_referencia': post['params']['unidadreferencia'],
+                            'embalaje_id': embalaje_id.id if embalaje_id else False,
+                            'unidad_logistica_id': unid_logistica_id.id if unid_logistica_id else False,
+                        }
 
-                        if not sale_line and not purchase_line and not stock_line:
-                            product_id.write(vals)
-                            mensaje_correcto['RespMessage'] = 'Producto se actualizó'
-                            self.create_message_log("WS017", as_token, mensaje_correcto, 'ACEPTADO',
-                                                    'Producto actualizado')
+                        product_id = request.env['product.template'].sudo().search(
+                            [('default_code', '=', post['params']['itemcode'])], limit=1)
+                        if product_id:
+                            sale_line = request.env['sale.order.line'].search([('product_id', '=', product_id.id)])
+                            purchase_line = request.env['purchase.order.line'].search(
+                                [('product_id', '=', product_id.id)])
+                            stock_line = request.env['stock.move.line'].search([('product_id', '=', product_id.id)])
+
+                            if not sale_line and not purchase_line and not stock_line:
+                                product_id.write(vals)
+                                mensaje_correcto['RespMessage'] = 'Producto se actualizó'
+                                self.create_message_log("WS017", as_token, mensaje_correcto, 'ACEPTADO',
+                                                        'Producto actualizado')
+                            else:
+                                mensaje_correcto[
+                                    'RespMessage'] = 'Producto no se actualizó, porque se han hecho trasacciones'
+                                self.create_message_log("WS017", as_token, mensaje_correcto, 'RECHAZADO',
+                                                        'Producto no se actualizó')
+                            return mensaje_correcto
                         else:
-                            mensaje_correcto[
-                                'RespMessage'] = 'Producto no se actualizó, porque se han hecho trasacciones'
-                            self.create_message_log("WS017", as_token, mensaje_correcto, 'RECHAZADO',
-                                                    'Producto no se actualizó')
-                        return mensaje_correcto
+                            product_id = request.env['product.template'].sudo().create(vals)
+                            self.create_message_log("WS017", as_token, post, 'ACEPTADO',
+                                                    'Producto creado correctamente')
+                            return mensaje_correcto
                     else:
-                        product_id = request.env['product.template'].sudo().create(vals)
-                        self.create_message_log("WS017", as_token, post, 'ACEPTADO', 'Producto creado correctamente')
-                        return mensaje_correcto
-                else:
-                    self.create_message_log("WS017", as_token, post, 'RECHAZADO', 'Estructura del Json Invalida')
-                    mensaje_error['RespCode'] = -3
-                    mensaje_error['RespMessage'] = f"Rechazado: Estructura del Json Invalida"
-                    return mensaje_error
+                        self.create_message_log("WS017", as_token, post, 'RECHAZADO', 'Estructura del Json Invalida')
+                        mensaje_error['RespCode'] = -3
+                        mensaje_error['RespMessage'] = f"Rechazado: Estructura del Json Invalida"
+                        return mensaje_error
 
-                # uid = request.env.user.id
+                    # uid = request.env.user.id
         except Exception as e:
             self.create_message_log("WS017", as_token, post, 'RECHAZADO', str(e))
             mensaje_error['RespCode'] = -99
@@ -1240,6 +1244,18 @@ class as_webservice_quimetal(http.Controller):
                             location_dest_id = request.env.ref('stock.stock_location_suppliers')
                         elif op_dev_type == 16 and not location_id:
                             location_id = request.env.ref('stock.stock_location_customers')
+
+                        if not location_dest_id:
+                            self.create_message_log("WS013", as_token, post, 'RECHAZADO',
+                                                    'La Ubicacion destino no existe')
+                            mensaje_error['RespMessage'] = 'La Ubicacion destino no existe'
+                            return mensaje_error
+
+                        if not location_id:
+                            self.create_message_log("WS013", as_token, post, 'RECHAZADO',
+                                                    'La Ubicacion origen no existe')
+                            mensaje_error['RespMessage'] = 'La Ubicacion origen no existe'
+                            return mensaje_error
 
                         partner = request.env['res.partner'].sudo().search([('vat', '=', post['params']['CardCode'])],
                                                                            limit=1)

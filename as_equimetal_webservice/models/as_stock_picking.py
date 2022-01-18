@@ -79,7 +79,7 @@ class AsStockPicking(models.Model):
     f_closed = fields.Integer(compute="_compute_f_closed", store=True, default=0)
     oc_state = fields.Char(
         compute='_compute_f_closed',
-        store=True
+        store=False, default='Abierta',
     )
 
     def _compute_f_closed(self):
