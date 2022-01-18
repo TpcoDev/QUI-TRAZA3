@@ -1384,7 +1384,7 @@ class as_webservice_quimetal(http.Controller):
                     object_model = request.env[model].search([('name', 'ilike', post['params']['docnum'])])
                     if object_model:
                         object_model.write({
-                            'f_closed': False if post['params']['flagclosed'] else True
+                            'f_closed': post['params']['flagclosed']
                         })
                         if post['params']['flagclosed']:
                             mensaje_correcto['RespMessage'] = f"La OC {post['params']['docnum']} fue cerrada"
