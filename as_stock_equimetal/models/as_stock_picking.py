@@ -5,19 +5,32 @@ from odoo import http
 import werkzeug
 from werkzeug.urls import url_encode
 
+
 class StockMoveLine(models.Model):
     _inherit = 'stock.picking'
 
-    partner_id = fields.Many2one(  'res.partner', 'Contact', check_company=True, states={'cancel': [('readonly', True)]})
-    as_picking_o = fields.Many2one('stock.picking',string="Movimeinto secundario",compute='_compute_purchase')
+    partner_id = fields.Many2one('res.partner', 'Contact', check_company=True, states={'cancel': [('readonly', True)]})
+    as_picking_o = fields.Many2one('stock.picking', string="Movimeinto secundario", compute='_compute_purchase')
 
     def _compute_purchase(self):
         for line in self:
-            if line.id:
-                picking = self.env['stock.picking'].search([('origin','=',line.origin),('state','!=','cancel'),('id','!=',line.id)],limit=1)
-                line.as_picking_o = picking
+            backorder = self.search([('backorder_id', '=', line.id)], limit=1)
+            if backorder:
+                line.as_picking_o = backorder.id
+            elif line.location_id.barcode == 'WH-INPUT' and line.location_dest_id.barcode == 'WH-QUALITY':
+                code = line.name.split('/')[-1]
+                pickings = self.env['stock.picking'].search(
+                    [('origin', '=', line.origin), ('state', '!=', 'cancel'), ('id', '!=', line.id)], order='id asc')
+                picking = pickings.filtered(lambda r: r.name.split('/')[-1] > code)
+                line.as_picking_o = picking.id
             else:
-                line.as_picking_o=False
+                picking = self.env['stock.picking'].search(
+                    [('origin', '=', line.origin), ('state', '!=', 'cancel'), ('id', '!=', line.id)], limit=1,
+                    order='id asc')
+                if picking:
+                    line.as_picking_o = picking.id
+                else:
+                    line.as_picking_o = False
 
     def _get_share_url(self, redirect=False, signup_partner=False, share_token=None):
         """
@@ -76,8 +89,10 @@ class StockMoveLine(models.Model):
 
     def _find_mail_template(self, force_confirmation_template=False):
         if self.location_id.as_plantilla == '1':
-            template_id = self.env['ir.model.data'].xmlid_to_res_id('as_stock_equimetal.stock_picking_mail_templateD', raise_if_not_found=False)
+            template_id = self.env['ir.model.data'].xmlid_to_res_id('as_stock_equimetal.stock_picking_mail_templateD',
+                                                                    raise_if_not_found=False)
         else:
-            template_id = self.env['ir.model.data'].xmlid_to_res_id('as_stock_equimetal.stock_picking_mail_templateO', raise_if_not_found=False)
+            template_id = self.env['ir.model.data'].xmlid_to_res_id('as_stock_equimetal.stock_picking_mail_templateO',
+                                                                    raise_if_not_found=False)
 
         return template_id
