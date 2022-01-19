@@ -1095,13 +1095,24 @@ class as_webservice_quimetal(http.Controller):
                             'uom_type': 'bigger' if post['params']['contenidoenvase'] > 1 else 'smaller'
                         })
 
-                    uomPOID = request.env['uom.uom'].sudo().search([('unidad_sap', '=', post['params']['uompoid'])],
-                                                                   limit=1)
+                    uompoid_name = post['params']['uompoid']
+                    uompo_name = False
+                    if uompoid_name == 'KG':
+                        uompo_name = 'KG'
+                    elif uompoid_name == 'LT':
+                        uompo_name = 'LT'
+                    elif uompoid_name == 'TM':
+                        uompo_name = 'TM'
+
+                    if not uompo_name:
+                        uompo_name = f"{uompoid_name} {contenidoenvase} {post['params']['unidadreferencia']}"
+
+                    uomPOID = request.env['uom.uom'].sudo().search([('name', '=', uompo_name)], limit=1)
                     if not uomPOID:
                         uomPOID = request.env['uom.uom'].sudo().create({
-                            'name': f"{post['params']['uomid']} {post['params']['contenidoenvase']} {post['params']['unidadreferencia']}",
+                            'name': f"{post['params']['itemdescription']} ({post['params']['uompoid']}) {post['params']['contenidoenvase']}",
                             'as_contenido_envase': post['params']['contenidoenvase'],
-                            'unidad_sap': post['params']['uomid'],
+                            'unidad_sap': post['params']['uompoid'],
                             'category_id': 2 if post['params']['unidadreferencia'] == 'KG' else 5,
                             'factor': (1 / post['params']['contenidoenvase']) if post['params'][
                                                                                      'contenidoenvase'] > 0 else 1,
