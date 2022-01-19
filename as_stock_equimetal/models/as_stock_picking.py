@@ -14,14 +14,11 @@ class StockMoveLine(models.Model):
 
     def _compute_purchase(self):
         for line in self:
-            backorder = self.search([('backorder_id', '=', line.id)], limit=1)
-            if backorder:
-                line.as_picking_o = backorder.id
-            elif line.location_id.barcode == 'WH-INPUT' and line.location_dest_id.barcode == 'WH-QUALITY':
+            if line.location_id.barcode == 'WH-INPUT' and line.location_dest_id.barcode == 'WH-QUALITY':
                 code = line.name.split('/')[-1]
                 pickings = self.env['stock.picking'].search(
                     [('origin', '=', line.origin), ('state', '!=', 'cancel'), ('id', '!=', line.id)], order='id asc')
-                picking = pickings.filtered(lambda r: r.name.split('/')[-1] > code)
+                picking = pickings.filtered(lambda r: int(r.name.split('/')[-1]) == int(code) + 1)
                 line.as_picking_o = picking.id
             else:
                 picking = self.env['stock.picking'].search(
